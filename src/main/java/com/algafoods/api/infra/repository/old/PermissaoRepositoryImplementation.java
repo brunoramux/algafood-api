@@ -1,6 +1,5 @@
-package com.algafoods.api.infra.repository;
+package com.algafoods.api.infra.repository.old;
 
-import com.algafoods.api.domain.model.FormaPagamento;
 import com.algafoods.api.domain.model.Permissao;
 import com.algafoods.api.domain.repository.PermissaoRepository;
 import jakarta.persistence.EntityManager;

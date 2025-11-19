@@ -62,6 +62,22 @@ public class RestauranteController {
         return ResponseEntity.ok(restaurantes);
     }
 
+    @GetMapping("/find")
+    public ResponseEntity<List<Restaurante>> buscarPorNomeETaxa(
+            @RequestParam
+            String nome,
+            BigDecimal taxaInicial,
+            BigDecimal taxaFinal
+    ){
+        List<Restaurante> restaurantes = restauranteRepository.find(nome, taxaInicial, taxaFinal);
+
+        if(restaurantes == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(restaurantes);
+    }
+
     @PostMapping
     public ResponseEntity<?> adicionar(
             @RequestBody

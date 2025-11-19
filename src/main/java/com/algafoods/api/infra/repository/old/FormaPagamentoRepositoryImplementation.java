@@ -1,4 +1,4 @@
-package com.algafoods.api.infra.repository;
+package com.algafoods.api.infra.repository.old;
 
 import com.algafoods.api.domain.model.FormaPagamento;
 import com.algafoods.api.domain.repository.FormaPagamentoRepository;
