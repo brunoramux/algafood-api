@@ -12,5 +12,19 @@ services:
     volumes:
       - db_data:/var/lib/mysql
 
+  api:
+    build: .
+    container_name: algafoods_api
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/algafoods?allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: algafoods
+      SPRING_DATASOURCE_PASSWORD: algafoods
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create
+    depends_on:
+      - db
+    restart: always
+
 volumes:
   db_data:
