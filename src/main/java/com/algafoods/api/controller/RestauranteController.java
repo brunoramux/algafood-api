@@ -1,10 +1,10 @@
 package com.algafoods.api.controller;
 
 import com.algafoods.api.domain.exception.EntidadeNaoEncontradaException;
-import com.algafoods.api.domain.model.Cozinha;
 import com.algafoods.api.domain.model.Restaurante;
 import com.algafoods.api.domain.repository.RestauranteRepository;
 import com.algafoods.api.domain.service.CadastroRestauranteService;
+import com.algafoods.api.infra.repository.spec.RestaurantesSpecs;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
@@ -64,15 +65,33 @@ public class RestauranteController {
 
     @GetMapping("/find")
     public ResponseEntity<List<Restaurante>> buscarPorNomeETaxa(
-            @RequestParam
+            @RequestParam(required = false)
             String nome,
+            @RequestParam(required = false)
             BigDecimal taxaInicial,
+            @RequestParam(required = false)
             BigDecimal taxaFinal
     ){
         List<Restaurante> restaurantes = restauranteRepository.find(nome, taxaInicial, taxaFinal);
 
         if(restaurantes == null) {
             return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(restaurantes);
+    }
+
+    @GetMapping("/findFreteGratis")
+    public ResponseEntity<List<Restaurante>> buscarPorFreteGratis(
+            @RequestParam(required = false) String nome
+    ){
+
+        List<Restaurante> restaurantes = null;
+
+        if(StringUtils.hasText(nome)){
+            restaurantes = restauranteRepository.findAll(RestaurantesSpecs.comFreteGratis().and(RestaurantesSpecs.comNomeSemelhante(nome)));
+        } else {
+            restaurantes = restauranteRepository.findAll(RestaurantesSpecs.comFreteGratis());
         }
 
         return ResponseEntity.ok(restaurantes);
