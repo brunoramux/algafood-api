@@ -86,15 +86,21 @@ public class RestauranteController {
             @RequestParam(required = false) String nome
     ){
 
-        List<Restaurante> restaurantes = null;
-
-        if(StringUtils.hasText(nome)){
-            restaurantes = restauranteRepository.findAll(RestaurantesSpecs.comFreteGratis().and(RestaurantesSpecs.comNomeSemelhante(nome)));
-        } else {
-            restaurantes = restauranteRepository.findAll(RestaurantesSpecs.comFreteGratis());
-        }
+        var restaurantes = restauranteRepository.findFreteGratis(nome);
 
         return ResponseEntity.ok(restaurantes);
+    }
+
+    @GetMapping("/findFirst")
+    public ResponseEntity<Restaurante> FindFirst(){
+
+        var restaurante = restauranteRepository.buscarPrimeiro();
+
+        if (restaurante.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(restaurante.get());
     }
 
     @PostMapping
