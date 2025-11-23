@@ -1,10 +1,17 @@
 package com.algafoods.api.domain.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+@Data
 @Entity
 public class Restaurante {
 
@@ -21,37 +28,22 @@ public class Restaurante {
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
 
-    public Cozinha getCozinha() {
-        return cozinha;
-    }
+    @ManyToMany
+    @JoinTable(name = "restaurante_forma_pagamento",
+            joinColumns = @JoinColumn(name = "restaurante_id"),
+            inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
+    private List<FormaPagamento> formasPagamento = new ArrayList<>();
 
-    public void setCozinha(Cozinha cozinha) {
-        this.cozinha = cozinha;
-    }
+    @Embedded
+    private Endereco endereco;
 
-    public Long getId() {
-        return id;
-    }
+    @CreationTimestamp
+    @Column(nullable = false)
+    private LocalDateTime dataCadastro;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public BigDecimal getTaxaFrete() {
-        return taxaFrete;
-    }
-
-    public void setTaxaFrete(BigDecimal taxaFrete) {
-        this.taxaFrete = taxaFrete;
-    }
+    @UpdateTimestamp
+    @Column(nullable = false)
+    private LocalDateTime dataAtualizacao;
 
     @Override
     public boolean equals(Object o) {
