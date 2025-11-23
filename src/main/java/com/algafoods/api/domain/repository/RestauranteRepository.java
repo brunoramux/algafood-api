@@ -2,7 +2,6 @@ package com.algafoods.api.domain.repository;
 
 import com.algafoods.api.domain.model.Restaurante;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;

@@ -1,6 +1,7 @@
 package com.algafoods.api.controller;
 
 import com.algafoods.api.domain.exception.EntidadeNaoEncontradaException;
+import com.algafoods.api.domain.model.FormaPagamento;
 import com.algafoods.api.domain.model.Restaurante;
 import com.algafoods.api.domain.repository.RestauranteRepository;
 import com.algafoods.api.domain.service.CadastroRestauranteService;
@@ -47,6 +48,17 @@ public class RestauranteController {
         if(restaurante.isEmpty()) return ResponseEntity.notFound().build();
 
         return ResponseEntity.ok(restaurante.get());
+    }
+
+    @GetMapping("/{restauranteId}/formas-pagamento")
+    public ResponseEntity<List<FormaPagamento>> buscarFormasPagamento(
+            @PathVariable
+            Long restauranteId
+    ){
+        Optional<Restaurante> restaurante = restauranteRepository.findById(restauranteId);
+        if(restaurante.isEmpty()) return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(restaurante.get().getFormasPagamento());
     }
 
     @GetMapping("/procurar")
@@ -132,7 +144,7 @@ public class RestauranteController {
 
             if(restauranteAtual.isEmpty()) return ResponseEntity.notFound().build();
 
-            BeanUtils.copyProperties(restaurante, restauranteAtual.get(), "id", "formasPagamento", "endereco", "dataCadastro");
+            BeanUtils.copyProperties(restaurante, restauranteAtual.get(), "id", "formasPagamento", "endereco", "dataCadastro","produtos");
             restauranteAtual.get().setDataAtualizacao(LocalDateTime.now());
             Restaurante restauranteAtualizado = cadastroRestauranteService.update(restauranteAtual.get());
             return ResponseEntity.ok(restauranteAtualizado);

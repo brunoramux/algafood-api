@@ -1,0 +1,126 @@
+create table cozinha
+(
+    id   bigint auto_increment
+        primary key,
+    nome varchar(255) not null
+);
+
+create table estado
+(
+    id   bigint auto_increment
+        primary key,
+    nome varchar(255) not null,
+    constraint UKgfot2y0318rs8hc74ppp0n87p
+        unique (nome)
+);
+
+create table cidade
+(
+    estado_id bigint       not null,
+    id        bigint auto_increment
+        primary key,
+    nome      varchar(255) not null,
+    constraint UKlwg97fq9vkwb5vlqo59krrxoa
+        unique (nome),
+    constraint FKkworrwk40xj58kevvh3evi500
+        foreign key (estado_id) references estado (id)
+);
+
+create table forma_pagamento
+(
+    id        bigint auto_increment
+        primary key,
+    descricao varchar(255) not null
+);
+
+create table grupo
+(
+    id   bigint auto_increment
+        primary key,
+    nome varchar(255) not null
+);
+
+create table permissao
+(
+    id        bigint auto_increment
+        primary key,
+    descricao varchar(255) null,
+    nome      varchar(255) null
+);
+
+create table grupo_permissao
+(
+    grupo_id     bigint not null,
+    permissao_id bigint not null,
+    constraint FKh21kiw0y0hxg6birmdf2ef6vy
+        foreign key (permissao_id) references permissao (id),
+    constraint FKta4si8vh3f4jo3bsslvkscc2m
+        foreign key (grupo_id) references grupo (id)
+);
+
+create table restaurante
+(
+    taxa_frete           decimal(38, 2) not null,
+    cozinha_id           bigint         not null,
+    data_atualizacao     datetime       not null,
+    data_cadastro        datetime       not null,
+    endereco_cidade_id   bigint         null,
+    id                   bigint auto_increment
+        primary key,
+    endereco_bairro      varchar(255)   null,
+    endereco_cep         varchar(255)   null,
+    endereco_complemento varchar(255)   null,
+    endereco_logradouro  varchar(255)   null,
+    endereco_numero      varchar(255)   null,
+    nome                 varchar(255)   null,
+    constraint FK76grk4roudh659skcgbnanthi
+        foreign key (cozinha_id) references cozinha (id),
+    constraint FKbc0tm7hnvc96d8e7e2ulb05yw
+        foreign key (endereco_cidade_id) references cidade (id)
+);
+
+create table produto
+(
+    ativo            bit            not null,
+    preco            decimal(38, 2) not null,
+    data_atualizacao datetime       not null,
+    data_cadastro    datetime       not null,
+    id               bigint auto_increment
+        primary key,
+    restaurante_id   bigint         not null,
+    descricao        varchar(255)   not null,
+    nome             varchar(255)   not null,
+    constraint FKb9jhjyghjcn25guim7q4pt8qx
+        foreign key (restaurante_id) references restaurante (id)
+);
+
+create table restaurante_forma_pagamento
+(
+    forma_pagamento_id bigint not null,
+    restaurante_id     bigint not null,
+    constraint FK7aln770m80358y4olr03hyhh2
+        foreign key (forma_pagamento_id) references forma_pagamento (id),
+    constraint FKa30vowfejemkw7whjvr8pryvj
+        foreign key (restaurante_id) references restaurante (id)
+);
+
+create table usuario
+(
+    data_cadastro datetime     not null,
+    id            bigint auto_increment
+        primary key,
+    email         varchar(255) not null,
+    nome          varchar(255) not null,
+    senha         varchar(255) not null
+);
+
+create table usuario_grupo
+(
+    grupo_id   bigint not null,
+    usuario_id bigint not null,
+    constraint FKdofo9es0esuiahyw2q467crxw
+        foreign key (usuario_id) references usuario (id),
+    constraint FKk30suuy31cq5u36m9am4om9ju
+        foreign key (grupo_id) references grupo (id)
+);
+
