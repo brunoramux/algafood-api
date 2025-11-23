@@ -12,7 +12,6 @@ import java.util.Objects;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "cozinha")
 public class Cozinha {
 
     @EqualsAndHashCode.Include

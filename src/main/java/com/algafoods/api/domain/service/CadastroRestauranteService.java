@@ -26,7 +26,7 @@ public class CadastroRestauranteService {
     @Autowired
     private FormaPagamentoRepository formaPagamentoRepository;
 
-    public Restaurante salvar(Restaurante restaurante) {
+    public Restaurante create(Restaurante restaurante) {
         Long cozinhaId = restaurante.getCozinha().getId();
         Cozinha cozinha = cozinhaRepository.findById(cozinhaId)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Cozinha informada não foi encontrada."));
@@ -41,6 +41,16 @@ public class CadastroRestauranteService {
                 .collect(Collectors.toSet());
 
         restaurante.setFormasPagamento(formasPagamento.stream().toList());
+        return restauranteRepository.save(restaurante);
+    }
+
+    public Restaurante update(Restaurante restaurante) {
+        Long cozinhaId = restaurante.getCozinha().getId();
+        Cozinha cozinha = cozinhaRepository.findById(cozinhaId)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Cozinha informada não foi encontrada."));
+
+        restaurante.setCozinha(cozinha);
+
         return restauranteRepository.save(restaurante);
     }
 

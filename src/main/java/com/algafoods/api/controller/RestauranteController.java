@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -109,7 +110,7 @@ public class RestauranteController {
             Restaurante restaurante
     ){
         try {
-            Restaurante newRestaurante =  cadastroRestauranteService.salvar(restaurante);
+            Restaurante newRestaurante =  cadastroRestauranteService.create(restaurante);
             return ResponseEntity.status(HttpStatus.CREATED).body(newRestaurante);
         } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.badRequest()
@@ -125,13 +126,15 @@ public class RestauranteController {
             @RequestBody
             Restaurante restaurante
     ){
+
         try {
             Optional<Restaurante> restauranteAtual = restauranteRepository.findById(restauranteId);
 
             if(restauranteAtual.isEmpty()) return ResponseEntity.notFound().build();
 
-            BeanUtils.copyProperties(restaurante, restauranteAtual.get(), "id", "formasPagamento", "endereco");
-            Restaurante restauranteAtualizado = cadastroRestauranteService.salvar(restauranteAtual.get());
+            BeanUtils.copyProperties(restaurante, restauranteAtual.get(), "id", "formasPagamento", "endereco", "dataCadastro");
+            restauranteAtual.get().setDataAtualizacao(LocalDateTime.now());
+            Restaurante restauranteAtualizado = cadastroRestauranteService.update(restauranteAtual.get());
             return ResponseEntity.ok(restauranteAtualizado);
         } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
