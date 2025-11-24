@@ -1,6 +1,7 @@
 package com.algafoods.api.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -28,6 +29,8 @@ public class Restaurante {
     private BigDecimal taxaFrete;
 
     // FETCH LAZY -> Faz SELECT de Cozinhas apenas se os dados forem necessários na requisição.
+    // A propriedade hibernateLazyInitializer é necessária ao usar o Lazy
+    @JsonIgnoreProperties("hibernateLazyInitializer")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;

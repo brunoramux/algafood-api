@@ -2,6 +2,7 @@ package com.algafoods.api.domain.repository;
 
 import com.algafoods.api.domain.model.Restaurante;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
@@ -13,6 +14,10 @@ public interface RestauranteRepository
         JpaSpecificationExecutor<Restaurante>
 {
     List<Restaurante> findByTaxaFreteBetween(BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal);
+
+    // Query personalizada para evitar muitos Selects ao usar ManyToOne ou ManyToMany
+    @Query("from Restaurante r join r.cozinha left join fetch r.formasPagamento")
+    List<Restaurante> findAll();
 
     //@Query("from Restaurante where nome like %:nome% and cozinha.id = :id")
     List<Restaurante> consultarPorNome(String nome, @Param("id") Long cozinha);
