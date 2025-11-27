@@ -4,10 +4,7 @@ import com.algafoods.api.domain.exception.EntidadeEmUsoException;
 import com.algafoods.api.domain.exception.EntidadeNaoEncontradaException;
 import com.algafoods.api.domain.model.Cozinha;
 import com.algafoods.api.domain.repository.CozinhaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,27 +13,28 @@ import java.util.Optional;
 public class CadastroCozinhaService {
 
     public static final String MENSAGEM_COZINHA_EM_USO = "Cozinha com o código %d não pode ser removida pois está em uso por um Restaurante.";
-    public static final String MENSAGEM_COZINHA_NAO_ENCONTRADA = "Cozinha não encontrada.";
+    public static final String MENSAGEM_COZINHA_NAO_ENCONTRADA = "Cozinha com o código %d não encontrada.";
 
-    @Autowired
-    private CozinhaRepository cozinhaRepository;
+    private CozinhaRepository repository;
+
+    public CadastroCozinhaService(CozinhaRepository repository) {
+        this.repository = repository;
+    }
 
     public Cozinha salvar(Cozinha cozinha) {
-        return cozinhaRepository.save(cozinha);
+        return repository.save(cozinha);
     }
 
     public Cozinha encontrarCozinha(Long cozinhaId) {
-        return cozinhaRepository.findById(cozinhaId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(MENSAGEM_COZINHA_NAO_ENCONTRADA));
+        return repository.findById(cozinhaId)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(
+                        String.format(MENSAGEM_COZINHA_NAO_ENCONTRADA,  cozinhaId)));
     }
 
     public void excluir(Long idCozinha){
+        this.encontrarCozinha(idCozinha);
         try {
-            Optional<Cozinha> cozinha = cozinhaRepository.findById(idCozinha);
-            if(cozinha.isEmpty()) {
-                throw new EntidadeNaoEncontradaException(MENSAGEM_COZINHA_NAO_ENCONTRADA);
-            }
-            cozinhaRepository.deleteById(idCozinha);
+            repository.deleteById(idCozinha);
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(
                     String.format(MENSAGEM_COZINHA_EM_USO,  idCozinha)

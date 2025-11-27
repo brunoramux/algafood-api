@@ -1,14 +1,18 @@
 package com.algafoods.api.controller;
 
+import com.algafoods.api.domain.exception.EntidadeEmUsoException;
+import com.algafoods.api.domain.exception.EntidadeNaoEncontradaException;
 import com.algafoods.api.domain.model.Cozinha;
 import com.algafoods.api.domain.repository.CozinhaRepository;
 import com.algafoods.api.domain.service.CadastroCozinhaService;
+import com.algafoods.api.exceptionhandler.ExceptionHandlerMessage;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -123,5 +127,27 @@ public class CozinhaController {
             Long cozinhaId
     ){
         cozinhaService.excluir(cozinhaId);
+    }
+
+    @ExceptionHandler(EntidadeNaoEncontradaException.class)
+    public ResponseEntity<?> handleEntidadeNaoEncontradaException(EntidadeNaoEncontradaException e) {
+        ExceptionHandlerMessage message = ExceptionHandlerMessage.builder()
+                .dataHora(LocalDateTime.now())
+                .mensagem(e.getMessage())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(message);
+    }
+
+    @ExceptionHandler(EntidadeEmUsoException.class)
+    public ResponseEntity<?> handleEntidadeEmUsoException(EntidadeEmUsoException e) {
+        ExceptionHandlerMessage message = ExceptionHandlerMessage.builder()
+                .dataHora(LocalDateTime.now())
+                .mensagem(e.getMessage())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(message);
     }
 }
