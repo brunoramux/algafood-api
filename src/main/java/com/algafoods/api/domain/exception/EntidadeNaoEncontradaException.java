@@ -22,7 +22,6 @@ import java.io.Serial;
 //    }
 //}
 
-@ResponseStatus(HttpStatus.NOT_FOUND)
 public class EntidadeNaoEncontradaException extends RuntimeException {
 
     @Serial
@@ -31,4 +30,5 @@ public class EntidadeNaoEncontradaException extends RuntimeException {
     public EntidadeNaoEncontradaException(String mensagem){
         super(mensagem);
     }
+
 }

@@ -128,26 +128,4 @@ public class CozinhaController {
     ){
         cozinhaService.excluir(cozinhaId);
     }
-
-    @ExceptionHandler(EntidadeNaoEncontradaException.class)
-    public ResponseEntity<?> handleEntidadeNaoEncontradaException(EntidadeNaoEncontradaException e) {
-        ExceptionHandlerMessage message = ExceptionHandlerMessage.builder()
-                .dataHora(LocalDateTime.now())
-                .mensagem(e.getMessage())
-                .build();
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(message);
-    }
-
-    @ExceptionHandler(EntidadeEmUsoException.class)
-    public ResponseEntity<?> handleEntidadeEmUsoException(EntidadeEmUsoException e) {
-        ExceptionHandlerMessage message = ExceptionHandlerMessage.builder()
-                .dataHora(LocalDateTime.now())
-                .mensagem(e.getMessage())
-                .build();
-
-        return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(message);
-    }
 }
