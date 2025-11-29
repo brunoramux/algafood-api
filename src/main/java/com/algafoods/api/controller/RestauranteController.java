@@ -6,12 +6,17 @@ import com.algafoods.api.domain.model.Restaurante;
 import com.algafoods.api.domain.repository.RestauranteRepository;
 import com.algafoods.api.domain.service.CadastroRestauranteService;
 import com.algafoods.api.infra.repository.spec.RestaurantesSpecs;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -158,26 +163,35 @@ public class RestauranteController {
             @PathVariable
             Long restauranteId,
             @RequestBody
-            Map<String, Object> campos_atualizar
+            Map<String, Object> campos_atualizar,
+            HttpServletRequest request
     ){
+        ServletServerHttpRequest serverHttpRequest = new ServletServerHttpRequest(request);
         Optional<Restaurante> restauranteAtual = restauranteRepository.findById(restauranteId);
         if(restauranteAtual.isEmpty()) return ResponseEntity.notFound().build();
 
-        // CRIA OBJETO RESTAURANTE APENAS COM DADOS PASSADOS NA REQUISIÇÃO. FAZ TODAS AS CONVERSÕES NECESSÁRIAS
-        ObjectMapper mapper = new ObjectMapper();
-        Restaurante restauranteOrigem = mapper.convertValue(campos_atualizar, Restaurante.class);
+        try {
+            // CRIA OBJETO RESTAURANTE APENAS COM DADOS PASSADOS NA REQUISIÇÃO. FAZ TODAS AS CONVERSÕES NECESSÁRIAS
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+            mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);
+            Restaurante restauranteOrigem = mapper.convertValue(campos_atualizar, Restaurante.class);
 
-        // ITERA NOS CAMPOS QUE DEVEM SER ALTERADOS E ATRAVÉS DO OBJETO FIELD, ALTERA O CAMPO CORRETO NO NOVO OBJETO RESTAURANTE
-        campos_atualizar.forEach((nomePropriedade, valorPropriedade) -> {
-            Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
-            if(field != null){
-                field.setAccessible(true);
+            // ITERA NOS CAMPOS QUE DEVEM SER ALTERADOS E ATRAVÉS DO OBJETO FIELD, ALTERA O CAMPO CORRETO NO NOVO OBJETO RESTAURANTE
+            campos_atualizar.forEach((nomePropriedade, valorPropriedade) -> {
+                Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
+                if(field != null){
+                    field.setAccessible(true);
 
-                Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
+                    Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
 
-                ReflectionUtils.setField(field, restauranteAtual.get(), novoValor);
-            }
-        });
+                    ReflectionUtils.setField(field, restauranteAtual.get(), novoValor);
+                }
+            });
+        } catch (IllegalArgumentException e) {
+            Throwable rootCause = ExceptionUtils.getRootCause(e);
+            throw new HttpMessageNotReadableException(e.getMessage(), rootCause, serverHttpRequest);
+        }
 
         return atualizar(restauranteId, restauranteAtual.get());
     }

@@ -85,7 +85,7 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
             predicates.add(builder.lessThanOrEqualTo(root.get("taxaFrete"), taxaFreteFinal));
         }
 
-        // ADICIONA O ARRAY DE PREDICATES NO WHERE DO CRITERIA
+        // ADICIONA O ARRAY DE PREDICATES NO WHERE DO CRITERIA. NECESSARIO TRANSFORMAR O predicates EM ARRAY
         criteria.where(predicates.toArray(new Predicate[0]));
 
         // EXECUTA A QUERY USANDO CRITERIA
@@ -99,6 +99,7 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
     public List<Restaurante> findFreteGratis(String nome) {
         List<Restaurante> restaurantes = null;
 
+        // USO DO RESTAURANTE SPECS
         if(StringUtils.hasText(nome)){
             restaurantes = restauranteRepository.findAll(RestaurantesSpecs.comFreteGratis().and(RestaurantesSpecs.comNomeSemelhante(nome)));
         } else {
