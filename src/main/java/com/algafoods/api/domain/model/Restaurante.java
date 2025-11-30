@@ -1,8 +1,14 @@
 package com.algafoods.api.domain.model;
 
+import com.algafoods.api.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
@@ -23,16 +29,25 @@ public class Restaurante {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(groups = Groups.CadastroRestaurante.class, message = "O nome do restaurante é obrigatório.")
+    @NotEmpty(groups = Groups.CadastroRestaurante.class, message = "O nome do restaurante não pode estar vazio.")
+    @NotBlank(groups = Groups.CadastroRestaurante.class, message = "O nome do restaurante não pode estar vazio.")
+    @Column(nullable = false)
     private String nome;
 
+    @NotNull(groups = Groups.CadastroRestaurante.class, message = "Taxa Frete obrigatória.")
+    @PositiveOrZero(message = "Taxa Frete deve ser maior ou igual a Zero.")
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
     // FETCH LAZY -> Faz SELECT de Cozinhas apenas se os dados forem necessários na requisição.
     // A propriedade hibernateLazyInitializer é necessária ao usar o Lazy
+    // @Valid faz com que a Bean Validation seja em cascada, ou seja, entre no objeto Cozinha e valide os campos que estão no grupo.
     @JsonIgnoreProperties("hibernateLazyInitializer")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cozinha_id", nullable = false)
+    @NotNull(groups = Groups.CadastroRestaurante.class, message = "Obrigatório informar uma cozinha.")
+    @Valid
     private Cozinha cozinha;
 
     @ManyToMany

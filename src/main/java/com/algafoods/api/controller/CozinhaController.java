@@ -6,6 +6,7 @@ import com.algafoods.api.domain.model.Cozinha;
 import com.algafoods.api.domain.repository.CozinhaRepository;
 import com.algafoods.api.domain.service.CadastroCozinhaService;
 import com.algafoods.api.exceptionhandler.ExceptionHandlerMessage;
+import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -78,6 +79,7 @@ public class CozinhaController {
     @PostMapping
     public ResponseEntity<Cozinha> adicionar(
             @RequestBody
+            @Valid
             Cozinha cozinha
     ){
         if(cozinha == null){

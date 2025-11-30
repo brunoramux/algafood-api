@@ -4,7 +4,6 @@ import com.algafoods.api.domain.repository.CustomJpaRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
-import org.springframework.data.repository.NoRepositoryBean;
 
 import java.util.Optional;
 

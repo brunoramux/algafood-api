@@ -17,6 +17,8 @@ import java.util.stream.Collectors;
 @Service
 public class CadastroRestauranteService {
 
+    public static final String MENSAGEM_RESTAURANTE_NAO_ENCONTRADO = "Restaurante com o código %d não encontrado.";
+
     @Autowired
     private RestauranteRepository restauranteRepository;
 
@@ -25,6 +27,12 @@ public class CadastroRestauranteService {
 
     @Autowired
     private FormaPagamentoRepository formaPagamentoRepository;
+
+    public Restaurante encontrarRestaurante(Long restauranteId) {
+        return restauranteRepository.findById(restauranteId)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(
+                        String.format(MENSAGEM_RESTAURANTE_NAO_ENCONTRADO,  restauranteId)));
+    }
 
     public Restaurante create(Restaurante restaurante) {
         Long cozinhaId = restaurante.getCozinha().getId();

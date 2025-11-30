@@ -1,14 +1,15 @@
 package com.algafoods.api.controller;
 
+import com.algafoods.api.Groups;
 import com.algafoods.api.domain.exception.EntidadeNaoEncontradaException;
 import com.algafoods.api.domain.model.FormaPagamento;
 import com.algafoods.api.domain.model.Restaurante;
 import com.algafoods.api.domain.repository.RestauranteRepository;
 import com.algafoods.api.domain.service.CadastroRestauranteService;
-import com.algafoods.api.infra.repository.spec.RestaurantesSpecs;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
-import org.springframework.util.StringUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
@@ -49,10 +50,9 @@ public class RestauranteController {
             @PathVariable
             Long restauranteId
     ){
-        Optional<Restaurante> restaurante = restauranteRepository.findById(restauranteId);
-        if(restaurante.isEmpty()) return ResponseEntity.notFound().build();
+        Restaurante restaurante = cadastroRestauranteService.encontrarRestaurante(restauranteId);
 
-        return ResponseEntity.ok(restaurante.get());
+        return ResponseEntity.ok(restaurante);
     }
 
     @GetMapping("/{restauranteId}/formas-pagamento")
@@ -124,16 +124,11 @@ public class RestauranteController {
     @PostMapping
     public ResponseEntity<?> adicionar(
             @RequestBody
+            @Validated(Groups.CadastroRestaurante.class)
             Restaurante restaurante
     ){
-        try {
             Restaurante newRestaurante =  cadastroRestauranteService.create(restaurante);
             return ResponseEntity.status(HttpStatus.CREATED).body(newRestaurante);
-        } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.badRequest()
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(String.format("{ 'message': '%s' }",  e.getMessage()));
-        }
     }
 
     @PutMapping("/{restauranteId}")
@@ -143,19 +138,12 @@ public class RestauranteController {
             @RequestBody
             Restaurante restaurante
     ){
+            Restaurante restauranteAtual = cadastroRestauranteService.encontrarRestaurante(restauranteId);
 
-        try {
-            Optional<Restaurante> restauranteAtual = restauranteRepository.findById(restauranteId);
-
-            if(restauranteAtual.isEmpty()) return ResponseEntity.notFound().build();
-
-            BeanUtils.copyProperties(restaurante, restauranteAtual.get(), "id", "formasPagamento", "endereco", "dataCadastro","produtos");
-            restauranteAtual.get().setDataAtualizacao(LocalDateTime.now());
-            Restaurante restauranteAtualizado = cadastroRestauranteService.update(restauranteAtual.get());
+            BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro","produtos");
+            restauranteAtual.setDataAtualizacao(LocalDateTime.now());
+            Restaurante restauranteAtualizado = cadastroRestauranteService.update(restauranteAtual);
             return ResponseEntity.ok(restauranteAtualizado);
-        } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
     }
 
     @PatchMapping("/{restauranteId}")

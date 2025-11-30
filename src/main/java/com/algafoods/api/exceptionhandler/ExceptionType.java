@@ -5,8 +5,10 @@ import lombok.Getter;
 @Getter
 public enum ExceptionType {
 
-    RECURSO_NAO_ENCONTRADO("recurso-nao-encontrado", "Recurso não encontrado."),
-    PARAMETRO_INVALIDO("parametro-invalido", "Parâmetro Inválido."),
+    ERRO_DE_VALIDACAO("/erro-de-validacao", "Erro de validação."),
+    ERRO_DE_SISTEMA("/erro-de-sistema", "Erro de sistema."),
+    RECURSO_NAO_ENCONTRADO("/recurso-nao-encontrado", "Recurso não encontrado."),
+    PARAMETRO_INVALIDO("/parametro-invalido", "Parâmetro Inválido."),
     MENSAGEM_INCOMPREENSIVEL("/mensagem-incompreensivel", "Mensagem incompreensível."),
     ENTIDADE_NAO_ENCONTRADA("/entidade-nao-encontrada", "Entidade não encontrada."),
     ENTIDADE_EM_USO("/entidade-em-uso", "Entidade em uso.");
