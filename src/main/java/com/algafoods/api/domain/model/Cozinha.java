@@ -1,6 +1,6 @@
 package com.algafoods.api.domain.model;
 
-import com.algafoods.api.Groups;
+import com.algafoods.api.core.validation.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -10,20 +10,19 @@ import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Cozinha {
 
-    @NotNull(groups = Groups.CadastroRestaurante.class, message = "O Id da Cozinha é obrigatório.")
+    @NotNull(groups = Groups.IdCozinha.class)
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Nome da Cozinha obrigatória.")
+    @NotBlank
     @Column(nullable = false)
     private String nome;
 

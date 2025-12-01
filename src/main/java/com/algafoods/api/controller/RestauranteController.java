@@ -1,7 +1,5 @@
 package com.algafoods.api.controller;
 
-import com.algafoods.api.Groups;
-import com.algafoods.api.domain.exception.EntidadeNaoEncontradaException;
 import com.algafoods.api.domain.model.FormaPagamento;
 import com.algafoods.api.domain.model.Restaurante;
 import com.algafoods.api.domain.repository.RestauranteRepository;
@@ -14,12 +12,10 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
@@ -124,7 +120,7 @@ public class RestauranteController {
     @PostMapping
     public ResponseEntity<?> adicionar(
             @RequestBody
-            @Validated(Groups.CadastroRestaurante.class)
+            @Valid
             Restaurante restaurante
     ){
             Restaurante newRestaurante =  cadastroRestauranteService.create(restaurante);

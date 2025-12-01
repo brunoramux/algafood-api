@@ -1,14 +1,17 @@
 package com.algafoods.api.domain.model;
 
-import com.algafoods.api.Groups;
+import com.algafoods.api.core.validation.Groups;
+import com.algafoods.api.core.validation.Multiplo;
+import com.algafoods.api.core.validation.TaxaFrete;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.groups.ConvertGroup;
+import jakarta.validation.groups.Default;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
@@ -29,14 +32,13 @@ public class Restaurante {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(groups = Groups.CadastroRestaurante.class, message = "O nome do restaurante é obrigatório.")
-    @NotEmpty(groups = Groups.CadastroRestaurante.class, message = "O nome do restaurante não pode estar vazio.")
-    @NotBlank(groups = Groups.CadastroRestaurante.class, message = "O nome do restaurante não pode estar vazio.")
+    @NotBlank
     @Column(nullable = false)
     private String nome;
 
-    @NotNull(groups = Groups.CadastroRestaurante.class, message = "Taxa Frete obrigatória.")
-    @PositiveOrZero(message = "Taxa Frete deve ser maior ou igual a Zero.")
+    @NotNull
+    @TaxaFrete
+    @Multiplo(numero = 5)
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
@@ -46,8 +48,9 @@ public class Restaurante {
     @JsonIgnoreProperties("hibernateLazyInitializer")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cozinha_id", nullable = false)
-    @NotNull(groups = Groups.CadastroRestaurante.class, message = "Obrigatório informar uma cozinha.")
+    @NotNull(groups = Groups.IdCozinha.class)
     @Valid
+    @ConvertGroup(from = Default.class, to = Groups.IdCozinha.class)
     private Cozinha cozinha;
 
     @ManyToMany
