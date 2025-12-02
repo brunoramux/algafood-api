@@ -1,5 +1,6 @@
 package com.algafoods.api.controller;
 
+import com.algafoods.api.core.validation.ValidacaoException;
 import com.algafoods.api.domain.model.FormaPagamento;
 import com.algafoods.api.domain.model.Restaurante;
 import com.algafoods.api.domain.repository.RestauranteRepository;
@@ -16,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
@@ -34,6 +37,9 @@ public class RestauranteController {
 
     @Autowired
     private CadastroRestauranteService cadastroRestauranteService;
+
+    @Autowired
+    private SmartValidator validator;
 
 
     @GetMapping
@@ -151,8 +157,7 @@ public class RestauranteController {
             HttpServletRequest request
     ){
         ServletServerHttpRequest serverHttpRequest = new ServletServerHttpRequest(request);
-        Optional<Restaurante> restauranteAtual = restauranteRepository.findById(restauranteId);
-        if(restauranteAtual.isEmpty()) return ResponseEntity.notFound().build();
+        Restaurante restauranteAtual = cadastroRestauranteService.encontrarRestaurante(restauranteId);
 
         try {
             // CRIA OBJETO RESTAURANTE APENAS COM DADOS PASSADOS NA REQUISIÇÃO. FAZ TODAS AS CONVERSÕES NECESSÁRIAS
@@ -169,7 +174,7 @@ public class RestauranteController {
 
                     Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
 
-                    ReflectionUtils.setField(field, restauranteAtual.get(), novoValor);
+                    ReflectionUtils.setField(field, restauranteAtual, novoValor);
                 }
             });
         } catch (IllegalArgumentException e) {
@@ -177,6 +182,18 @@ public class RestauranteController {
             throw new HttpMessageNotReadableException(e.getMessage(), rootCause, serverHttpRequest);
         }
 
-        return atualizar(restauranteId, restauranteAtual.get());
+        validate(restauranteAtual, "restaurante");
+
+        return atualizar(restauranteId, restauranteAtual);
+    }
+
+    private void validate(Restaurante restaurante, String objectName){
+        BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurante, objectName);
+        validator.validate(restaurante, bindingResult);
+
+        if(!bindingResult.hasErrors()){
+            throw new ValidacaoException(bindingResult);
+        }
     }
 }
+

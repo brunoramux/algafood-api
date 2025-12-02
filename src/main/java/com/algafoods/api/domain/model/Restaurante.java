@@ -3,6 +3,7 @@ package com.algafoods.api.domain.model;
 import com.algafoods.api.core.validation.Groups;
 import com.algafoods.api.core.validation.Multiplo;
 import com.algafoods.api.core.validation.TaxaFrete;
+import com.algafoods.api.core.validation.ValorZeroIncluiDescricao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
@@ -22,6 +23,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
