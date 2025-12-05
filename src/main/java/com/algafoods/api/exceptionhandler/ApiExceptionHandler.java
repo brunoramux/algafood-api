@@ -190,6 +190,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         String detail = "Um ou mais campos receberam valores inválidos. Corrija e tente novamente.";
 
+        // Cria a mensagem e set os objects - campos a serem mostrados com erro na validacao
         ExceptionHandlerMessage message = createExceptionMessageBuilder(status, exceptionType, detail).objects(problemFields).build();
 
         return handleExceptionInternal(ex, message, new HttpHeaders(), status, request);
