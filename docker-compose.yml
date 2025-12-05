@@ -4,6 +4,7 @@ services:
     container_name: mysql_server
     restart: always
     environment:
+      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: algafoods
       MYSQL_USER: algafoods
       MYSQL_PASSWORD: algafoods
