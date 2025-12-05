@@ -5,12 +5,16 @@ import com.algafoods.api.domain.model.Cozinha;
 import com.algafoods.api.domain.model.Restaurante;
 import com.algafoods.api.domain.service.CadastroCozinhaService;
 import com.algafoods.api.domain.service.CadastroRestauranteService;
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import jakarta.validation.ConstraintViolationException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
@@ -18,7 +22,7 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CadastroCozinhaIT {
 
     @Autowired
@@ -26,6 +30,9 @@ public class CadastroCozinhaIT {
 
     @Autowired
     private CadastroRestauranteService cadastroRestauranteService;
+
+    @LocalServerPort
+    private int port;
 
     @Test
     public void cadastroCozinhaComSucessoTest() {
@@ -65,5 +72,17 @@ public class CadastroCozinhaIT {
         assertThrows(EntidadeEmUsoException.class, () -> {
             cadastroCozinhaService.excluir(newCozinha.getId());
         });
+    }
+
+    @Test
+    public void shouldReturnHttpStatus200WhenGettingCozinhas() {
+        RestAssured.given()
+                .basePath("/cozinhas")
+                .port(port)
+                .accept(ContentType.JSON)
+                .when()
+                .get()
+                .then()
+                .statusCode(HttpStatus.OK.value());
     }
 }
