@@ -9,6 +9,7 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import jakarta.validation.ConstraintViolationException;
 import org.assertj.core.api.Assertions;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +77,7 @@ public class CadastroCozinhaIT {
 
     @Test
     public void shouldReturnHttpStatus200WhenGettingCozinhas() {
+        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
         RestAssured.given()
                 .basePath("/cozinhas")
                 .port(port)
@@ -84,5 +86,20 @@ public class CadastroCozinhaIT {
                 .get()
                 .then()
                 .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    public void shouldReturnBodyWithFourCozinhas() {
+        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+        RestAssured.given()
+                .basePath("/cozinhas")
+                .port(port)
+                .accept(ContentType.JSON)
+                .when()
+                .get()
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("", Matchers.hasSize(4))
+                .body("nome", Matchers.hasItems("Indiana", "Tailandesa"));
     }
 }
