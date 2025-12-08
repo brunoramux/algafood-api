@@ -1,10 +1,9 @@
 package com.algafoods.api.controller;
 
-import com.algafoods.api.domain.exception.EntidadeNaoEncontradaException;
-import com.algafoods.api.domain.model.FormaPagamento;
-import com.algafoods.api.domain.model.Restaurante;
-import com.algafoods.api.domain.repository.FormaPagamentoRepository;
-import com.algafoods.api.domain.service.CadastroFormaPagamentoService;
+import com.algafoods.domain.exception.EntidadeNaoEncontradaException;
+import com.algafoods.domain.model.FormaPagamento;
+import com.algafoods.domain.repository.FormaPagamentoRepository;
+import com.algafoods.domain.service.CadastroFormaPagamentoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

@@ -1,11 +1,8 @@
 package com.algafoods.api.controller;
 
-import com.algafoods.api.domain.exception.EntidadeEmUsoException;
-import com.algafoods.api.domain.exception.EntidadeNaoEncontradaException;
-import com.algafoods.api.domain.model.Cozinha;
-import com.algafoods.api.domain.repository.CozinhaRepository;
-import com.algafoods.api.domain.service.CadastroCozinhaService;
-import com.algafoods.api.exceptionhandler.ExceptionHandlerMessage;
+import com.algafoods.domain.model.Cozinha;
+import com.algafoods.domain.repository.CozinhaRepository;
+import com.algafoods.domain.service.CadastroCozinhaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,18 +10,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
 @RequestMapping("/cozinhas")
 public class CozinhaController {
 
-    @Autowired
-    private CozinhaRepository cozinhaRepository;
+    private final CozinhaRepository cozinhaRepository;
 
-    @Autowired
-    private CadastroCozinhaService cozinhaService;
+    private final CadastroCozinhaService cozinhaService;
+
+    public CozinhaController(CozinhaRepository cozinhaRepository, CadastroCozinhaService cozinhaService) {
+        this.cozinhaRepository = cozinhaRepository;
+        this.cozinhaService = cozinhaService;
+    }
 
     @GetMapping
     public List<Cozinha> listar(){

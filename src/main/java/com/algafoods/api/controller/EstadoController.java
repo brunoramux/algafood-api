@@ -1,7 +1,7 @@
 package com.algafoods.api.controller;
 
-import com.algafoods.api.domain.model.Estado;
-import com.algafoods.api.domain.repository.EstadoRepository;
+import com.algafoods.domain.model.Estado;
+import com.algafoods.domain.repository.EstadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,8 +13,11 @@ import java.util.List;
 @RequestMapping("/estados")
 public class EstadoController {
 
-    @Autowired
-    private EstadoRepository repository;
+    private final EstadoRepository repository;
+
+    public EstadoController(EstadoRepository repository) {
+        this.repository = repository;
+    }
 
     @GetMapping
     public List<Estado> listar(){

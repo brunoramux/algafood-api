@@ -1,7 +1,7 @@
 package com.algafoods.api.exceptionhandler;
 
-import com.algafoods.api.domain.exception.EntidadeEmUsoException;
-import com.algafoods.api.domain.exception.EntidadeNaoEncontradaException;
+import com.algafoods.domain.exception.EntidadeEmUsoException;
+import com.algafoods.domain.exception.EntidadeNaoEncontradaException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -22,7 +22,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -223,7 +223,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .type(type.getUri())
                 .title(type.getTitle())
                 .detail(detail)
-                .timestamp(LocalDateTime.now());
+                .timestamp(OffsetDateTime.now());
     }
 
 }

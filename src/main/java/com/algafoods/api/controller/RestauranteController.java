@@ -1,17 +1,20 @@
 package com.algafoods.api.controller;
 
-import com.algafoods.api.core.validation.ValidacaoException;
-import com.algafoods.api.domain.model.FormaPagamento;
-import com.algafoods.api.domain.model.Restaurante;
-import com.algafoods.api.domain.repository.RestauranteRepository;
-import com.algafoods.api.domain.service.CadastroRestauranteService;
+import com.algafoods.api.mappers.RestauranteMapper;
+import com.algafoods.api.model.input.RestauranteInputDTO;
+import com.algafoods.api.model.output.RestauranteOutputDTO;
+import com.algafoods.core.validation.ValidacaoException;
+import com.algafoods.domain.exception.EntidadeNaoEncontradaException;
+import com.algafoods.domain.model.FormaPagamento;
+import com.algafoods.domain.model.Restaurante;
+import com.algafoods.domain.repository.RestauranteRepository;
+import com.algafoods.domain.service.CadastroRestauranteService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -23,38 +26,42 @@ import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/restaurantes")
 public class RestauranteController {
 
-    @Autowired
-    private RestauranteRepository restauranteRepository;
+    private final RestauranteRepository restauranteRepository;
 
-    @Autowired
-    private CadastroRestauranteService cadastroRestauranteService;
+    private final CadastroRestauranteService cadastroRestauranteService;
 
-    @Autowired
-    private SmartValidator validator;
+    private final SmartValidator validator;
 
+    public RestauranteController(RestauranteRepository restauranteRepository, CadastroRestauranteService cadastroRestauranteService, SmartValidator validator) {
+        this.restauranteRepository = restauranteRepository;
+        this.cadastroRestauranteService = cadastroRestauranteService;
+        this.validator = validator;
+    }
 
     @GetMapping
-    public List<Restaurante> listar(){
-        return restauranteRepository.findAll();
+    public List<RestauranteOutputDTO> listar(){
+        return  restauranteRepository.findAll().stream()
+                .map(RestauranteMapper::toModel)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{restauranteId}")
-    public ResponseEntity<Restaurante> buscarPorId(
+    public ResponseEntity<RestauranteOutputDTO> buscarPorId(
             @PathVariable
             Long restauranteId
     ){
         Restaurante restaurante = cadastroRestauranteService.encontrarRestaurante(restauranteId);
 
-        return ResponseEntity.ok(restaurante);
+        return ResponseEntity.ok(RestauranteMapper.toModel(restaurante));
     }
 
     @GetMapping("/{restauranteId}/formas-pagamento")
@@ -62,10 +69,10 @@ public class RestauranteController {
             @PathVariable
             Long restauranteId
     ){
-        Optional<Restaurante> restaurante = restauranteRepository.findById(restauranteId);
-        if(restaurante.isEmpty()) return ResponseEntity.notFound().build();
+        Restaurante restaurante = restauranteRepository.findById(restauranteId)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Restaurante não encontrado."));
 
-        return ResponseEntity.ok(restaurante.get().getFormasPagamento());
+        return ResponseEntity.ok(restaurante.getFormasPagamento());
     }
 
     @GetMapping("/procurar")
@@ -127,9 +134,10 @@ public class RestauranteController {
     public ResponseEntity<?> adicionar(
             @RequestBody
             @Valid
-            Restaurante restaurante
+            RestauranteInputDTO restaurante
     ){
-            Restaurante newRestaurante =  cadastroRestauranteService.create(restaurante);
+            Restaurante restauranteModel = RestauranteMapper.toDomain(restaurante);
+            RestauranteOutputDTO newRestaurante =  RestauranteMapper.toModel(cadastroRestauranteService.create(restauranteModel));
             return ResponseEntity.status(HttpStatus.CREATED).body(newRestaurante);
     }
 
@@ -138,12 +146,13 @@ public class RestauranteController {
             @PathVariable
             Long restauranteId,
             @RequestBody
+            @Valid
             Restaurante restaurante
     ){
             Restaurante restauranteAtual = cadastroRestauranteService.encontrarRestaurante(restauranteId);
 
             BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro","produtos");
-            restauranteAtual.setDataAtualizacao(LocalDateTime.now());
+            restauranteAtual.setDataAtualizacao(OffsetDateTime.now());
             Restaurante restauranteAtualizado = cadastroRestauranteService.update(restauranteAtual);
             return ResponseEntity.ok(restauranteAtualizado);
     }

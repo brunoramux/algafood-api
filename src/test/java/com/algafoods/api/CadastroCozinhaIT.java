@@ -1,16 +1,15 @@
 package com.algafoods.api;
 
-import com.algafoods.api.domain.exception.EntidadeEmUsoException;
-import com.algafoods.api.domain.model.Cozinha;
-import com.algafoods.api.domain.model.Restaurante;
-import com.algafoods.api.domain.service.CadastroCozinhaService;
-import com.algafoods.api.domain.service.CadastroRestauranteService;
+import com.algafoods.domain.exception.EntidadeEmUsoException;
+import com.algafoods.domain.model.Cozinha;
+import com.algafoods.domain.model.Restaurante;
+import com.algafoods.domain.service.CadastroCozinhaService;
+import com.algafoods.domain.service.CadastroRestauranteService;
 import com.algafoods.api.util.DatabaseCleaner;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import jakarta.validation.ConstraintViolationException;
 import org.assertj.core.api.Assertions;
-import org.flywaydb.core.Flyway;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class CadastroCozinhaIT {
 
+    public static final int NONEXISTENT_COZINHA_ID = 100;
     @Autowired
     private CadastroCozinhaService cadastroCozinhaService;
 
@@ -128,6 +128,29 @@ public class CadastroCozinhaIT {
                 .post()
                 .then()
                 .statusCode(HttpStatus.CREATED.value());
+    }
+
+    @Test
+    public void shouldBeAbleToGetACozinhaWithId() {
+        RestAssured.given()
+                .pathParam("id", 1)
+                .accept(ContentType.JSON)
+                .when()
+                .get("/{id}")
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("nome", Matchers.equalTo("Chinesa"));
+    }
+
+    @Test
+    public void shouldReturnNotFoundWhenGettingANonExistentCozinha() {
+        RestAssured.given()
+                .pathParam("id", NONEXISTENT_COZINHA_ID)
+                .accept(ContentType.JSON)
+                .when()
+                .get("/{id}")
+                .then()
+                .statusCode(HttpStatus.NOT_FOUND.value());
     }
 
     private void prepareDatabase() {
