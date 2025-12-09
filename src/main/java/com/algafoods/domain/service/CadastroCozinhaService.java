@@ -36,6 +36,7 @@ public class CadastroCozinhaService {
         this.encontrarCozinha(idCozinha);
         try {
             repository.deleteById(idCozinha);
+            repository.flush();
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(
                     String.format(MENSAGEM_COZINHA_EM_USO,  idCozinha)

@@ -150,11 +150,10 @@ public class RestauranteController {
             Long restauranteId,
             @RequestBody
             @Valid
-            Restaurante restaurante
+            RestauranteInputDTO restauranteInputDTO
     ){
             Restaurante restauranteAtual = cadastroRestauranteService.encontrarRestaurante(restauranteId);
-
-            BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro","produtos");
+            restauranteMapper.copyToDomainObject(restauranteInputDTO, restauranteAtual);
             restauranteAtual.setDataAtualizacao(OffsetDateTime.now());
             Restaurante restauranteAtualizado = cadastroRestauranteService.update(restauranteAtual);
             return ResponseEntity.ok(restauranteAtualizado);
@@ -169,10 +168,11 @@ public class RestauranteController {
             HttpServletRequest request
     ){
         ServletServerHttpRequest serverHttpRequest = new ServletServerHttpRequest(request);
+        // ENCONTRA O RESTAURANTE A SER ATUALIZADO
         Restaurante restauranteAtual = cadastroRestauranteService.encontrarRestaurante(restauranteId);
 
         try {
-            // CRIA OBJETO RESTAURANTE APENAS COM DADOS PASSADOS NA REQUISIÇÃO. FAZ TODAS AS CONVERSÕES NECESSÁRIAS
+            // CRIA OBJETO RESTAURANTE APENAS COM DADOS PASSADOS NA REQUISIÇÃO (DADOS A SEREM ATUALIZADOS). FAZ TODAS AS CONVERSÕES NECESSÁRIAS
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
             mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);
@@ -184,8 +184,10 @@ public class RestauranteController {
                 if(field != null){
                     field.setAccessible(true);
 
+                    // PEGA NOVO VALOR, SETADO NO OBJETO RESTAURANTEORIGEM
                     Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
 
+                    // ALTERA VALOR NO OBJETO DE RESTAURANTE CONSULTADO ATRAVÉS DO ID PASSADO COMO PARÂMETRO
                     ReflectionUtils.setField(field, restauranteAtual, novoValor);
                 }
             });
@@ -194,9 +196,14 @@ public class RestauranteController {
             throw new HttpMessageNotReadableException(e.getMessage(), rootCause, serverHttpRequest);
         }
 
+        // FAZ VALIDAÇÃO DO OBJETO FINAL
         validate(restauranteAtual, "restaurante");
+        // TRANSFORMA O OBJETO EM INPUT DTO PARA PASSAR COMO PARÂMETRO PARA A FUNÇÃO
+        var restauranteInputDTO = new RestauranteInputDTO();
+        restauranteMapper.copyToModelInputObject(restauranteAtual, restauranteInputDTO);
 
-        return atualizar(restauranteId, restauranteAtual);
+        // CHAMA O METODO PARA ATUALIZAR NO BANCO DE DADOS
+        return atualizar(restauranteId, restauranteInputDTO);
     }
 
     @DeleteMapping("/{id}")
@@ -212,7 +219,7 @@ public class RestauranteController {
         BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurante, objectName);
         validator.validate(restaurante, bindingResult);
 
-        if(!bindingResult.hasErrors()){
+        if(bindingResult.hasErrors()){
             throw new ValidacaoException(bindingResult);
         }
     }

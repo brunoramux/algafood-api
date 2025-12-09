@@ -1,5 +1,6 @@
 package com.algafoods.domain.service;
 
+import com.algafoods.domain.exception.EntidadeEmUsoException;
 import com.algafoods.domain.exception.EntidadeNaoEncontradaException;
 import com.algafoods.domain.model.Cozinha;
 import com.algafoods.domain.model.FormaPagamento;
@@ -7,6 +8,7 @@ import com.algafoods.domain.model.Restaurante;
 import com.algafoods.domain.repository.CozinhaRepository;
 import com.algafoods.domain.repository.FormaPagamentoRepository;
 import com.algafoods.domain.repository.RestauranteRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 public class CadastroRestauranteService {
 
     public static final String MENSAGEM_RESTAURANTE_NAO_ENCONTRADO = "Restaurante com o código %d não encontrado.";
+    public static final String MENSAGEM_RESTAURANTE_EM_USO = "Restaurante em uso.";
 
     private RestauranteRepository restauranteRepository;
 
@@ -66,12 +69,17 @@ public class CadastroRestauranteService {
         return restauranteRepository.save(restaurante);
     }
 
+    @Transactional
     public void delete(Long restauranteId) {
         Restaurante restaurante = restauranteRepository.findById(restauranteId).orElseThrow(
                 () -> new EntidadeNaoEncontradaException("Restaurante não encontrado")
         );
-        restauranteRepository.deleteById(restauranteId);
+        try {
+            restauranteRepository.deleteById(restauranteId);
+            restauranteRepository.flush();
+        } catch (DataIntegrityViolationException e) {
+            throw new EntidadeEmUsoException(MENSAGEM_RESTAURANTE_EM_USO);
+        }
     }
-
 
 }
