@@ -66,5 +66,12 @@ public class CadastroRestauranteService {
         return restauranteRepository.save(restaurante);
     }
 
+    public void delete(Long restauranteId) {
+        Restaurante restaurante = restauranteRepository.findById(restauranteId).orElseThrow(
+                () -> new EntidadeNaoEncontradaException("Restaurante não encontrado")
+        );
+        restauranteRepository.deleteById(restauranteId);
+    }
+
 
 }

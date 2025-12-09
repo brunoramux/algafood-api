@@ -1,37 +1,26 @@
 package com.algafoods.api.mappers;
 
-import com.algafoods.api.model.CozinhaModel;
 import com.algafoods.api.model.input.RestauranteInputDTO;
 import com.algafoods.api.model.output.RestauranteOutputDTO;
-import com.algafoods.domain.model.Cozinha;
 import com.algafoods.domain.model.Restaurante;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RestauranteMapper {
 
-    public static RestauranteOutputDTO toModel(Restaurante restaurante) {
-        RestauranteOutputDTO restauranteOutputDTO = new RestauranteOutputDTO();
-        CozinhaModel cozinhaModel = new CozinhaModel();
+    private ModelMapper mapper;
 
-        cozinhaModel.setId(restaurante.getCozinha().getId());
-        cozinhaModel.setNome(restaurante.getCozinha().getNome());
-
-        restauranteOutputDTO.setId(restaurante.getId());
-        restauranteOutputDTO.setNome(restaurante.getNome());
-        restauranteOutputDTO.setTaxaFrete(restaurante.getTaxaFrete());
-        restauranteOutputDTO.setCozinha(cozinhaModel);
-
-        return restauranteOutputDTO;
+    public RestauranteMapper(ModelMapper mapper) {
+        this.mapper = mapper;
     }
 
-    public static Restaurante toDomain(RestauranteInputDTO restauranteInputDTO) {
-        Restaurante restaurante = new Restaurante();
+    public RestauranteOutputDTO toModel(Restaurante restaurante) {
+        return mapper.map(restaurante, RestauranteOutputDTO.class);
+    }
 
-        restaurante.setNome(restauranteInputDTO.getNome());
-        restaurante.setTaxaFrete(restauranteInputDTO.getTaxaFrete());
-        restaurante.setCozinha(new Cozinha());
-        restaurante.getCozinha().setId(restauranteInputDTO.getCozinha().getId());
-
-        return restaurante;
+    public Restaurante toDomain(RestauranteInputDTO restauranteInputDTO) {
+        return mapper.map(restauranteInputDTO, Restaurante.class);
     }
 
 }

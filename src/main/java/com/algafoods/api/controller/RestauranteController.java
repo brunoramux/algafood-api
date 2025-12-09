@@ -39,18 +39,21 @@ public class RestauranteController {
 
     private final CadastroRestauranteService cadastroRestauranteService;
 
+    private final RestauranteMapper restauranteMapper;
+
     private final SmartValidator validator;
 
-    public RestauranteController(RestauranteRepository restauranteRepository, CadastroRestauranteService cadastroRestauranteService, SmartValidator validator) {
+    public RestauranteController(RestauranteRepository restauranteRepository, CadastroRestauranteService cadastroRestauranteService, SmartValidator validator, RestauranteMapper restauranteMapper) {
         this.restauranteRepository = restauranteRepository;
         this.cadastroRestauranteService = cadastroRestauranteService;
         this.validator = validator;
+        this.restauranteMapper = restauranteMapper;
     }
 
     @GetMapping
     public List<RestauranteOutputDTO> listar(){
         return  restauranteRepository.findAll().stream()
-                .map(RestauranteMapper::toModel)
+                .map(restauranteMapper::toModel)
                 .collect(Collectors.toList());
     }
 
@@ -61,7 +64,7 @@ public class RestauranteController {
     ){
         Restaurante restaurante = cadastroRestauranteService.encontrarRestaurante(restauranteId);
 
-        return ResponseEntity.ok(RestauranteMapper.toModel(restaurante));
+        return ResponseEntity.ok(restauranteMapper.toModel(restaurante));
     }
 
     @GetMapping("/{restauranteId}/formas-pagamento")
@@ -136,8 +139,8 @@ public class RestauranteController {
             @Valid
             RestauranteInputDTO restaurante
     ){
-            Restaurante restauranteModel = RestauranteMapper.toDomain(restaurante);
-            RestauranteOutputDTO newRestaurante =  RestauranteMapper.toModel(cadastroRestauranteService.create(restauranteModel));
+            Restaurante restauranteModel = restauranteMapper.toDomain(restaurante);
+            RestauranteOutputDTO newRestaurante =  restauranteMapper.toModel(cadastroRestauranteService.create(restauranteModel));
             return ResponseEntity.status(HttpStatus.CREATED).body(newRestaurante);
     }
 
@@ -194,6 +197,15 @@ public class RestauranteController {
         validate(restauranteAtual, "restaurante");
 
         return atualizar(restauranteId, restauranteAtual);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void remover(
+            @PathVariable
+            Long id
+    ){
+        cadastroRestauranteService.delete(id);
     }
 
     private void validate(Restaurante restaurante, String objectName){
