@@ -20,6 +20,9 @@ public class RestauranteInputDTO {
     @PositiveOrZero
     BigDecimal taxaFrete;
 
+    @NotNull
+    private Boolean ativo;
+
     @Valid
     @NotNull
     CozinhaEmCadastroRestauranteDTO cozinha;

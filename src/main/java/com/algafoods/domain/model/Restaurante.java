@@ -23,7 +23,7 @@ import java.util.List;
 // ValorZeroIncluiDescricao é uma Annotation criada para ser usada apenas em Classes. @Target({ ElementType.TYPE })
 // Uma anotation é criada nesse contexto para validações específicas.
 // @EqualsAndHashCode(onlyExplicitlyIncluded = true) indica ao Lombok para usar apenas campos espeficios ao criar os metodos equals e hashcode
-@ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
+// @ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
@@ -34,13 +34,11 @@ public class Restaurante {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     @Column(nullable = false)
     private String nome;
 
     // @Multiplo e @TaxaFrete -> Anotação de validação para métodos
     // @Column -> Usamos para indicar propriedades para o JPA utilizar na criação da tabela no banco de dados.
-    @NotNull
     @TaxaFrete
     @Multiplo(numero = 5)
     @Column(name = "taxa_frete", nullable = false)
@@ -57,9 +55,7 @@ public class Restaurante {
     // @Valid faz com que a Bean Validation seja em cascada, ou seja, entre no objeto Cozinha e valide os campos que estão no grupo.
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cozinha_id", nullable = false)
-    @NotNull(groups = Groups.IdCozinha.class)
     @Valid
-    @ConvertGroup(from = Default.class, to = Groups.IdCozinha.class)
     private Cozinha cozinha;
 
     @ManyToMany
@@ -75,6 +71,9 @@ public class Restaurante {
     @Embedded
     private Endereco endereco;
 
+    @Column(nullable = false)
+    private boolean ativo = Boolean.TRUE;
+
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
     private OffsetDateTime dataCadastro;
@@ -82,5 +81,13 @@ public class Restaurante {
     @UpdateTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
     private OffsetDateTime dataAtualizacao;
+
+    public void ativar() {
+        this.ativo = Boolean.TRUE;
+    }
+
+    public void desativar() {
+        this.ativo = Boolean.FALSE;
+    }
 
 }

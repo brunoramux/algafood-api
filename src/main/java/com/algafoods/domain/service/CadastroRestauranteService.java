@@ -82,4 +82,24 @@ public class CadastroRestauranteService {
         }
     }
 
+    @Transactional
+    public void ativar(Long restauranteId) {
+        Restaurante restaurante = restauranteRepository.findById(restauranteId).orElseThrow(
+                () -> new EntidadeNaoEncontradaException("Restaurante não encontrado")
+        );
+
+        restaurante.ativar();
+        restauranteRepository.save(restaurante);
+    }
+
+    @Transactional
+    public void desativar(Long restauranteId) {
+        Restaurante restaurante = restauranteRepository.findById(restauranteId).orElseThrow(
+                () -> new EntidadeNaoEncontradaException("Restaurante não encontrado")
+        );
+
+        restaurante.desativar();
+        restauranteRepository.save(restaurante);
+    }
+
 }

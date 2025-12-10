@@ -13,8 +13,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -205,6 +205,25 @@ public class RestauranteController {
         // CHAMA O METODO PARA ATUALIZAR NO BANCO DE DADOS
         return atualizar(restauranteId, restauranteInputDTO);
     }
+
+    @PutMapping("/{restauranteId}/ativar")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void ativar(
+            @PathVariable
+            Long restauranteId
+    ){
+        cadastroRestauranteService.ativar(restauranteId);
+    }
+
+    @DeleteMapping("/{restauranteId}/desativar")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void desativar(
+            @PathVariable
+            Long restauranteId
+    ){
+        cadastroRestauranteService.desativar(restauranteId);
+    }
+
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

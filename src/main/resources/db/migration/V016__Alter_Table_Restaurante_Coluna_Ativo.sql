@@ -1,0 +1,1 @@
+ALTER TABLE restaurante ADD ativo tinyint(1) not null default true;
