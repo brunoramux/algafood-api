@@ -1,6 +1,7 @@
 package com.algafoods.api.controller;
 
 import com.algafoods.api.mappers.RestauranteMapper;
+import com.algafoods.api.model.input.FormaPagamentoEmRestauranteDTO;
 import com.algafoods.api.model.input.RestauranteInputDTO;
 import com.algafoods.api.model.output.RestauranteOutputDTO;
 import com.algafoods.core.validation.ValidacaoException;
@@ -8,6 +9,7 @@ import com.algafoods.domain.exception.EntidadeNaoEncontradaException;
 import com.algafoods.domain.model.FormaPagamento;
 import com.algafoods.domain.model.Restaurante;
 import com.algafoods.domain.repository.RestauranteRepository;
+import com.algafoods.domain.service.FormaPagamentoService;
 import com.algafoods.domain.service.RestauranteService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,12 +43,14 @@ public class RestauranteController {
     private final RestauranteMapper restauranteMapper;
 
     private final SmartValidator validator;
+    private final FormaPagamentoService formaPagamentoService;
 
-    public RestauranteController(RestauranteRepository restauranteRepository, RestauranteService restauranteService, SmartValidator validator, RestauranteMapper restauranteMapper) {
+    public RestauranteController(RestauranteRepository restauranteRepository, RestauranteService restauranteService, SmartValidator validator, RestauranteMapper restauranteMapper, FormaPagamentoService formaPagamentoService) {
         this.restauranteRepository = restauranteRepository;
         this.restauranteService = restauranteService;
         this.validator = validator;
         this.restauranteMapper = restauranteMapper;
+        this.formaPagamentoService = formaPagamentoService;
     }
 
     @GetMapping
@@ -75,6 +79,24 @@ public class RestauranteController {
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Restaurante não encontrado."));
 
         return ResponseEntity.ok(restaurante.getFormasPagamento());
+    }
+
+    @PutMapping("/{restauranteId}/formas-pagamento")
+    public void vincularFormaPagamento(
+            @PathVariable Long restauranteId,
+            @RequestBody List<FormaPagamentoEmRestauranteDTO> formasPagamento
+    ){
+        Restaurante restaurante = restauranteRepository.findById(restauranteId)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Restaurante não encontrado."));
+
+        formasPagamento.forEach(formaPagamento -> {
+            FormaPagamento newFormaPagamento = formaPagamentoService.getFormaPagamentoById(formaPagamento.getId());
+            if(!restaurante.getFormasPagamento().contains(newFormaPagamento)) {
+                restaurante.getFormasPagamento().add(newFormaPagamento);
+            }
+        });
+
+        restauranteRepository.save(restaurante);
     }
 
     @GetMapping("/procurar")
