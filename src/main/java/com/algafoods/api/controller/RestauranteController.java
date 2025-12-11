@@ -8,12 +8,11 @@ import com.algafoods.domain.exception.EntidadeNaoEncontradaException;
 import com.algafoods.domain.model.FormaPagamento;
 import com.algafoods.domain.model.Restaurante;
 import com.algafoods.domain.repository.RestauranteRepository;
-import com.algafoods.domain.service.CadastroRestauranteService;
+import com.algafoods.domain.service.RestauranteService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,15 +36,15 @@ public class RestauranteController {
 
     private final RestauranteRepository restauranteRepository;
 
-    private final CadastroRestauranteService cadastroRestauranteService;
+    private final RestauranteService restauranteService;
 
     private final RestauranteMapper restauranteMapper;
 
     private final SmartValidator validator;
 
-    public RestauranteController(RestauranteRepository restauranteRepository, CadastroRestauranteService cadastroRestauranteService, SmartValidator validator, RestauranteMapper restauranteMapper) {
+    public RestauranteController(RestauranteRepository restauranteRepository, RestauranteService restauranteService, SmartValidator validator, RestauranteMapper restauranteMapper) {
         this.restauranteRepository = restauranteRepository;
-        this.cadastroRestauranteService = cadastroRestauranteService;
+        this.restauranteService = restauranteService;
         this.validator = validator;
         this.restauranteMapper = restauranteMapper;
     }
@@ -62,7 +61,7 @@ public class RestauranteController {
             @PathVariable
             Long restauranteId
     ){
-        Restaurante restaurante = cadastroRestauranteService.encontrarRestaurante(restauranteId);
+        Restaurante restaurante = restauranteService.encontrarRestaurante(restauranteId);
 
         return ResponseEntity.ok(restauranteMapper.toModel(restaurante));
     }
@@ -140,7 +139,7 @@ public class RestauranteController {
             RestauranteInputDTO restaurante
     ){
             Restaurante restauranteModel = restauranteMapper.toDomain(restaurante);
-            RestauranteOutputDTO newRestaurante =  restauranteMapper.toModel(cadastroRestauranteService.create(restauranteModel));
+            RestauranteOutputDTO newRestaurante =  restauranteMapper.toModel(restauranteService.create(restauranteModel));
             return ResponseEntity.status(HttpStatus.CREATED).body(newRestaurante);
     }
 
@@ -152,10 +151,10 @@ public class RestauranteController {
             @Valid
             RestauranteInputDTO restauranteInputDTO
     ){
-            Restaurante restauranteAtual = cadastroRestauranteService.encontrarRestaurante(restauranteId);
+            Restaurante restauranteAtual = restauranteService.encontrarRestaurante(restauranteId);
             restauranteMapper.copyToDomainObject(restauranteInputDTO, restauranteAtual);
             restauranteAtual.setDataAtualizacao(OffsetDateTime.now());
-            Restaurante restauranteAtualizado = cadastroRestauranteService.update(restauranteAtual);
+            Restaurante restauranteAtualizado = restauranteService.update(restauranteAtual);
             return ResponseEntity.ok(restauranteAtualizado);
     }
 
@@ -169,7 +168,7 @@ public class RestauranteController {
     ){
         ServletServerHttpRequest serverHttpRequest = new ServletServerHttpRequest(request);
         // ENCONTRA O RESTAURANTE A SER ATUALIZADO
-        Restaurante restauranteAtual = cadastroRestauranteService.encontrarRestaurante(restauranteId);
+        Restaurante restauranteAtual = restauranteService.encontrarRestaurante(restauranteId);
 
         try {
             // CRIA OBJETO RESTAURANTE APENAS COM DADOS PASSADOS NA REQUISIÇÃO (DADOS A SEREM ATUALIZADOS). FAZ TODAS AS CONVERSÕES NECESSÁRIAS
@@ -212,7 +211,7 @@ public class RestauranteController {
             @PathVariable
             Long restauranteId
     ){
-        cadastroRestauranteService.ativar(restauranteId);
+        restauranteService.ativar(restauranteId);
     }
 
     @DeleteMapping("/{restauranteId}/desativar")
@@ -221,7 +220,7 @@ public class RestauranteController {
             @PathVariable
             Long restauranteId
     ){
-        cadastroRestauranteService.desativar(restauranteId);
+        restauranteService.desativar(restauranteId);
     }
 
 
@@ -231,7 +230,7 @@ public class RestauranteController {
             @PathVariable
             Long id
     ){
-        cadastroRestauranteService.delete(id);
+        restauranteService.delete(id);
     }
 
     private void validate(Restaurante restaurante, String objectName){

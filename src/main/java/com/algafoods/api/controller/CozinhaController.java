@@ -2,10 +2,9 @@ package com.algafoods.api.controller;
 
 import com.algafoods.domain.model.Cozinha;
 import com.algafoods.domain.repository.CozinhaRepository;
-import com.algafoods.domain.service.CadastroCozinhaService;
+import com.algafoods.domain.service.CozinhaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +17,9 @@ public class CozinhaController {
 
     private final CozinhaRepository cozinhaRepository;
 
-    private final CadastroCozinhaService cozinhaService;
+    private final CozinhaService cozinhaService;
 
-    public CozinhaController(CozinhaRepository cozinhaRepository, CadastroCozinhaService cozinhaService) {
+    public CozinhaController(CozinhaRepository cozinhaRepository, CozinhaService cozinhaService) {
         this.cozinhaRepository = cozinhaRepository;
         this.cozinhaService = cozinhaService;
     }

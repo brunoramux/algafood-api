@@ -9,14 +9,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class CadastroCozinhaService {
+public class CozinhaService {
 
     public static final String MENSAGEM_COZINHA_EM_USO = "Cozinha com o código %d não pode ser removida pois está em uso por um Restaurante.";
     public static final String MENSAGEM_COZINHA_NAO_ENCONTRADA = "Cozinha com o código %d não encontrada.";
 
     private final CozinhaRepository repository;
 
-    public CadastroCozinhaService(CozinhaRepository repository) {
+    public CozinhaService(CozinhaRepository repository) {
         this.repository = repository;
     }
 

@@ -16,7 +16,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class CadastroRestauranteService {
+public class RestauranteService {
 
     public static final String MENSAGEM_RESTAURANTE_NAO_ENCONTRADO = "Restaurante com o código %d não encontrado.";
     public static final String MENSAGEM_RESTAURANTE_EM_USO = "Restaurante em uso.";
@@ -27,7 +27,7 @@ public class CadastroRestauranteService {
 
     private FormaPagamentoRepository formaPagamentoRepository;
 
-    public CadastroRestauranteService(RestauranteRepository restauranteRepository, CozinhaRepository cozinhaRepository, FormaPagamentoRepository formaPagamentoRepository) {
+    public RestauranteService(RestauranteRepository restauranteRepository, CozinhaRepository cozinhaRepository, FormaPagamentoRepository formaPagamentoRepository) {
         this.restauranteRepository = restauranteRepository;
         this.cozinhaRepository = cozinhaRepository;
         this.formaPagamentoRepository = formaPagamentoRepository;

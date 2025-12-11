@@ -3,8 +3,8 @@ package com.algafoods.api;
 import com.algafoods.domain.exception.EntidadeEmUsoException;
 import com.algafoods.domain.model.Cozinha;
 import com.algafoods.domain.model.Restaurante;
-import com.algafoods.domain.service.CadastroCozinhaService;
-import com.algafoods.domain.service.CadastroRestauranteService;
+import com.algafoods.domain.service.CozinhaService;
+import com.algafoods.domain.service.RestauranteService;
 import com.algafoods.api.util.DatabaseCleaner;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -32,10 +32,10 @@ public class CadastroCozinhaIT {
 
     public static final int NONEXISTENT_COZINHA_ID = 100;
     @Autowired
-    private CadastroCozinhaService cadastroCozinhaService;
+    private CozinhaService cozinhaService;
 
     @Autowired
-    private CadastroRestauranteService cadastroRestauranteService;
+    private RestauranteService restauranteService;
 
     @LocalServerPort
     private int port;
@@ -59,7 +59,7 @@ public class CadastroCozinhaIT {
         Cozinha cozinha = new Cozinha();
         cozinha.setNome("Chinesa");
 
-        Cozinha newCozinha = cadastroCozinhaService.salvar(cozinha);
+        Cozinha newCozinha = cozinhaService.salvar(cozinha);
 
         Assertions.assertThat(newCozinha).isNotNull();
         Assertions.assertThat(newCozinha.getId()).isNotNull();
@@ -70,7 +70,7 @@ public class CadastroCozinhaIT {
         Cozinha cozinha = new Cozinha();
 
         assertThrows(ConstraintViolationException.class, () -> {
-            cadastroCozinhaService.salvar(cozinha);
+            cozinhaService.salvar(cozinha);
         });
     }
 
@@ -80,17 +80,17 @@ public class CadastroCozinhaIT {
         Cozinha cozinha = new Cozinha();
         cozinha.setNome("Chinesa");
 
-        Cozinha newCozinha = cadastroCozinhaService.salvar(cozinha);
+        Cozinha newCozinha = cozinhaService.salvar(cozinha);
 
         Restaurante restaurante = new Restaurante();
         restaurante.setCozinha(newCozinha);
         restaurante.setNome("Restaurante de Cozinha Chinesa");
         restaurante.setTaxaFrete(BigDecimal.valueOf(10.0));
 
-        Restaurante newRestaurante = cadastroRestauranteService.create(restaurante);
+        Restaurante newRestaurante = restauranteService.create(restaurante);
 
         assertThrows(EntidadeEmUsoException.class, () -> {
-            cadastroCozinhaService.excluir(newCozinha.getId());
+            cozinhaService.excluir(newCozinha.getId());
         });
     }
 
@@ -156,6 +156,6 @@ public class CadastroCozinhaIT {
     private void prepareDatabase() {
         Cozinha newCozinha = new Cozinha();
         newCozinha.setNome("Chinesa");
-        Cozinha cozinha = cadastroCozinhaService.salvar(newCozinha);
+        Cozinha cozinha = cozinhaService.salvar(newCozinha);
     }
 }
