@@ -1,6 +1,7 @@
 package com.algafoods.api.model.output;
 
 import com.algafoods.api.model.CozinhaModel;
+import com.algafoods.api.model.EnderecoModel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,5 +20,7 @@ public class RestauranteOutputDTO {
     private Boolean ativo;
 
     private CozinhaModel cozinha;
+
+    private EnderecoModel endereco;
 
 }

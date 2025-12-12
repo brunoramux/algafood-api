@@ -1,7 +1,7 @@
 package com.algafoods.api.controller;
 
 import com.algafoods.api.mappers.RestauranteMapper;
-import com.algafoods.api.model.input.FormaPagamentoEmRestauranteDTO;
+import com.algafoods.api.model.input.IncluirFormaPagamentoEmRestauranteDTO;
 import com.algafoods.api.model.input.RestauranteInputDTO;
 import com.algafoods.api.model.output.RestauranteOutputDTO;
 import com.algafoods.core.validation.ValidacaoException;
@@ -81,10 +81,10 @@ public class RestauranteController {
         return ResponseEntity.ok(restaurante.getFormasPagamento());
     }
 
-    @PutMapping("/{restauranteId}/formas-pagamento")
+    @PutMapping(    "/{restauranteId}/formas-pagamento")
     public void vincularFormaPagamento(
             @PathVariable Long restauranteId,
-            @RequestBody List<FormaPagamentoEmRestauranteDTO> formasPagamento
+            @RequestBody List<IncluirFormaPagamentoEmRestauranteDTO> formasPagamento
     ){
         Restaurante restaurante = restauranteRepository.findById(restauranteId)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Restaurante não encontrado."));

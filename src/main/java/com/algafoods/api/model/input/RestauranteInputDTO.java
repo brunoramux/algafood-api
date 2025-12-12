@@ -1,5 +1,6 @@
 package com.algafoods.api.model.input;
 
+import com.algafoods.api.model.EnderecoModel;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -18,13 +19,15 @@ public class RestauranteInputDTO {
 
     @NotNull
     @PositiveOrZero
-    BigDecimal taxaFrete;
+    private BigDecimal taxaFrete;
 
     @NotNull
     private Boolean ativo;
 
     @Valid
     @NotNull
-    CozinhaEmCadastroRestauranteDTO cozinha;
+    private CozinhaEmCadastroRestauranteDTO cozinha;
+
+    private EnderecoModel endereco;
 
 }
