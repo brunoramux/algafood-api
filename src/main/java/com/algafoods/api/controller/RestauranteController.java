@@ -65,7 +65,7 @@ public class RestauranteController {
             @PathVariable
             Long restauranteId
     ){
-        Restaurante restaurante = restauranteService.encontrarRestaurante(restauranteId);
+        Restaurante restaurante = restauranteService.find(restauranteId);
 
         return ResponseEntity.ok(restauranteMapper.toModel(restaurante));
     }
@@ -173,7 +173,7 @@ public class RestauranteController {
             @Valid
             RestauranteInputDTO restauranteInputDTO
     ){
-            Restaurante restauranteAtual = restauranteService.encontrarRestaurante(restauranteId);
+            Restaurante restauranteAtual = restauranteService.find(restauranteId);
 
             // TRANSFORMAR O OBJETO RECEBIDO NA REQUISIÇÃO PARA EVITAR ERROS NO JPA
             restauranteMapper.copyToDomainObject(restauranteInputDTO, restauranteAtual);
@@ -195,7 +195,7 @@ public class RestauranteController {
     ){
         ServletServerHttpRequest serverHttpRequest = new ServletServerHttpRequest(request);
         // ENCONTRA O RESTAURANTE A SER ATUALIZADO
-        Restaurante restauranteAtual = restauranteService.encontrarRestaurante(restauranteId);
+        Restaurante restauranteAtual = restauranteService.find(restauranteId);
 
         try {
             // CRIA OBJETO RESTAURANTE APENAS COM DADOS PASSADOS NA REQUISIÇÃO (DADOS A SEREM ATUALIZADOS). FAZ TODAS AS CONVERSÕES NECESSÁRIAS

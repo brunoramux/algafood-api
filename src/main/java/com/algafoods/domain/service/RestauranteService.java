@@ -38,7 +38,7 @@ public class RestauranteService {
         this.cidadeRepository = cidadeRepository;
     }
 
-    public Restaurante encontrarRestaurante(Long restauranteId) {
+    public Restaurante find(Long restauranteId) {
         return restauranteRepository.findById(restauranteId)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException(
                         String.format(MENSAGEM_RESTAURANTE_NAO_ENCONTRADO,  restauranteId)));
@@ -81,9 +81,7 @@ public class RestauranteService {
 
     @Transactional
     public void delete(Long restauranteId) {
-        Restaurante restaurante = restauranteRepository.findById(restauranteId).orElseThrow(
-                () -> new EntidadeNaoEncontradaException("Restaurante não encontrado")
-        );
+        Restaurante restaurante = this.find(restauranteId);
         try {
             restauranteRepository.deleteById(restauranteId);
             restauranteRepository.flush();
