@@ -5,6 +5,7 @@ import lombok.Getter;
 @Getter
 public enum ExceptionType {
 
+    ERRO_DE_SENHA_INVALIDA("/erro-de-senha-invalida", "Erro de senha inválida."),
     ERRO_DE_VALIDACAO("/erro-de-validacao", "Erro de validação."),
     ERRO_DE_SISTEMA("/erro-de-sistema", "Erro de sistema."),
     RECURSO_NAO_ENCONTRADO("/recurso-nao-encontrado", "Recurso não encontrado."),

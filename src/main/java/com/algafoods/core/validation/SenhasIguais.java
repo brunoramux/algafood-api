@@ -17,4 +17,8 @@ public @interface SenhasIguais {
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
+
+    String senha();
+
+    String confirmacaoSenha();
 }

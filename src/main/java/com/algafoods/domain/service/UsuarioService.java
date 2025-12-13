@@ -3,9 +3,9 @@ package com.algafoods.domain.service;
 
 import com.algafoods.domain.exception.EntidadeEmUsoException;
 import com.algafoods.domain.exception.EntidadeNaoEncontradaException;
+import com.algafoods.domain.exception.SenhaInvalidaException;
 import com.algafoods.domain.model.Grupo;
 import com.algafoods.domain.model.Usuario;
-import com.algafoods.domain.repository.GrupoRepository;
 import com.algafoods.domain.repository.UsuarioRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService {
@@ -70,5 +69,21 @@ public class UsuarioService {
     @Transactional
     public Usuario update(Usuario usuario) {
         return repository.save(usuario);
+    }
+
+    @Transactional
+    public void alterarSenha(Long id, String senhaAtual, String novaSenha){
+        Usuario usuario = this.find(id);
+
+        boolean senhaAtualValida = encoder.matches(senhaAtual, usuario.getSenha());
+
+        if(!senhaAtualValida){
+            throw new SenhaInvalidaException("Senha atual inválida.");
+        }
+
+        String senhaCriptografada = encoder.encode(novaSenha);
+        usuario.setSenha(senhaCriptografada);
+
+        repository.save(usuario);
     }
 }

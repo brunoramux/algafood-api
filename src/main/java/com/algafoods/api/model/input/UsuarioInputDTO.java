@@ -15,7 +15,10 @@ import java.util.List;
 
 @Getter
 @Setter
-@SenhasIguais
+@SenhasIguais(
+        senha = "senha",
+        confirmacaoSenha = "confirmacaoSenha"
+)
 public class UsuarioInputDTO {
 
     @NotNull
