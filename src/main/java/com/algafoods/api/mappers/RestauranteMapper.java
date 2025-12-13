@@ -2,6 +2,7 @@ package com.algafoods.api.mappers;
 
 import com.algafoods.api.model.input.RestauranteInputDTO;
 import com.algafoods.api.model.output.RestauranteOutputDTO;
+import com.algafoods.domain.model.Cidade;
 import com.algafoods.domain.model.Cozinha;
 import com.algafoods.domain.model.Restaurante;
 import org.modelmapper.ModelMapper;
@@ -27,6 +28,11 @@ public class RestauranteMapper {
     public void copyToDomainObject(RestauranteInputDTO restauranteInputDTO, Restaurante restaurante) {
         // PARA EVITAR EXCEPTION DO JPA AO ALTERAR ID DA COZINHA
         restaurante.setCozinha(new Cozinha());
+
+        // PARA EVITAR EXCEPTION DO JPA AO ALTERAR ID DA CIDADE
+        if (restauranteInputDTO.getEndereco() != null) {
+            restaurante.getEndereco().setCidade(new Cidade());
+        }
 
         mapper.map(restauranteInputDTO, restaurante);
     }

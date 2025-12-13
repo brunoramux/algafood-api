@@ -2,9 +2,11 @@ package com.algafoods.domain.service;
 
 import com.algafoods.domain.exception.EntidadeEmUsoException;
 import com.algafoods.domain.exception.EntidadeNaoEncontradaException;
+import com.algafoods.domain.model.Cidade;
 import com.algafoods.domain.model.Cozinha;
 import com.algafoods.domain.model.FormaPagamento;
 import com.algafoods.domain.model.Restaurante;
+import com.algafoods.domain.repository.CidadeRepository;
 import com.algafoods.domain.repository.CozinhaRepository;
 import com.algafoods.domain.repository.FormaPagamentoRepository;
 import com.algafoods.domain.repository.RestauranteRepository;
@@ -21,16 +23,19 @@ public class RestauranteService {
     public static final String MENSAGEM_RESTAURANTE_NAO_ENCONTRADO = "Restaurante com o código %d não encontrado.";
     public static final String MENSAGEM_RESTAURANTE_EM_USO = "Restaurante em uso.";
 
-    private RestauranteRepository restauranteRepository;
+    private final RestauranteRepository restauranteRepository;
 
-    private CozinhaRepository cozinhaRepository;
+    private final CozinhaRepository cozinhaRepository;
 
-    private FormaPagamentoRepository formaPagamentoRepository;
+    private final FormaPagamentoRepository formaPagamentoRepository;
 
-    public RestauranteService(RestauranteRepository restauranteRepository, CozinhaRepository cozinhaRepository, FormaPagamentoRepository formaPagamentoRepository) {
+    private final CidadeRepository cidadeRepository;
+
+    public RestauranteService(RestauranteRepository restauranteRepository, CozinhaRepository cozinhaRepository, FormaPagamentoRepository formaPagamentoRepository, CidadeRepository cidadeRepository) {
         this.restauranteRepository = restauranteRepository;
         this.cozinhaRepository = cozinhaRepository;
         this.formaPagamentoRepository = formaPagamentoRepository;
+        this.cidadeRepository = cidadeRepository;
     }
 
     public Restaurante encontrarRestaurante(Long restauranteId) {
@@ -64,7 +69,12 @@ public class RestauranteService {
         Cozinha cozinha = cozinhaRepository.findById(cozinhaId)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Cozinha informada não foi encontrada."));
 
+        Long cidadeId = restaurante.getEndereco().getCidade().getId();
+        Cidade cidade = cidadeRepository.findById(cidadeId).orElseThrow(() -> new EntidadeNaoEncontradaException("Cidade não encontrada."));
+
         restaurante.setCozinha(cozinha);
+        restaurante.getEndereco().setCidade(cidade);
+
 
         return restauranteRepository.save(restaurante);
     }

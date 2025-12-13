@@ -174,10 +174,15 @@ public class RestauranteController {
             RestauranteInputDTO restauranteInputDTO
     ){
             Restaurante restauranteAtual = restauranteService.encontrarRestaurante(restauranteId);
+
+            // TRANSFORMAR O OBJETO RECEBIDO NA REQUISIÇÃO PARA EVITAR ERROS NO JPA
             restauranteMapper.copyToDomainObject(restauranteInputDTO, restauranteAtual);
+            // SETAR TIMESTAMP DE ATUALIZACAO COM TIMEZONE SEMPRE EM UTC
             restauranteAtual.setDataAtualizacao(OffsetDateTime.now());
+            // ATUALIZA NO BANCO DE DADOS
             Restaurante restauranteAtualizado = restauranteService.update(restauranteAtual);
-            return ResponseEntity.ok(restauranteAtualizado);
+            // RETORNA OBJETO DTO A PARTIR DO OBJETO ATUALZIADO
+            return ResponseEntity.ok(restauranteMapper.toModel(restauranteAtualizado));
     }
 
     @PatchMapping("/{restauranteId}")
