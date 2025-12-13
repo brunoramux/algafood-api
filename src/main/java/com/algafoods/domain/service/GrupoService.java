@@ -8,6 +8,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class GrupoService {
     public static final String MENSAGEM_GRUPO_NAO_ENCONTRADO = "Grupo com o código %d não encontrado.";
@@ -17,6 +19,10 @@ public class GrupoService {
 
     public GrupoService(GrupoRepository repository) {
         this.repository = repository;
+    }
+
+    public List<Grupo> findAll(){
+        return repository.findAll();
     }
 
     public Grupo find(Long id) {

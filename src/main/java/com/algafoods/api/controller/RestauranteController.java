@@ -143,7 +143,7 @@ public class RestauranteController {
     }
 
     @GetMapping("/findFirst")
-    public ResponseEntity<Restaurante> FindFirst(){
+    public ResponseEntity<Restaurante> findFirst(){
 
         var restaurante = restauranteRepository.buscarPrimeiro();
 
