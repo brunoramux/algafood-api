@@ -2,6 +2,7 @@ package com.algafoods.api.exceptionhandler;
 
 import com.algafoods.domain.exception.EntidadeEmUsoException;
 import com.algafoods.domain.exception.EntidadeNaoEncontradaException;
+import com.algafoods.domain.exception.SenhaInvalidaException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -102,6 +103,18 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<?> handleEntidadeEmUsoException(EntidadeEmUsoException ex, WebRequest request) {
         HttpStatus status = HttpStatus.CONFLICT;
         ExceptionType exceptionType = ExceptionType.ENTIDADE_EM_USO;
+        String detail = ex.getMessage();
+
+        ExceptionHandlerMessage message = createExceptionMessageBuilder(status, exceptionType, detail).build();
+
+        return handleExceptionInternal(ex, message, new HttpHeaders(), status, request);
+    }
+
+    // handle da excessão de Senha Inválida
+    @ExceptionHandler(SenhaInvalidaException.class)
+    protected ResponseEntity<?> handleSenhaInvalidaException(SenhaInvalidaException ex, WebRequest request) {
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
+        ExceptionType exceptionType = ExceptionType.ERRO_DE_SENHA_INVALIDA;
         String detail = ex.getMessage();
 
         ExceptionHandlerMessage message = createExceptionMessageBuilder(status, exceptionType, detail).build();
