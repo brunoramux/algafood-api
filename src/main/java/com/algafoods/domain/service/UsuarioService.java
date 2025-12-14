@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -41,6 +42,13 @@ public class UsuarioService {
 
     @Transactional
     public Usuario create(Usuario usuario) {
+
+        Optional<Usuario> usuarioComMesmoEmail = repository.findByEmail(usuario.getEmail());
+
+        if(usuarioComMesmoEmail.isPresent()) {
+            throw new EntidadeEmUsoException("Email informado já existente.");
+        }
+
         List<Grupo> grupos = usuario.getGrupos().stream()
                 .map(grupo -> grupoService.find(grupo.getId()))
                 .toList();
