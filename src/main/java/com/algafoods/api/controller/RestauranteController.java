@@ -1,15 +1,19 @@
 package com.algafoods.api.controller;
 
+import com.algafoods.api.mappers.ProdutoMapper;
 import com.algafoods.api.mappers.RestauranteMapper;
 import com.algafoods.api.model.input.IncluirFormaPagamentoEmRestauranteDTO;
+import com.algafoods.api.model.input.ProdutoInputDTO;
 import com.algafoods.api.model.input.RestauranteInputDTO;
 import com.algafoods.api.model.output.RestauranteOutputDTO;
 import com.algafoods.core.validation.ValidacaoException;
 import com.algafoods.domain.exception.EntidadeNaoEncontradaException;
 import com.algafoods.domain.model.FormaPagamento;
+import com.algafoods.domain.model.Produto;
 import com.algafoods.domain.model.Restaurante;
 import com.algafoods.domain.repository.RestauranteRepository;
 import com.algafoods.domain.service.FormaPagamentoService;
+import com.algafoods.domain.service.ProdutoService;
 import com.algafoods.domain.service.RestauranteService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,18 +43,31 @@ public class RestauranteController {
     private final RestauranteRepository restauranteRepository;
 
     private final RestauranteService restauranteService;
+    private final FormaPagamentoService formaPagamentoService;
+    private final ProdutoService produtoService;
 
     private final RestauranteMapper restauranteMapper;
+    private final ProdutoMapper produtoMapper;
 
     private final SmartValidator validator;
-    private final FormaPagamentoService formaPagamentoService;
 
-    public RestauranteController(RestauranteRepository restauranteRepository, RestauranteService restauranteService, SmartValidator validator, RestauranteMapper restauranteMapper, FormaPagamentoService formaPagamentoService) {
+
+    public RestauranteController(
+            RestauranteRepository restauranteRepository,
+            RestauranteService restauranteService,
+            FormaPagamentoService formaPagamentoService,
+            ProdutoService produtoService,
+            SmartValidator validator,
+            RestauranteMapper restauranteMapper,
+            ProdutoMapper produtoMapper
+    ) {
         this.restauranteRepository = restauranteRepository;
         this.restauranteService = restauranteService;
         this.validator = validator;
         this.restauranteMapper = restauranteMapper;
         this.formaPagamentoService = formaPagamentoService;
+        this.produtoMapper = produtoMapper;
+        this.produtoService = produtoService;
     }
 
     @GetMapping
@@ -258,6 +275,31 @@ public class RestauranteController {
             Long id
     ){
         restauranteService.delete(id);
+    }
+
+
+    //ENDPOINTS PARA PRODUTO
+    @GetMapping("{id}/produtos")
+    public List<Produto> listar(
+            @PathVariable
+            Long id
+    ){
+        return produtoService.list(id);
+    }
+
+    @PostMapping("/{id}/produtos")
+    public Produto cadastrarProduto(
+            @PathVariable
+            Long id,
+            @RequestBody
+            ProdutoInputDTO produtoInputDTO
+    ){
+        Restaurante restaurante = restauranteService.find(id);
+
+        Produto produto = produtoMapper.toDomain(produtoInputDTO);
+        produto.setRestaurante(restaurante);
+
+        return produtoService.create(produto);
     }
 
     private void validate(Restaurante restaurante, String objectName){
