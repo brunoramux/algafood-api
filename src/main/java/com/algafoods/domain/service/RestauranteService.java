@@ -110,4 +110,18 @@ public class RestauranteService {
         restauranteRepository.save(restaurante);
     }
 
+    @Transactional
+    public void abrir(Long restauranteId) {
+        Restaurante restaurante = this.find(restauranteId);
+        restaurante.abrir();
+        restauranteRepository.save(restaurante);
+    }
+
+    @Transactional
+    public void fechar(Long restauranteId) {
+        Restaurante restaurante = this.find(restauranteId);
+        restaurante.fechar();
+        restauranteRepository.save(restaurante);
+    }
+
 }
