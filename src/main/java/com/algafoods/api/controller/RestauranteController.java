@@ -284,7 +284,6 @@ public class RestauranteController {
     ) {
         restauranteService.fechar(restauranteId);
     }
-2
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
