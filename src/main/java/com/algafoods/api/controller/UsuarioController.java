@@ -1,6 +1,8 @@
 package com.algafoods.api.controller;
 
+import com.algafoods.api.mappers.GrupoMapper;
 import com.algafoods.api.mappers.UsuarioMapper;
+import com.algafoods.api.model.GrupoModel;
 import com.algafoods.api.model.input.AlteracaoSenhaInputDTO;
 import com.algafoods.api.model.input.UsuarioInputDTO;
 import com.algafoods.api.model.output.UsuarioOutputDTO;
@@ -19,10 +21,12 @@ import java.util.stream.Collectors;
 public class UsuarioController {
     private final UsuarioService usuarioService;
     private final UsuarioMapper usuarioMapper;
+    private final GrupoMapper grupoMapper;
 
-    public UsuarioController(UsuarioService usuarioService, UsuarioMapper usuarioMapper) {
+    public UsuarioController(UsuarioService usuarioService, UsuarioMapper usuarioMapper, GrupoMapper grupoMapper) {
         this.usuarioService = usuarioService;
         this.usuarioMapper = usuarioMapper;
+        this.grupoMapper = grupoMapper;
     }
 
 
@@ -55,5 +59,37 @@ public class UsuarioController {
             AlteracaoSenhaInputDTO alteracaoSenhaInputDTO
     ) {
         usuarioService.alterarSenha(id, alteracaoSenhaInputDTO.getSenhaAtual(), alteracaoSenhaInputDTO.getNovaSenha());
+    }
+
+    @GetMapping("/{id}/grupos")
+    public List<GrupoModel> listarGrupos(
+            @PathVariable
+            Long id
+    ){
+        return usuarioService.listarGrupos(id).stream()
+                .map(grupoMapper::toModel)
+                .collect(Collectors.toList());
+    }
+
+    @PutMapping("/{usuarioId}/grupos/{grupoId}/associar")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void associarGrupo(
+            @PathVariable
+            Long usuarioId,
+            @PathVariable
+            Long grupoId
+    ) {
+        usuarioService.associarGrupo(usuarioId, grupoId);
+    }
+
+    @DeleteMapping("/{usuarioId}/grupos/{grupoId}/desassociar")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void desassociarGrupo(
+            @PathVariable
+            Long usuarioId,
+            @PathVariable
+            Long grupoId
+    ) {
+        usuarioService.desassociarGrupo(usuarioId, grupoId);
     }
 }

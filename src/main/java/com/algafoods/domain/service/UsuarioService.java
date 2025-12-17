@@ -1,6 +1,7 @@
 package com.algafoods.domain.service;
 
 
+import com.algafoods.api.model.GrupoModel;
 import com.algafoods.domain.exception.EntidadeEmUsoException;
 import com.algafoods.domain.exception.EntidadeNaoEncontradaException;
 import com.algafoods.domain.exception.SenhaInvalidaException;
@@ -14,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService {
@@ -49,9 +52,9 @@ public class UsuarioService {
             throw new EntidadeEmUsoException("Email informado já existente.");
         }
 
-        List<Grupo> grupos = usuario.getGrupos().stream()
+        Set<Grupo> grupos = usuario.getGrupos().stream()
                 .map(grupo -> grupoService.find(grupo.getId()))
-                .toList();
+                .collect(Collectors.toSet());
 
         usuario.setGrupos(grupos);
 
@@ -91,6 +94,34 @@ public class UsuarioService {
 
         String senhaCriptografada = encoder.encode(novaSenha);
         usuario.setSenha(senhaCriptografada);
+
+        repository.save(usuario);
+    }
+
+    public Set<Grupo> listarGrupos(Long id) {
+        Usuario usuario = this.find(id);
+        return usuario.getGrupos();
+    }
+
+    @Transactional
+    public void associarGrupo(Long usuarioId, Long grupoId) {
+        Usuario usuario = this.find(usuarioId);
+
+        Grupo grupo = grupoService.find(grupoId);
+
+        usuario.getGrupos().add(grupo);
+
+        repository.save(usuario);
+    }
+
+
+    @Transactional
+    public void desassociarGrupo(Long usuarioId, Long grupoId) {
+        Usuario usuario = this.find(usuarioId);
+
+        Grupo grupo = grupoService.find(grupoId);
+
+        usuario.getGrupos().remove(grupo);
 
         repository.save(usuario);
     }
