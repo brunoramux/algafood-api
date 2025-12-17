@@ -1,6 +1,8 @@
 package com.algafoods.api.model.input;
 
 import com.algafoods.api.model.EnderecoModel;
+import com.algafoods.core.validation.Multiplo;
+import com.algafoods.core.validation.TaxaFrete;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -18,7 +20,8 @@ public class RestauranteInputDTO {
     private String nome;
 
     @NotNull
-    @PositiveOrZero
+    @TaxaFrete
+    @Multiplo(numero = 5)
     private BigDecimal taxaFrete;
 
     @NotNull

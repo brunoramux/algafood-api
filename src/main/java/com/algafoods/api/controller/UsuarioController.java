@@ -71,7 +71,7 @@ public class UsuarioController {
                 .collect(Collectors.toList());
     }
 
-    @PutMapping("/{usuarioId}/grupos/{grupoId}/associar")
+    @PutMapping("/{usuarioId}/grupos/{grupoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void associarGrupo(
             @PathVariable
@@ -82,7 +82,7 @@ public class UsuarioController {
         usuarioService.associarGrupo(usuarioId, grupoId);
     }
 
-    @DeleteMapping("/{usuarioId}/grupos/{grupoId}/desassociar")
+    @DeleteMapping("/{usuarioId}/grupos/{grupoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void desassociarGrupo(
             @PathVariable

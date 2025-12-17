@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class GrupoMapper {
+
     private final ModelMapper mapper;
 
     public GrupoMapper(ModelMapper mapper) {
@@ -28,4 +29,5 @@ public class GrupoMapper {
     public void copyToModelInputObject(Grupo model, GrupoModel grupoModel) {
         mapper.map(model, grupoModel);
     }
+
 }

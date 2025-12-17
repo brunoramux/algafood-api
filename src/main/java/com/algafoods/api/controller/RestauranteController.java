@@ -258,6 +258,24 @@ public class RestauranteController {
         restauranteService.ativar(restauranteId);
     }
 
+    @PutMapping("/ativacoes")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void ativarMultiplos(
+            @RequestBody
+            List<Long> restauranteIds
+    ){
+        restauranteService.ativar(restauranteIds);
+    }
+
+    @PutMapping("/desativacoes")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void desativarMultiplos(
+            @RequestBody
+            List<Long> restauranteIds
+    ){
+        restauranteService.desativar(restauranteIds);
+    }
+
     @DeleteMapping("/{restauranteId}/desativar")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void desativar(

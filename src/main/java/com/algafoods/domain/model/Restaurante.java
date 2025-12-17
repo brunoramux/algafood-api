@@ -1,15 +1,7 @@
 package com.algafoods.domain.model;
 
-import com.algafoods.core.validation.Groups;
-import com.algafoods.core.validation.Multiplo;
-import com.algafoods.core.validation.TaxaFrete;
-import com.algafoods.core.validation.ValorZeroIncluiDescricao;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.groups.ConvertGroup;
-import jakarta.validation.groups.Default;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
@@ -18,7 +10,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 // ValorZeroIncluiDescricao é uma Annotation criada para ser usada apenas em Classes. @Target({ ElementType.TYPE })
 // Uma anotation é criada nesse contexto para validações específicas.
@@ -37,10 +31,7 @@ public class Restaurante {
     @Column(nullable = false)
     private String nome;
 
-    // @Multiplo e @TaxaFrete -> Anotação de validação para métodos
-    // @Column -> Usamos para indicar propriedades para o JPA utilizar na criação da tabela no banco de dados.
-    @TaxaFrete
-    @Multiplo(numero = 5)
+
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
@@ -63,6 +54,12 @@ public class Restaurante {
             joinColumns = @JoinColumn(name = "restaurante_id"),
             inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
     private List<FormaPagamento> formasPagamento = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(name = "restaurante_usuario_responsavel",
+            joinColumns = @JoinColumn(name = "restaurante_id"),
+            inverseJoinColumns = @JoinColumn(name = "usuario_id"))
+    private Set<Usuario> usuarios = new HashSet<>();
 
     @OneToMany(mappedBy = "restaurante")
     private List<Produto> produtos = new ArrayList<>();

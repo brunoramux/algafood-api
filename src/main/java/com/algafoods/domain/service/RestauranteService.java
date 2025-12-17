@@ -14,6 +14,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -98,6 +99,18 @@ public class RestauranteService {
 
         restaurante.ativar();
         restauranteRepository.save(restaurante);
+    }
+
+    @Transactional
+    public void ativar(List<Long> restauranteIds){
+        for (Long restauranteId : restauranteIds) {
+            this.ativar(restauranteId);
+        }
+    }
+
+    @Transactional
+    public void desativar(List<Long> restauranteIds){
+        restauranteIds.forEach(this::desativar);
     }
 
     @Transactional
