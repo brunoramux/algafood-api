@@ -2,10 +2,7 @@ package com.algafoods.domain.service;
 
 import com.algafoods.domain.exception.EntidadeEmUsoException;
 import com.algafoods.domain.exception.EntidadeNaoEncontradaException;
-import com.algafoods.domain.model.Cidade;
-import com.algafoods.domain.model.Cozinha;
-import com.algafoods.domain.model.FormaPagamento;
-import com.algafoods.domain.model.Restaurante;
+import com.algafoods.domain.model.*;
 import com.algafoods.domain.repository.CidadeRepository;
 import com.algafoods.domain.repository.CozinhaRepository;
 import com.algafoods.domain.repository.FormaPagamentoRepository;
@@ -14,7 +11,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -32,17 +31,28 @@ public class RestauranteService {
 
     private final CidadeRepository cidadeRepository;
 
-    public RestauranteService(RestauranteRepository restauranteRepository, CozinhaRepository cozinhaRepository, FormaPagamentoRepository formaPagamentoRepository, CidadeRepository cidadeRepository) {
+    private final UsuarioService usuarioService;
+
+    public RestauranteService(RestauranteRepository restauranteRepository, CozinhaRepository cozinhaRepository, FormaPagamentoRepository formaPagamentoRepository, CidadeRepository cidadeRepository, UsuarioService usuarioService) {
         this.restauranteRepository = restauranteRepository;
         this.cozinhaRepository = cozinhaRepository;
         this.formaPagamentoRepository = formaPagamentoRepository;
         this.cidadeRepository = cidadeRepository;
+        this.usuarioService = usuarioService;
     }
 
     public Restaurante find(Long restauranteId) {
         return restauranteRepository.findById(restauranteId)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException(
                         String.format(MENSAGEM_RESTAURANTE_NAO_ENCONTRADO,  restauranteId)));
+    }
+
+    public List<Restaurante> findAll(){
+        return restauranteRepository.findAll();
+    }
+
+    public void save(Restaurante restaurante) {
+        restauranteRepository.save(restaurante);
     }
 
     @Transactional
@@ -137,4 +147,44 @@ public class RestauranteService {
         restauranteRepository.save(restaurante);
     }
 
+    @Transactional
+    public void vincularUsuarioResponsavel(Long restauranteId, Long usuarioId) {
+        Restaurante restaurante = this.find(restauranteId);
+        Usuario usuario = usuarioService.find(usuarioId);
+
+        restaurante.adicionarUsuario(usuario);
+
+        restauranteRepository.save(restaurante);
+    }
+
+    @Transactional
+    public void desvincularUsuarioResponsavel(Long restauranteId, Long usuarioId) {
+        Restaurante restaurante = this.find(restauranteId);
+        Usuario usuario = usuarioService.find(usuarioId);
+
+        restaurante.removerUsuario(usuario);
+        restauranteRepository.save(restaurante);
+    }
+
+    public List<Restaurante> findByTaxaFreteBetween(BigDecimal taxaInicial, BigDecimal taxaFinal) {
+        return restauranteRepository.findByTaxaFreteBetween(taxaInicial, taxaFinal);
+    }
+
+    public List<Restaurante> findByNomeAndTaxaFrete(String nome, BigDecimal taxaInicial, BigDecimal taxaFinal) {
+        return restauranteRepository.find(nome, taxaInicial, taxaFinal);
+    }
+
+    public List<Restaurante> findByFreteGratis(String nome) {
+        return restauranteRepository.findFreteGratis(nome);
+    }
+
+    public Optional<Restaurante> findFirst() {
+        return restauranteRepository.buscarPrimeiro();
+    }
+
+    public Set<Usuario> findUsuariosResponsaveis(Long id) {
+        Restaurante restaurante = this.find(id);
+
+        return restaurante.getUsuarios();
+    }
 }

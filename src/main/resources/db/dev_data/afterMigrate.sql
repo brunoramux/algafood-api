@@ -12,6 +12,7 @@ delete from produto;
 delete from restaurante_forma_pagamento;
 delete from usuario;
 delete from usuario_grupo;
+delete from restaurante_usuario_responsavel;
 
 ALTER TABLE cozinha AUTO_INCREMENT = 1;
 ALTER TABLE estado AUTO_INCREMENT = 1;
@@ -80,3 +81,8 @@ insert into usuario (id, nome, email, senha, data_cadastro) values
                                                                 (2, 'Maria Joaquina', 'maria.vnd@algafood.com', '123', utc_timestamp),
                                                                 (3, 'José Souza', 'jose.aux@algafood.com', '123', utc_timestamp),
                                                                 (4, 'Sebastião Martins', 'sebastiao.cad@algafood.com', '123', utc_timestamp);
+
+insert into usuario (id, nome, email, senha, data_cadastro) values
+    (5, 'Manoel Lima', 'manoel.loja@gmail.com', '123', utc_timestamp);
+
+insert into restaurante_usuario_responsavel (restaurante_id, usuario_id) values (1, 5), (3, 5);

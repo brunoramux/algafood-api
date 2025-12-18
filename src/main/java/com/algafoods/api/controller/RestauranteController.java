@@ -2,10 +2,13 @@ package com.algafoods.api.controller;
 
 import com.algafoods.api.mappers.ProdutoMapper;
 import com.algafoods.api.mappers.RestauranteMapper;
+import com.algafoods.api.mappers.UsuarioMapper;
 import com.algafoods.api.model.input.IncluirFormaPagamentoEmRestauranteDTO;
 import com.algafoods.api.model.input.ProdutoInputDTO;
 import com.algafoods.api.model.input.RestauranteInputDTO;
 import com.algafoods.api.model.output.RestauranteOutputDTO;
+import com.algafoods.api.model.output.UsuarioOutputDTO;
+import com.algafoods.api.model.output.UsuarioResponsavelRestauranteOutputDTO;
 import com.algafoods.core.validation.ValidacaoException;
 import com.algafoods.domain.exception.EntidadeNaoEncontradaException;
 import com.algafoods.domain.model.FormaPagamento;
@@ -34,13 +37,12 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/restaurantes")
 public class RestauranteController {
-
-    private final RestauranteRepository restauranteRepository;
 
     private final RestauranteService restauranteService;
     private final FormaPagamentoService formaPagamentoService;
@@ -50,6 +52,7 @@ public class RestauranteController {
     private final ProdutoMapper produtoMapper;
 
     private final SmartValidator validator;
+    private final UsuarioMapper usuarioMapper;
 
 
     public RestauranteController(
@@ -59,20 +62,23 @@ public class RestauranteController {
             ProdutoService produtoService,
             SmartValidator validator,
             RestauranteMapper restauranteMapper,
-            ProdutoMapper produtoMapper
-    ) {
-        this.restauranteRepository = restauranteRepository;
+            ProdutoMapper produtoMapper,
+            UsuarioMapper usuarioMapper) {
         this.restauranteService = restauranteService;
         this.validator = validator;
         this.restauranteMapper = restauranteMapper;
         this.formaPagamentoService = formaPagamentoService;
         this.produtoMapper = produtoMapper;
         this.produtoService = produtoService;
+        this.usuarioMapper = usuarioMapper;
     }
+
+
+    // ENDPOINTS DE LISTAGEM DE RESTAURANTES
 
     @GetMapping
     public List<RestauranteOutputDTO> listar(){
-        return  restauranteRepository.findAll().stream()
+        return  restauranteService.findAll().stream()
                 .map(restauranteMapper::toModel)
                 .collect(Collectors.toList());
     }
@@ -87,13 +93,15 @@ public class RestauranteController {
         return ResponseEntity.ok(restauranteMapper.toModel(restaurante));
     }
 
+
+    // ENDPOINTS DE FORMA DE PAGAMENTO VINCULADO A RESTAURANTE
+
     @GetMapping("/{restauranteId}/formas-pagamento")
     public ResponseEntity<List<FormaPagamento>> buscarFormasPagamento(
             @PathVariable
             Long restauranteId
     ){
-        Restaurante restaurante = restauranteRepository.findById(restauranteId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Restaurante não encontrado."));
+        Restaurante restaurante = restauranteService.find(restauranteId);
 
         return ResponseEntity.ok(restaurante.getFormasPagamento());
     }
@@ -103,8 +111,7 @@ public class RestauranteController {
             @PathVariable Long restauranteId,
             @RequestBody List<IncluirFormaPagamentoEmRestauranteDTO> formasPagamento
     ){
-        Restaurante restaurante = restauranteRepository.findById(restauranteId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Restaurante não encontrado."));
+        Restaurante restaurante = restauranteService.find(restauranteId);
 
         formasPagamento.forEach(formaPagamento -> {
             FormaPagamento newFormaPagamento = formaPagamentoService.getFormaPagamentoById(formaPagamento.getId());
@@ -113,8 +120,11 @@ public class RestauranteController {
             }
         });
 
-        restauranteRepository.save(restaurante);
+        restauranteService.save(restaurante);
     }
+
+
+    // ENDPOINTS PARA PROCURAR RESTAURANTES
 
     @GetMapping("/procurar")
     public ResponseEntity<List<Restaurante>> buscarPorTaxa(
@@ -122,7 +132,7 @@ public class RestauranteController {
             BigDecimal taxaInicial,
             BigDecimal taxaFinal
     ){
-        List<Restaurante> restaurantes = restauranteRepository.findByTaxaFreteBetween(taxaInicial, taxaFinal);
+        List<Restaurante> restaurantes = restauranteService.findByTaxaFreteBetween(taxaInicial, taxaFinal);
 
         if(restaurantes == null) {
             return ResponseEntity.notFound().build();
@@ -140,7 +150,7 @@ public class RestauranteController {
             @RequestParam(required = false)
             BigDecimal taxaFinal
     ){
-        List<Restaurante> restaurantes = restauranteRepository.find(nome, taxaInicial, taxaFinal);
+        List<Restaurante> restaurantes = restauranteService.findByNomeAndTaxaFrete(nome, taxaInicial, taxaFinal);
 
         if(restaurantes == null) {
             return ResponseEntity.notFound().build();
@@ -154,7 +164,7 @@ public class RestauranteController {
             @RequestParam(required = false) String nome
     ){
 
-        var restaurantes = restauranteRepository.findFreteGratis(nome);
+        var restaurantes = restauranteService.findByFreteGratis(nome);
 
         return ResponseEntity.ok(restaurantes);
     }
@@ -162,7 +172,7 @@ public class RestauranteController {
     @GetMapping("/findFirst")
     public ResponseEntity<Restaurante> findFirst(){
 
-        var restaurante = restauranteRepository.buscarPrimeiro();
+        var restaurante = restauranteService.findFirst();
 
         if (restaurante.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -170,6 +180,8 @@ public class RestauranteController {
 
         return ResponseEntity.ok(restaurante.get());
     }
+
+    // ENDPOINTS PARA ADICIONAR E ATUALIZAR RESTAURANTE
 
     @PostMapping
     public ResponseEntity<?> adicionar(
@@ -249,6 +261,9 @@ public class RestauranteController {
         return atualizar(restauranteId, restauranteInputDTO);
     }
 
+
+    // ENDPOINTS DE ATIVAÇÃO DE RESTAURANTE
+
     @PutMapping("/{restauranteId}/ativar")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void ativar(
@@ -256,6 +271,15 @@ public class RestauranteController {
             Long restauranteId
     ){
         restauranteService.ativar(restauranteId);
+    }
+
+    @DeleteMapping("/{restauranteId}/desativar")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void desativar(
+            @PathVariable
+            Long restauranteId
+    ){
+        restauranteService.desativar(restauranteId);
     }
 
     @PutMapping("/ativacoes")
@@ -276,14 +300,8 @@ public class RestauranteController {
         restauranteService.desativar(restauranteIds);
     }
 
-    @DeleteMapping("/{restauranteId}/desativar")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void desativar(
-            @PathVariable
-            Long restauranteId
-    ){
-        restauranteService.desativar(restauranteId);
-    }
+
+    // ENDPOINTS DE ABERTURA E FECHAMENTO DE RESTAURANTE
 
     @PutMapping("/{restauranteId}/abrir")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -303,6 +321,9 @@ public class RestauranteController {
         restauranteService.fechar(restauranteId);
     }
 
+
+    // ENDPOINT PARA REMOVER UM RESTAURANTE
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(
@@ -313,7 +334,9 @@ public class RestauranteController {
     }
 
 
-    //ENDPOINTS PARA PRODUTO
+
+    //ENDPOINTS PARA PRODUTOS VINCULADOS A RESTAURANTES
+
     @GetMapping("{id}/produtos")
     public List<Produto> listar(
             @PathVariable
@@ -335,6 +358,41 @@ public class RestauranteController {
         produto.setRestaurante(restaurante);
 
         return produtoService.create(produto);
+    }
+
+
+    // ENDPOINTS PARA VINCULAR, DESVINCULAR E MOSTRAR USUÁRIO RESPONSÁVEL PELO RESTAURANTE
+
+    @PutMapping("/{restauranteId}/usuarios/{usuarioId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void vincularUsuario(
+            @PathVariable
+            Long restauranteId,
+            @PathVariable
+            Long usuarioId
+    ){
+        restauranteService.vincularUsuarioResponsavel(restauranteId, usuarioId);
+    }
+
+    @DeleteMapping("/{restauranteId}/usuarios/{usuarioId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void desvincularUsuario(
+            @PathVariable
+            Long restauranteId,
+            @PathVariable
+            Long usuarioId
+    ){
+        restauranteService.desvincularUsuarioResponsavel(restauranteId, usuarioId);
+    }
+
+    @GetMapping("/{id}/responsaveis")
+    public Set<UsuarioOutputDTO> listarUsuariosResponsaveis(
+            @PathVariable
+            Long id
+    ){
+        return restauranteService.findUsuariosResponsaveis(id).stream()
+                .map(usuarioMapper::toModel)
+                .collect(Collectors.toSet());
     }
 
     private void validate(Restaurante restaurante, String objectName){

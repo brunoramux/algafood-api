@@ -98,4 +98,12 @@ public class Restaurante {
         this.aberto = Boolean.FALSE;
     }
 
+    public void adicionarUsuario(Usuario usuario) {
+        this.usuarios.add(usuario);
+    }
+
+    public void removerUsuario(Usuario usuario) {
+        this.usuarios.remove(usuario);
+    }
+
 }

@@ -34,7 +34,8 @@ public class Pedido {
     private LocalDateTime dataEntrega;
     private LocalDateTime dataCancelamento;
 
-    private StatusPedido status;
+    @Enumerated(EnumType.STRING)
+    private StatusPedido status = StatusPedido.CRIADO;
 
     @ManyToOne
     @JoinColumn(nullable = false)

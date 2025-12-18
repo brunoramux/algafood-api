@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class ItemPedido {
+
     @Id
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,4 +28,5 @@ public class ItemPedido {
     @ManyToOne
     @JoinColumn(nullable = false)
     private Produto produto;
+
 }
