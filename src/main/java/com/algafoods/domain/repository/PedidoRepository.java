@@ -17,7 +17,7 @@ public interface PedidoRepository extends  CustomJpaRepository<Pedido, Long> {
             Sort.by("nome").ascending()
     );
 
-    @Query("from Pedido p join fetch p.cliente join fetch p.restaurante")
+    @Query("from Pedido p join fetch p.cliente join fetch p.restaurante r join fetch r.cozinha")
     Page<Pedido> findAll(Pageable pageable);
 
 }
