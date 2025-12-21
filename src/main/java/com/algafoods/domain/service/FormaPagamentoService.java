@@ -10,6 +10,7 @@ import java.util.List;
 
 @Service
 public class FormaPagamentoService {
+    public static final String MENSAGEM_FORMAPAGAMENTO_NAO_ENCONTRADA = "Forma de pagamento com o código %d não encontrada.";
     private final FormaPagamentoRepository repository;
 
     public FormaPagamentoService(FormaPagamentoRepository repository) {
@@ -22,7 +23,9 @@ public class FormaPagamentoService {
 
     public FormaPagamento getFormaPagamentoById(Long id) {
         return repository.findById(id).orElseThrow(
-                () -> new EntidadeNaoEncontradaException("Forma de Pagamento não encontrada.")
+                () -> new EntidadeNaoEncontradaException(
+                        String.format(MENSAGEM_FORMAPAGAMENTO_NAO_ENCONTRADA, id)
+                )
         );
     }
 

@@ -40,7 +40,7 @@ public class UsuarioService {
     public Usuario find(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        String.format(MENSAGEM_USUARIO_NAO_ENCONTRADO,  id)));
+                        String.format(MENSAGEM_USUARIO_NAO_ENCONTRADO, id)));
     }
 
     @Transactional
