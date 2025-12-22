@@ -4,12 +4,15 @@ import com.algafoods.api.mappers.PedidoResumidoMapper;
 import com.algafoods.api.model.output.pedidos.PedidoResumidoOutputDTO;
 import com.algafoods.domain.exception.EntidadeNaoEncontradaException;
 import com.algafoods.domain.exception.FormaPagamentoEmPedidoException;
+import com.algafoods.domain.exception.StatusPedidoInvalidoException;
 import com.algafoods.domain.model.*;
 import com.algafoods.domain.repository.PedidoRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.OffsetDateTime;
 
 
 @Service
@@ -76,5 +79,43 @@ public class PedidoService {
             item.setProduto(produto);
             item.setPedido(pedido);
         });
+    }
+
+    @Transactional
+    public void confirmarPedido(Long id) {
+        Pedido pedido = this.findById(id);
+        if(!pedido.getStatus().equals(StatusPedido.CRIADO)){
+            throw new StatusPedidoInvalidoException(
+                    String.format("Pedido com o status %s não pode ser confirmado.", pedido.getStatus())
+            );
+        }
+
+        pedido.setStatus(StatusPedido.CONFIRMADO);
+        pedido.setDataConfirmacao(OffsetDateTime.now());
+    }
+
+    @Transactional
+    public void entregarPedido(Long id) {
+        Pedido pedido = this.findById(id);
+        if(pedido.getStatus().equals(StatusPedido.CANCELADO)){
+            throw new StatusPedidoInvalidoException("Pedido cancelado.");
+        }
+
+        pedido.setStatus(StatusPedido.ENTREGUE);
+        pedido.setDataEntrega(OffsetDateTime.now());
+    }
+
+    @Transactional
+    public void cancelarPedido(Long id) {
+        Pedido pedido = this.findById(id);
+        if(pedido.getStatus().equals(StatusPedido.CANCELADO)){
+            throw new StatusPedidoInvalidoException("Pedido já cancelado.");
+        }
+        if(pedido.getStatus().equals(StatusPedido.ENTREGUE)){
+            throw new StatusPedidoInvalidoException("Pedido com o status entregue.");
+        }
+
+        pedido.setStatus(StatusPedido.CANCELADO);
+        pedido.setDataCancelamento(OffsetDateTime.now());
     }
 }

@@ -3,6 +3,7 @@ package com.algafoods.api.exceptionhandler;
 import com.algafoods.domain.exception.EntidadeEmUsoException;
 import com.algafoods.domain.exception.EntidadeNaoEncontradaException;
 import com.algafoods.domain.exception.SenhaInvalidaException;
+import com.algafoods.domain.exception.StatusPedidoInvalidoException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -77,6 +78,18 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ExceptionType exceptionType = ExceptionType.MENSAGEM_INCOMPREENSIVEL;
         String detail = String.format("A propriedade '%s' recebeu um valor de tipo inválido. Informe um valor do tipo %s. ", path, ex.getTargetType().getSimpleName());;
+
+        ExceptionHandlerMessage message = createExceptionMessageBuilder(status, exceptionType, detail).build();
+
+        return handleExceptionInternal(ex, message, new HttpHeaders(), status, request);
+    }
+
+    @ExceptionHandler(StatusPedidoInvalidoException.class)
+    protected ResponseEntity<?> handleStatusPedidoInvalidoException(StatusPedidoInvalidoException ex, WebRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        ExceptionType exceptionType = ExceptionType.STATUS_PEDIDO_INVALIDO;
+        String detail = ex.getMessage();
 
         ExceptionHandlerMessage message = createExceptionMessageBuilder(status, exceptionType, detail).build();
 

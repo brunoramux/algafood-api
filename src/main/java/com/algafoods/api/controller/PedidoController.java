@@ -59,4 +59,22 @@ public class PedidoController {
 
         return pedidoMapper.toModel(novoPedido);
     }
+
+    @PutMapping("/{pedidoId}/confirmar")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void confirmarPedido(@PathVariable Long pedidoId) {
+        pedidoService.confirmarPedido(pedidoId);
+    }
+
+    @PutMapping("/{pedidoId}/entregar")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void entregarPedido(@PathVariable Long pedidoId) {
+        pedidoService.entregarPedido(pedidoId);
+    }
+
+    @PutMapping("/{pedidoId}/cancelar")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void cancelarPedido(@PathVariable Long pedidoId) {
+        pedidoService.cancelarPedido(pedidoId);
+    }
 }
