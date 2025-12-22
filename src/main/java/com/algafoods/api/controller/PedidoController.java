@@ -9,10 +9,18 @@ import com.algafoods.api.model.output.pedidos.PedidoResumidoOutputDTO;
 import com.algafoods.domain.model.Pedido;
 import com.algafoods.domain.model.Usuario;
 import com.algafoods.domain.service.PedidoService;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import io.micrometer.common.util.StringUtils;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 @RestController
@@ -31,8 +39,27 @@ public class PedidoController {
     }
 
     @GetMapping
-    public PageResponseDTO<PedidoResumidoOutputDTO> listar(Pageable pageable) {
-        return PageResponseDTO.from(pedidoService.findAll(pageable));
+    public MappingJacksonValue listar(
+            @RequestParam(required = false) String fields,
+            Pageable pageable
+    ) {
+        PageResponseDTO<PedidoResumidoOutputDTO> pedidos =  PageResponseDTO.from(pedidoService.findAll(pageable));
+
+        MappingJacksonValue pedidosWrapper = new MappingJacksonValue(pedidos);
+
+        SimpleFilterProvider filterProvider = new SimpleFilterProvider();
+        filterProvider.addFilter("pedidoFilter", SimpleBeanPropertyFilter.serializeAll());
+
+        if(StringUtils.isNotEmpty(fields)) {
+            List<String> fieldsList = new ArrayList<>(
+                    Arrays.asList(fields.split(","))
+            );
+            filterProvider.addFilter("pedidoFilter", SimpleBeanPropertyFilter.filterOutAllExcept(fieldsList.toArray(new String[0])));
+        }
+
+        pedidosWrapper.setFilters(filterProvider);
+
+        return pedidosWrapper;
     }
 
     @GetMapping("/{codigo}")
