@@ -8,6 +8,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface PedidoRepository extends  CustomJpaRepository<Pedido, Long> {
 
@@ -19,5 +21,7 @@ public interface PedidoRepository extends  CustomJpaRepository<Pedido, Long> {
 
     @Query("from Pedido p join fetch p.cliente join fetch p.restaurante r join fetch r.cozinha")
     Page<Pedido> findAll(Pageable pageable);
+
+    Optional<Pedido> findByCodigo(String codigo);
 
 }

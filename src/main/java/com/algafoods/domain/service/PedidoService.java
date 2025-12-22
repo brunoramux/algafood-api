@@ -36,8 +36,8 @@ public class PedidoService {
         this.produtoService = produtoService;
     }
 
-    public Pedido findById(Long id) {
-        return pedidoRepository.findById(id)
+    public Pedido findByCodigo(String codigo) {
+        return pedidoRepository.findByCodigo(codigo)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Pedido não encontrado."));
     }
 
@@ -82,8 +82,8 @@ public class PedidoService {
     }
 
     @Transactional
-    public void confirmarPedido(Long id) {
-        Pedido pedido = this.findById(id);
+    public void confirmarPedido(String codigo) {
+        Pedido pedido = this.findByCodigo(codigo);
         if(!pedido.getStatus().equals(StatusPedido.CRIADO)){
             throw new StatusPedidoInvalidoException(
                     String.format("Pedido com o status %s não pode ser confirmado.", pedido.getStatus())
@@ -95,8 +95,8 @@ public class PedidoService {
     }
 
     @Transactional
-    public void entregarPedido(Long id) {
-        Pedido pedido = this.findById(id);
+    public void entregarPedido(String codigo) {
+        Pedido pedido = this.findByCodigo(codigo);
         if(pedido.getStatus().equals(StatusPedido.CANCELADO)){
             throw new StatusPedidoInvalidoException("Pedido cancelado.");
         }
@@ -106,8 +106,8 @@ public class PedidoService {
     }
 
     @Transactional
-    public void cancelarPedido(Long id) {
-        Pedido pedido = this.findById(id);
+    public void cancelarPedido(String codigo) {
+        Pedido pedido = this.findByCodigo(codigo);
         if(pedido.getStatus().equals(StatusPedido.CANCELADO)){
             throw new StatusPedidoInvalidoException("Pedido já cancelado.");
         }
