@@ -41,6 +41,12 @@ public class ProdutoService {
 //                );
     }
 
+    public List<Produto> findAtivosByRestaurante(Long restauranteId) {
+        Restaurante restaurante = restauranteService.find(restauranteId);
+
+        return repository.findAtivosByRestaurante(restaurante);
+    }
+
     public List<Produto> list(Long restauranteId) {
         Restaurante restaurante = restauranteService.find(restauranteId);
         return repository.findByRestaurante(restaurante);

@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -106,7 +107,7 @@ public class RestauranteController {
         return ResponseEntity.ok(restaurante.getFormasPagamento());
     }
 
-    @PutMapping(    "/{restauranteId}/formas-pagamento")
+    @PutMapping("/{restauranteId}/formas-pagamento")
     public void vincularFormaPagamento(
             @PathVariable Long restauranteId,
             @RequestBody List<IncluirFormaPagamentoEmRestauranteDTO> formasPagamento
@@ -335,13 +336,17 @@ public class RestauranteController {
 
 
 
-    //ENDPOINTS PARA PRODUTOS VINCULADOS A RESTAURANTES
+    // ENDPOINTS PARA PRODUTOS VINCULADOS A RESTAURANTES
 
-    @GetMapping("{id}/produtos")
+    @GetMapping("/{id}/produtos")
     public List<Produto> listar(
             @PathVariable
-            Long id
+            Long id,
+            @RequestParam(required = false) boolean ativo
     ){
+        if(ativo){
+            return produtoService.findAtivosByRestaurante(id);
+        }
         return produtoService.list(id);
     }
 
