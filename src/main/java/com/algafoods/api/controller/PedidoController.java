@@ -42,7 +42,7 @@ public class PedidoController {
     @GetMapping
     public PageResponseDTO<PedidoResumidoOutputDTO> listar(
             PedidoFilter pedidoFilter,
-            Pageable pageable
+            @PageableDefault(size = 10) Pageable pageable
     ) {
         return PageResponseDTO.from(pedidoService.findAll(pageable,  pedidoFilter));
 
