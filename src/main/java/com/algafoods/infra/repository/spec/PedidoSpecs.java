@@ -20,8 +20,10 @@ public class PedidoSpecs {
     public static Specification<Pedido> useFilter(PedidoFilter filter) {
         return (root, criteriaQuery, criteriaBuilder) -> {
 
-          root.fetch("restaurante").fetch("cozinha");
-          root.fetch("cliente");
+          if(Pedido.class.equals(criteriaQuery.getResultType())) { // ESSE IF É PARA EVITAR PROBLEMAS DO FETCH COM O FUNCIONAMENTO DA PAGINAÇÃO
+              root.fetch("restaurante").fetch("cozinha");
+              root.fetch("cliente");
+          }
 
           var predicates = new ArrayList<Predicate>();
 

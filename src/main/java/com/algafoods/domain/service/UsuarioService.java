@@ -82,6 +82,7 @@ public class UsuarioService {
         return repository.save(usuario);
     }
 
+
     @Transactional
     public void alterarSenha(Long id, String senhaAtual, String novaSenha){
         Usuario usuario = this.find(id);
@@ -102,6 +103,7 @@ public class UsuarioService {
         Usuario usuario = this.find(id);
         return usuario.getGrupos();
     }
+
 
     @Transactional
     public void associarGrupo(Long usuarioId, Long grupoId) {
