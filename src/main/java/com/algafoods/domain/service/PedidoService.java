@@ -7,6 +7,8 @@ import com.algafoods.domain.exception.FormaPagamentoEmPedidoException;
 import com.algafoods.domain.exception.StatusPedidoInvalidoException;
 import com.algafoods.domain.model.*;
 import com.algafoods.domain.repository.PedidoRepository;
+import com.algafoods.domain.repository.filter.PedidoFilter;
+import com.algafoods.infra.repository.spec.PedidoSpecs;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -41,8 +43,9 @@ public class PedidoService {
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Pedido não encontrado."));
     }
 
-    public Page<PedidoResumidoOutputDTO> findAll(Pageable pageable) {
-        return pedidoRepository.findAll(pageable).map(pedidoMapper::toModel);
+
+    public Page<PedidoResumidoOutputDTO> findAll(Pageable pageable, PedidoFilter filter) {
+        return pedidoRepository.findAll(PedidoSpecs.useFilter(filter), pageable).map(pedidoMapper::toModel);
     }
 
     @Transactional
