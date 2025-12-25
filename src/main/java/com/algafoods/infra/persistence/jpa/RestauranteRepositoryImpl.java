@@ -1,9 +1,9 @@
-package com.algafoods.infra.repository;
+package com.algafoods.infra.persistence.jpa;
 
 import com.algafoods.domain.model.Restaurante;
 import com.algafoods.domain.repository.RestauranteRepository;
 import com.algafoods.domain.repository.RestauranteRepositoryQueries;
-import com.algafoods.infra.repository.spec.RestaurantesSpecs;
+import com.algafoods.infra.persistence.spec.RestaurantesSpecs;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;

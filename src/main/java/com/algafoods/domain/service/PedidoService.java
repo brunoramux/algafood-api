@@ -8,7 +8,7 @@ import com.algafoods.domain.exception.StatusPedidoInvalidoException;
 import com.algafoods.domain.model.*;
 import com.algafoods.domain.repository.PedidoRepository;
 import com.algafoods.domain.repository.filter.PedidoFilter;
-import com.algafoods.infra.repository.spec.PedidoSpecs;
+import com.algafoods.infra.persistence.spec.PedidoSpecs;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

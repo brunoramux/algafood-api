@@ -1,11 +1,10 @@
 package com.algafoods;
 
-import com.algafoods.infra.repository.CustomJpaRepositoryImpl;
+import com.algafoods.infra.persistence.jpa.CustomJpaRepositoryImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import java.time.ZoneId;
 import java.util.TimeZone;
 
 @SpringBootApplication

@@ -1,4 +1,4 @@
-package com.algafoods.infra.repository.spec;
+package com.algafoods.infra.persistence.spec;
 
 import com.algafoods.domain.model.Pedido;
 import com.algafoods.domain.repository.filter.PedidoFilter;

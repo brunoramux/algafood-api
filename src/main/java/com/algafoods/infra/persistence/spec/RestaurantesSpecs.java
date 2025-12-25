@@ -1,4 +1,4 @@
-package com.algafoods.infra.repository.spec;
+package com.algafoods.infra.persistence.spec;
 
 import com.algafoods.domain.model.Restaurante;
 import org.springframework.data.jpa.domain.Specification;

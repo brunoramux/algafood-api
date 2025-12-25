@@ -1,0 +1,43 @@
+Estrutura padrão recomendada pelo DDD + Clean Architecture
+
+/src
+ ├── domain
+ │    ├── model
+ │    ├── repository
+ │    └── service         ← transações e regras de negócio
+ │
+ ├── application
+ │    ├── usecase
+ │    │    └── relatorio
+ │    │         ├── ConsultarVendasDiariasUseCase.java
+ │    │         └── ExportarRelatorioPDFUseCase.java
+ │    ├── dto
+ │    │    └── VendasDiariasFiltro.java
+ │    └── port
+ │         └── RelatorioVendasQueryPort.java
+ │
+ ├── infrastructure
+ │    ├── persistence
+ │    │    ├── jpa
+ │    │    │    └── RelatorioVendasQueryJpaAdapter.java
+ │    │    └── mapper
+ │    ├── report
+ │    │    ├── JasperPdfGenerator.java
+ │    └── config
+ │
+ └── api
+      ├── controller
+      │    └── RelatoriosController.java
+      ├── outputmodel
+      │    └── VendaDiariaModel.java
+      └── assembler
+
+
+ FLUXO:
+ Controller --> Use Case --> Query Port --> Adapter (Infra) --> Banco/Dashboard
+
+ 	•	Controller → recebe filtro e content-type (JSON/PDF)
+ 	•	Use case → orquestra, valida filtros, delega a query
+ 	•	Query Port (interface) → define contrato de consulta
+ 	•	Adapter (JPA / SQL / Jasper) → executa SQL otimizado e gera projeções
+ 	•	Use case devolve modelo simples → Controller retorna HTTP
