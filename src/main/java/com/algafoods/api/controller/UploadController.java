@@ -1,6 +1,8 @@
 package com.algafoods.api.controller;
 
 import com.algafoods.api.model.input.FotoProdutoInputDTO;
+import com.algafoods.application.usecases.produto.CadastroFotoProdutoUseCase;
+import com.algafoods.domain.model.FotoProduto;
 import com.algafoods.domain.model.Produto;
 import com.algafoods.domain.service.ProdutoService;
 import jakarta.validation.Valid;
@@ -17,9 +19,11 @@ import java.util.UUID;
 public class UploadController {
 
     private final ProdutoService produtoService;
+    private final CadastroFotoProdutoUseCase cadastroFotoProdutoUseCase;
 
-    public UploadController(ProdutoService produtoService) {
+    public UploadController(ProdutoService produtoService, CadastroFotoProdutoUseCase cadastroFotoProdutoUseCase) {
         this.produtoService = produtoService;
+        this.cadastroFotoProdutoUseCase = cadastroFotoProdutoUseCase;
     }
 
     @PostMapping(value = "/produtos/{produtoId}/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -37,11 +41,20 @@ public class UploadController {
         var tipoArquivo = fotoProdutoInputDTO.getArquivo().getContentType();
         var tamanhoArquivo = fotoProdutoInputDTO.getArquivo().getSize();
 
-        System.out.println(tamanhoArquivo);
+        FotoProduto fotoProduto = new FotoProduto();
+        fotoProduto.setProduto(produto);
+        fotoProduto.setDescricao(fotoProdutoInputDTO.getDescricao());
+        fotoProduto.setTamanho(tamanhoArquivo);
+        fotoProduto.setContentType(tipoArquivo);
+        fotoProduto.setNomeArquivo(nomeArquivo);
+
         try {
             fotoProdutoInputDTO.getArquivo().transferTo(arquivoFoto);
+            cadastroFotoProdutoUseCase.save(fotoProduto);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+
     }
 }

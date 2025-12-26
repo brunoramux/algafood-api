@@ -15,6 +15,7 @@ delete from usuario_grupo;
 delete from restaurante_usuario_responsavel;
 delete from pedido;
 delete from item_pedido;
+delete from foto_produto;
 
 ALTER TABLE cozinha AUTO_INCREMENT = 1;
 ALTER TABLE estado AUTO_INCREMENT = 1;
