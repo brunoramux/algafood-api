@@ -41,6 +41,14 @@ public class ProdutoService {
 //                );
     }
 
+    public Produto find(Long idProduto) {
+        return repository.findById(idProduto).orElseThrow(
+                () -> new EntidadeNaoEncontradaException(
+                        String.format(MENSAGEM_PRODUTO_NAO_ENCONTRADO, idProduto)
+                )
+        );
+    }
+
     public List<Produto> findAtivosByRestaurante(Long restauranteId) {
         Restaurante restaurante = restauranteService.find(restauranteId);
 
