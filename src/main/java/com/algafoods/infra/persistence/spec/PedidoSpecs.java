@@ -45,6 +45,10 @@ public class PedidoSpecs {
               predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("dataCriacao"), dataCriacaoFim));
           }
 
+          if(filter.getStatus() != null) {
+              predicates.add(criteriaBuilder.equal(root.get("status"), filter.getStatus()));
+          }
+
           return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
 
         };

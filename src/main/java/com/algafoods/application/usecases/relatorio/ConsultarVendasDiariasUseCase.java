@@ -16,7 +16,7 @@ public class ConsultarVendasDiariasUseCase {
         this.relatorioVendasQueryPort = relatorioVendasQueryPort;
     }
 
-    public List<VendaDiariaDTO> execute(VendaDiariaFilter filter) {
-        return relatorioVendasQueryPort.consultar(filter);
+    public List<VendaDiariaDTO> execute(VendaDiariaFilter filter, String timeOffSet) {
+        return relatorioVendasQueryPort.consultar(filter, timeOffSet);
     }
 }

@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface RelatorioVendasQueryPort {
 
-    List<VendaDiariaDTO> consultar(VendaDiariaFilter filter);
+    List<VendaDiariaDTO> consultar(VendaDiariaFilter filter, String timeOffSet);
 
 }

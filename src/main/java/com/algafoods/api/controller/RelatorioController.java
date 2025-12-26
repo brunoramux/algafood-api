@@ -5,6 +5,7 @@ import com.algafoods.application.filter.VendaDiariaFilter;
 import com.algafoods.application.usecases.relatorio.ConsultarVendasDiariasUseCase;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -13,15 +14,17 @@ import java.util.List;
 @RequestMapping("/relatorios")
 public class RelatorioController {
 
-    private final ConsultarVendasDiariasUseCase useCase;
+    private final ConsultarVendasDiariasUseCase consultarVendasDiariasUseCase;
 
-
-    public RelatorioController(ConsultarVendasDiariasUseCase useCase) {
-        this.useCase = useCase;
+    public RelatorioController(ConsultarVendasDiariasUseCase consultarVendasDiariasUseCase) {
+        this.consultarVendasDiariasUseCase = consultarVendasDiariasUseCase;
     }
 
     @GetMapping("/vendas-diarias")
-    public List<VendaDiariaDTO> consultar(VendaDiariaFilter filtro) {
-        return useCase.execute(filtro);
+    public List<VendaDiariaDTO> consultar(
+            @RequestParam(required = false, defaultValue = "+00:00") String timeOffSet,
+            VendaDiariaFilter filtro
+    ) {
+        return consultarVendasDiariasUseCase.execute(filtro, timeOffSet);
     }
 }
