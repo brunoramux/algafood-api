@@ -9,6 +9,8 @@ public interface FotoProdutoStoragePort {
 
     void armazenarFotoProduto(NovaFoto novaFoto);
 
+    void removerFotoProduto(String nomeArquivo);
+
     @Getter
     @Builder
     class NovaFoto {

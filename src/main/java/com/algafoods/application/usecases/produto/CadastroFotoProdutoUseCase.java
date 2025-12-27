@@ -12,11 +12,13 @@ public class CadastroFotoProdutoUseCase {
     private final FotoProdutoPort repository;
     private final BuscarFotoProdutoUseCase buscarFotoProdutoUseCase;
     private final RemoverFotoProdutoUseCase removerFotoProdutoUseCase;
+    private final RemoverArmazenamentoFotoProdutoUseCase removerArmazenamentoFotoProdutoUseCase;
 
-    public CadastroFotoProdutoUseCase(FotoProdutoPort repository, BuscarFotoProdutoUseCase buscarFotoProdutoUseCase, RemoverFotoProdutoUseCase removerFotoProdutoUseCase) {
+    public CadastroFotoProdutoUseCase(FotoProdutoPort repository, BuscarFotoProdutoUseCase buscarFotoProdutoUseCase, RemoverFotoProdutoUseCase removerFotoProdutoUseCase, RemoverArmazenamentoFotoProdutoUseCase removerArmazenamentoFotoProdutoUseCase) {
         this.repository = repository;
         this.buscarFotoProdutoUseCase = buscarFotoProdutoUseCase;
         this.removerFotoProdutoUseCase = removerFotoProdutoUseCase;
+        this.removerArmazenamentoFotoProdutoUseCase = removerArmazenamentoFotoProdutoUseCase;
     }
 
     public FotoProduto execute(FotoProduto fotoProduto) {
@@ -24,6 +26,7 @@ public class CadastroFotoProdutoUseCase {
 
         if (fotoProdutoExistente.isPresent()) {
             removerFotoProdutoUseCase.execute(fotoProdutoExistente.get().getProduto().getRestaurante().getId(), fotoProdutoExistente.get().getProduto().getId());
+            removerArmazenamentoFotoProdutoUseCase.execute(fotoProdutoExistente.get().getNomeArquivo());
         }
 
         return this.repository.save(fotoProduto);

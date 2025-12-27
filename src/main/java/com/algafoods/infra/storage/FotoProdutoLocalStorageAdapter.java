@@ -26,6 +26,17 @@ public class FotoProdutoLocalStorageAdapter implements FotoProdutoStoragePort {
         }
     }
 
+    @Override
+    public void removerFotoProduto(String nomeArquivo) {
+        Path arquivoPath = getDiretorioFotos(nomeArquivo);
+
+        try {
+            Files.deleteIfExists(arquivoPath);
+        } catch (IOException e) {
+            throw new StorageException("Erro ao remover arquivo em disco.");
+        }
+    }
+
     private Path getDiretorioFotos(String nomeArquivo) {
         return diretorioFotos.resolve(Path.of(nomeArquivo));
     }
