@@ -6,6 +6,8 @@ import com.algafoods.api.model.input.ProdutoInputDTO;
 import com.algafoods.api.model.output.FotoProdutoOutputDTO;
 import com.algafoods.application.port.FotoProdutoStoragePort;
 import com.algafoods.application.usecases.produto.BuscarFotoProdutoUseCase;
+import com.algafoods.application.usecases.produto.RemoverArmazenamentoFotoProdutoUseCase;
+import com.algafoods.application.usecases.produto.RemoverFotoProdutoUseCase;
 import com.algafoods.domain.exception.EntidadeNaoEncontradaException;
 import com.algafoods.domain.model.FotoProduto;
 import com.algafoods.domain.model.Produto;
@@ -13,6 +15,7 @@ import com.algafoods.domain.model.Restaurante;
 import com.algafoods.domain.service.ProdutoService;
 import com.algafoods.domain.service.RestauranteService;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
@@ -34,14 +37,18 @@ public class ProdutoController {
     private final BuscarFotoProdutoUseCase buscarFotoProdutoUseCase;
     private final FotoProdutoStoragePort fotoProdutoStoragePort;
     private final FotoProdutoMapper fotoProdutoMapper;
+    private final RemoverFotoProdutoUseCase removerFotoProdutoUseCase;
+    private final RemoverArmazenamentoFotoProdutoUseCase removerArmazenamentoFotoProdutoUseCase;
 
-    public ProdutoController(RestauranteService restauranteService, ProdutoService produtoService, ProdutoMapper produtoMapper, BuscarFotoProdutoUseCase buscarFotoProdutoUseCase, FotoProdutoStoragePort fotoProdutoStoragePort, FotoProdutoMapper fotoProdutoMapper) {
+    public ProdutoController(RestauranteService restauranteService, ProdutoService produtoService, ProdutoMapper produtoMapper, BuscarFotoProdutoUseCase buscarFotoProdutoUseCase, FotoProdutoStoragePort fotoProdutoStoragePort, FotoProdutoMapper fotoProdutoMapper, RemoverFotoProdutoUseCase removerFotoProdutoUseCase, RemoverArmazenamentoFotoProdutoUseCase removerArmazenamentoFotoProdutoUseCase) {
         this.restauranteService = restauranteService;
         this.produtoService = produtoService;
         this.produtoMapper = produtoMapper;
         this.buscarFotoProdutoUseCase = buscarFotoProdutoUseCase;
         this.fotoProdutoStoragePort = fotoProdutoStoragePort;
         this.fotoProdutoMapper = fotoProdutoMapper;
+        this.removerFotoProdutoUseCase = removerFotoProdutoUseCase;
+        this.removerArmazenamentoFotoProdutoUseCase = removerArmazenamentoFotoProdutoUseCase;
     }
 
     @GetMapping
@@ -111,6 +118,20 @@ public class ProdutoController {
         } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @DeleteMapping("/{produtoId}/fotos")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removerFotoProduto(
+            @PathVariable Long id,
+            @PathVariable Long produtoId
+    ){
+        FotoProduto fotoProduto = buscarFotoProdutoUseCase.execute(id, produtoId).orElseThrow(
+                () -> new EntidadeNaoEncontradaException("Foto do produto não encontrada.")
+        );
+
+        removerFotoProdutoUseCase.execute(id, fotoProduto.getId());
+        removerArmazenamentoFotoProdutoUseCase.execute(fotoProduto.getNomeArquivo());
     }
 
     private boolean verificarCompatibilidadeMediaType(MediaType mediaType, List<MediaType> acceptableMediaTypes) {

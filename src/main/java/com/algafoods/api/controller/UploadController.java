@@ -4,9 +4,7 @@ import com.algafoods.api.mappers.FotoProdutoMapper;
 import com.algafoods.api.model.input.FotoProdutoInputDTO;
 import com.algafoods.api.model.output.FotoProdutoOutputDTO;
 import com.algafoods.application.port.FotoProdutoStoragePort;
-import com.algafoods.application.usecases.produto.ArmazenarFotoProdutoUseCase;
-import com.algafoods.application.usecases.produto.BuscarFotoProdutoUseCase;
-import com.algafoods.application.usecases.produto.CadastroFotoProdutoUseCase;
+import com.algafoods.application.usecases.produto.*;
 import com.algafoods.domain.model.FotoProduto;
 import com.algafoods.domain.model.Produto;
 import com.algafoods.domain.service.ProdutoService;
@@ -27,12 +25,16 @@ public class UploadController {
     private final ProdutoService produtoService;
     private final CadastroFotoProdutoUseCase cadastroFotoProdutoUseCase;
     private final ArmazenarFotoProdutoUseCase armazenarFotoProdutoUseCase;
+    private final RemoverArmazenamentoFotoProdutoUseCase removerArmazenamentoFotoProdutoUseCase;
+    private final RemoverFotoProdutoUseCase removerFotoProdutoUseCase;
     private final FotoProdutoMapper fotoProdutoMapper;
 
-    public UploadController(ProdutoService produtoService, CadastroFotoProdutoUseCase cadastroFotoProdutoUseCase, ArmazenarFotoProdutoUseCase armazenarFotoProdutoUseCase, FotoProdutoMapper fotoProdutoMapper) {
+    public UploadController(ProdutoService produtoService, CadastroFotoProdutoUseCase cadastroFotoProdutoUseCase, ArmazenarFotoProdutoUseCase armazenarFotoProdutoUseCase, RemoverArmazenamentoFotoProdutoUseCase removerArmazenamentoFotoProdutoUseCase, RemoverFotoProdutoUseCase removerFotoProdutoUseCase, FotoProdutoMapper fotoProdutoMapper) {
         this.produtoService = produtoService;
         this.cadastroFotoProdutoUseCase = cadastroFotoProdutoUseCase;
         this.armazenarFotoProdutoUseCase = armazenarFotoProdutoUseCase;
+        this.removerArmazenamentoFotoProdutoUseCase = removerArmazenamentoFotoProdutoUseCase;
+        this.removerFotoProdutoUseCase = removerFotoProdutoUseCase;
         this.fotoProdutoMapper = fotoProdutoMapper;
     }
 
