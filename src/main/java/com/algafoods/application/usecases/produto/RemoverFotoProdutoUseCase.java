@@ -23,7 +23,7 @@ public class RemoverFotoProdutoUseCase {
     }
 
     @Transactional
-    public void remove(Long restauranteId, Long produtoId){
+    public void execute(Long restauranteId, Long produtoId){
         Restaurante restaurante = restauranteRepository.findById(restauranteId).orElseThrow(
                 () -> new EntidadeNaoEncontradaException("Restaurante não encontrado.")
         );

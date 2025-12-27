@@ -3,6 +3,8 @@ package com.algafoods.api.controller;
 import com.algafoods.api.mappers.FotoProdutoMapper;
 import com.algafoods.api.model.input.FotoProdutoInputDTO;
 import com.algafoods.api.model.output.FotoProdutoOutputDTO;
+import com.algafoods.application.port.FotoProdutoStoragePort;
+import com.algafoods.application.usecases.produto.ArmazenarFotoProdutoUseCase;
 import com.algafoods.application.usecases.produto.BuscarFotoProdutoUseCase;
 import com.algafoods.application.usecases.produto.CadastroFotoProdutoUseCase;
 import com.algafoods.domain.model.FotoProduto;
@@ -14,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.UUID;
 
@@ -23,11 +26,13 @@ public class UploadController {
 
     private final ProdutoService produtoService;
     private final CadastroFotoProdutoUseCase cadastroFotoProdutoUseCase;
+    private final ArmazenarFotoProdutoUseCase armazenarFotoProdutoUseCase;
     private final FotoProdutoMapper fotoProdutoMapper;
 
-    public UploadController(ProdutoService produtoService, CadastroFotoProdutoUseCase cadastroFotoProdutoUseCase, FotoProdutoMapper fotoProdutoMapper) {
+    public UploadController(ProdutoService produtoService, CadastroFotoProdutoUseCase cadastroFotoProdutoUseCase, ArmazenarFotoProdutoUseCase armazenarFotoProdutoUseCase, FotoProdutoMapper fotoProdutoMapper) {
         this.produtoService = produtoService;
         this.cadastroFotoProdutoUseCase = cadastroFotoProdutoUseCase;
+        this.armazenarFotoProdutoUseCase = armazenarFotoProdutoUseCase;
         this.fotoProdutoMapper = fotoProdutoMapper;
     }
 
@@ -42,7 +47,6 @@ public class UploadController {
         Produto produto = produtoService.find(restauranteId, produtoId);
 
         var nomeArquivo = UUID.randomUUID().toString() + "_" + fotoProdutoInputDTO.getArquivo().getOriginalFilename();
-        var arquivoFoto = Path.of("/Users/brunoramoslemos/fotos_teste", nomeArquivo);
         var tipoArquivo = fotoProdutoInputDTO.getArquivo().getContentType();
         var tamanhoArquivo = fotoProdutoInputDTO.getArquivo().getSize();
 
@@ -54,12 +58,12 @@ public class UploadController {
         fotoProduto.setNomeArquivo(nomeArquivo);
 
         try {
-            fotoProdutoInputDTO.getArquivo().transferTo(arquivoFoto);
-            FotoProduto newFotoProduto = cadastroFotoProdutoUseCase.save(fotoProduto);
+            armazenarFotoProdutoUseCase.execute(fotoProdutoInputDTO.getArquivo().getInputStream(), nomeArquivo);
+            FotoProduto newFotoProduto = cadastroFotoProdutoUseCase.execute(fotoProduto);
 
             return fotoProdutoMapper.toModel(newFotoProduto);
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

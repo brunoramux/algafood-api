@@ -19,11 +19,11 @@ public class CadastroFotoProdutoUseCase {
         this.removerFotoProdutoUseCase = removerFotoProdutoUseCase;
     }
 
-    public FotoProduto save(FotoProduto fotoProduto) {
-        Optional<FotoProduto> fotoProdutoExistente = buscarFotoProdutoUseCase.findById(fotoProduto.getProduto().getRestaurante().getId(), fotoProduto.getProduto().getId());
+    public FotoProduto execute(FotoProduto fotoProduto) {
+        Optional<FotoProduto> fotoProdutoExistente = buscarFotoProdutoUseCase.execute(fotoProduto.getProduto().getRestaurante().getId(), fotoProduto.getProduto().getId());
 
         if (fotoProdutoExistente.isPresent()) {
-            removerFotoProdutoUseCase.remove(fotoProdutoExistente.get().getProduto().getRestaurante().getId(), fotoProdutoExistente.get().getProduto().getId());
+            removerFotoProdutoUseCase.execute(fotoProdutoExistente.get().getProduto().getRestaurante().getId(), fotoProdutoExistente.get().getProduto().getId());
         }
 
         return this.repository.save(fotoProduto);

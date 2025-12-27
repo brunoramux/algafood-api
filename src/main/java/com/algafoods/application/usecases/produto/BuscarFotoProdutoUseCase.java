@@ -24,7 +24,7 @@ public class BuscarFotoProdutoUseCase {
         this.restauranteRepository = restauranteRepository;
     }
 
-    public Optional<FotoProduto> findById(Long restauranteId, Long produtoId) {
+    public Optional<FotoProduto> execute(Long restauranteId, Long produtoId) {
         Restaurante restaurante = restauranteRepository.findById(restauranteId).orElseThrow(
                 () -> new EntidadeNaoEncontradaException("Restaurante não encontrado.")
         );

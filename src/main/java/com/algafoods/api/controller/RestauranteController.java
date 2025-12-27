@@ -379,7 +379,7 @@ public class RestauranteController {
             @PathVariable Long restauranteId,
             @PathVariable Long produtoId
     ){
-        FotoProduto fotoProduto = buscarFotoProdutoUseCase.findById(restauranteId, produtoId).orElseThrow(
+        FotoProduto fotoProduto = buscarFotoProdutoUseCase.execute(restauranteId, produtoId).orElseThrow(
                 () -> new EntidadeNaoEncontradaException("Foto do produto não encontrada.")
         );
 
