@@ -1,6 +1,9 @@
 package com.algafoods.api.controller;
 
+import com.algafoods.api.mappers.FotoProdutoMapper;
 import com.algafoods.api.model.input.FotoProdutoInputDTO;
+import com.algafoods.api.model.output.FotoProdutoOutputDTO;
+import com.algafoods.application.usecases.produto.BuscarFotoProdutoUseCase;
 import com.algafoods.application.usecases.produto.CadastroFotoProdutoUseCase;
 import com.algafoods.domain.model.FotoProduto;
 import com.algafoods.domain.model.Produto;
@@ -20,15 +23,17 @@ public class UploadController {
 
     private final ProdutoService produtoService;
     private final CadastroFotoProdutoUseCase cadastroFotoProdutoUseCase;
+    private final FotoProdutoMapper fotoProdutoMapper;
 
-    public UploadController(ProdutoService produtoService, CadastroFotoProdutoUseCase cadastroFotoProdutoUseCase) {
+    public UploadController(ProdutoService produtoService, CadastroFotoProdutoUseCase cadastroFotoProdutoUseCase, FotoProdutoMapper fotoProdutoMapper) {
         this.produtoService = produtoService;
         this.cadastroFotoProdutoUseCase = cadastroFotoProdutoUseCase;
+        this.fotoProdutoMapper = fotoProdutoMapper;
     }
 
     @PostMapping(value = "/produtos/{produtoId}/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public void uploadProdutoFoto(
+    public FotoProdutoOutputDTO uploadProdutoFoto(
             @PathVariable Long produtoId,
             @PathVariable Long restauranteId,
             @Valid
@@ -50,11 +55,12 @@ public class UploadController {
 
         try {
             fotoProdutoInputDTO.getArquivo().transferTo(arquivoFoto);
-            cadastroFotoProdutoUseCase.save(fotoProduto);
+            FotoProduto newFotoProduto = cadastroFotoProdutoUseCase.save(fotoProduto);
+
+            return fotoProdutoMapper.toModel(newFotoProduto);
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-
     }
 }

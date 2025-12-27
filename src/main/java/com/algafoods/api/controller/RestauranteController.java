@@ -1,17 +1,21 @@
 package com.algafoods.api.controller;
 
+import com.algafoods.api.mappers.FotoProdutoMapper;
 import com.algafoods.api.mappers.ProdutoMapper;
 import com.algafoods.api.mappers.RestauranteMapper;
 import com.algafoods.api.mappers.UsuarioMapper;
 import com.algafoods.api.model.input.IncluirFormaPagamentoEmRestauranteDTO;
 import com.algafoods.api.model.input.ProdutoInputDTO;
 import com.algafoods.api.model.input.RestauranteInputDTO;
+import com.algafoods.api.model.output.FotoProdutoOutputDTO;
 import com.algafoods.api.model.output.RestauranteOutputDTO;
 import com.algafoods.api.model.output.UsuarioOutputDTO;
 import com.algafoods.api.model.output.UsuarioResponsavelRestauranteOutputDTO;
+import com.algafoods.application.usecases.produto.BuscarFotoProdutoUseCase;
 import com.algafoods.core.validation.ValidacaoException;
 import com.algafoods.domain.exception.EntidadeNaoEncontradaException;
 import com.algafoods.domain.model.FormaPagamento;
+import com.algafoods.domain.model.FotoProduto;
 import com.algafoods.domain.model.Produto;
 import com.algafoods.domain.model.Restaurante;
 import com.algafoods.domain.repository.RestauranteRepository;
@@ -38,6 +42,7 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -51,27 +56,31 @@ public class RestauranteController {
 
     private final RestauranteMapper restauranteMapper;
     private final ProdutoMapper produtoMapper;
+    private final FotoProdutoMapper fotoProdutoMapper;
 
     private final SmartValidator validator;
     private final UsuarioMapper usuarioMapper;
 
+    private final BuscarFotoProdutoUseCase buscarFotoProdutoUseCase;
 
     public RestauranteController(
             RestauranteRepository restauranteRepository,
             RestauranteService restauranteService,
             FormaPagamentoService formaPagamentoService,
-            ProdutoService produtoService,
+            ProdutoService produtoService, FotoProdutoMapper fotoProdutoMapper,
             SmartValidator validator,
             RestauranteMapper restauranteMapper,
             ProdutoMapper produtoMapper,
-            UsuarioMapper usuarioMapper) {
+            UsuarioMapper usuarioMapper, BuscarFotoProdutoUseCase buscarFotoProdutoUseCase) {
         this.restauranteService = restauranteService;
+        this.fotoProdutoMapper = fotoProdutoMapper;
         this.validator = validator;
         this.restauranteMapper = restauranteMapper;
         this.formaPagamentoService = formaPagamentoService;
         this.produtoMapper = produtoMapper;
         this.produtoService = produtoService;
         this.usuarioMapper = usuarioMapper;
+        this.buscarFotoProdutoUseCase = buscarFotoProdutoUseCase;
     }
 
 
@@ -363,6 +372,18 @@ public class RestauranteController {
         produto.setRestaurante(restaurante);
 
         return produtoService.create(produto);
+    }
+
+    @GetMapping("/{restauranteId}/produtos/{produtoId}/fotos")
+    public FotoProdutoOutputDTO buscarFotoProduto(
+            @PathVariable Long restauranteId,
+            @PathVariable Long produtoId
+    ){
+        FotoProduto fotoProduto = buscarFotoProdutoUseCase.findById(restauranteId, produtoId).orElseThrow(
+                () -> new EntidadeNaoEncontradaException("Foto do produto não encontrada.")
+        );
+
+        return fotoProdutoMapper.toModel(fotoProduto);
     }
 
 
