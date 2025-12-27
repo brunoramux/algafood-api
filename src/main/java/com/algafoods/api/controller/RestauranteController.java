@@ -5,18 +5,13 @@ import com.algafoods.api.mappers.ProdutoMapper;
 import com.algafoods.api.mappers.RestauranteMapper;
 import com.algafoods.api.mappers.UsuarioMapper;
 import com.algafoods.api.model.input.IncluirFormaPagamentoEmRestauranteDTO;
-import com.algafoods.api.model.input.ProdutoInputDTO;
 import com.algafoods.api.model.input.RestauranteInputDTO;
-import com.algafoods.api.model.output.FotoProdutoOutputDTO;
 import com.algafoods.api.model.output.RestauranteOutputDTO;
 import com.algafoods.api.model.output.UsuarioOutputDTO;
-import com.algafoods.api.model.output.UsuarioResponsavelRestauranteOutputDTO;
+import com.algafoods.application.port.FotoProdutoStoragePort;
 import com.algafoods.application.usecases.produto.BuscarFotoProdutoUseCase;
 import com.algafoods.core.validation.ValidacaoException;
-import com.algafoods.domain.exception.EntidadeNaoEncontradaException;
 import com.algafoods.domain.model.FormaPagamento;
-import com.algafoods.domain.model.FotoProduto;
-import com.algafoods.domain.model.Produto;
 import com.algafoods.domain.model.Restaurante;
 import com.algafoods.domain.repository.RestauranteRepository;
 import com.algafoods.domain.service.FormaPagamentoService;
@@ -26,7 +21,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +36,6 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -52,35 +45,27 @@ public class RestauranteController {
 
     private final RestauranteService restauranteService;
     private final FormaPagamentoService formaPagamentoService;
-    private final ProdutoService produtoService;
 
     private final RestauranteMapper restauranteMapper;
-    private final ProdutoMapper produtoMapper;
-    private final FotoProdutoMapper fotoProdutoMapper;
 
     private final SmartValidator validator;
     private final UsuarioMapper usuarioMapper;
 
-    private final BuscarFotoProdutoUseCase buscarFotoProdutoUseCase;
 
     public RestauranteController(
             RestauranteRepository restauranteRepository,
             RestauranteService restauranteService,
             FormaPagamentoService formaPagamentoService,
-            ProdutoService produtoService, FotoProdutoMapper fotoProdutoMapper,
+            ProdutoService produtoService, FotoProdutoMapper fotoProdutoMapper, FotoProdutoStoragePort fotoProdutoStoragePort,
             SmartValidator validator,
             RestauranteMapper restauranteMapper,
             ProdutoMapper produtoMapper,
             UsuarioMapper usuarioMapper, BuscarFotoProdutoUseCase buscarFotoProdutoUseCase) {
         this.restauranteService = restauranteService;
-        this.fotoProdutoMapper = fotoProdutoMapper;
         this.validator = validator;
         this.restauranteMapper = restauranteMapper;
         this.formaPagamentoService = formaPagamentoService;
-        this.produtoMapper = produtoMapper;
-        this.produtoService = produtoService;
         this.usuarioMapper = usuarioMapper;
-        this.buscarFotoProdutoUseCase = buscarFotoProdutoUseCase;
     }
 
 
@@ -184,11 +169,8 @@ public class RestauranteController {
 
         var restaurante = restauranteService.findFirst();
 
-        if (restaurante.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
+        return restaurante.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 
-        return ResponseEntity.ok(restaurante.get());
     }
 
     // ENDPOINTS PARA ADICIONAR E ATUALIZAR RESTAURANTE
@@ -262,7 +244,7 @@ public class RestauranteController {
         }
 
         // FAZ VALIDAÇÃO DO OBJETO FINAL
-        validate(restauranteAtual, "restaurante");
+        validate(restauranteAtual);
         // TRANSFORMA O OBJETO EM INPUT DTO PARA PASSAR COMO PARÂMETRO PARA A FUNÇÃO
         var restauranteInputDTO = new RestauranteInputDTO();
         restauranteMapper.copyToModelInputObject(restauranteAtual, restauranteInputDTO);
@@ -343,50 +325,6 @@ public class RestauranteController {
         restauranteService.delete(id);
     }
 
-
-
-    // ENDPOINTS PARA PRODUTOS VINCULADOS A RESTAURANTES
-
-    @GetMapping("/{id}/produtos")
-    public List<Produto> listar(
-            @PathVariable
-            Long id,
-            @RequestParam(required = false) boolean ativo
-    ){
-        if(ativo){
-            return produtoService.findAtivosByRestaurante(id);
-        }
-        return produtoService.list(id);
-    }
-
-    @PostMapping("/{id}/produtos")
-    public Produto cadastrarProduto(
-            @PathVariable
-            Long id,
-            @RequestBody
-            ProdutoInputDTO produtoInputDTO
-    ){
-        Restaurante restaurante = restauranteService.find(id);
-
-        Produto produto = produtoMapper.toDomain(produtoInputDTO);
-        produto.setRestaurante(restaurante);
-
-        return produtoService.create(produto);
-    }
-
-    @GetMapping("/{restauranteId}/produtos/{produtoId}/fotos")
-    public FotoProdutoOutputDTO buscarFotoProduto(
-            @PathVariable Long restauranteId,
-            @PathVariable Long produtoId
-    ){
-        FotoProduto fotoProduto = buscarFotoProdutoUseCase.execute(restauranteId, produtoId).orElseThrow(
-                () -> new EntidadeNaoEncontradaException("Foto do produto não encontrada.")
-        );
-
-        return fotoProdutoMapper.toModel(fotoProduto);
-    }
-
-
     // ENDPOINTS PARA VINCULAR, DESVINCULAR E MOSTRAR USUÁRIO RESPONSÁVEL PELO RESTAURANTE
 
     @PutMapping("/{restauranteId}/usuarios/{usuarioId}")
@@ -421,8 +359,8 @@ public class RestauranteController {
                 .collect(Collectors.toSet());
     }
 
-    private void validate(Restaurante restaurante, String objectName){
-        BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurante, objectName);
+    private void validate(Restaurante restaurante){
+        BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurante, "restaurante");
         validator.validate(restaurante, bindingResult);
 
         if(bindingResult.hasErrors()){

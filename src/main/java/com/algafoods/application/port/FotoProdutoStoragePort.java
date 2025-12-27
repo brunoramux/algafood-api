@@ -11,6 +11,8 @@ public interface FotoProdutoStoragePort {
 
     void removerFotoProduto(String nomeArquivo);
 
+    InputStream recuperarFotoProduto(String nomeArquivo);
+
     @Getter
     @Builder
     class NovaFoto {

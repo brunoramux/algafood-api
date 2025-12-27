@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -34,6 +35,17 @@ public class FotoProdutoLocalStorageAdapter implements FotoProdutoStoragePort {
             Files.deleteIfExists(arquivoPath);
         } catch (IOException e) {
             throw new StorageException("Erro ao remover arquivo em disco.");
+        }
+    }
+
+    @Override
+    public InputStream recuperarFotoProduto(String nomeArquivo) {
+        Path arquivoPath = getDiretorioFotos(nomeArquivo);
+
+        try {
+            return Files.newInputStream(arquivoPath);
+        } catch (IOException e) {
+            throw new StorageException("Erro ao recuperar arquivo em disco.");
         }
     }
 
