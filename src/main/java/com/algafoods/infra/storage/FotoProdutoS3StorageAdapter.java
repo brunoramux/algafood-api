@@ -26,7 +26,6 @@ public class FotoProdutoS3StorageAdapter implements FotoProdutoStoragePort {
                         .builder()
                         .bucket(storageProperties.getS3().getBucketName())
                         .key(storageProperties.getS3().getFotosDir() + "/" + novaFoto.getNomeArquivo())
-
                         .build(),
                 RequestBody.fromInputStream(novaFoto.getInputStream(), novaFoto.getTamanhoArquivo())
         );
@@ -40,7 +39,6 @@ public class FotoProdutoS3StorageAdapter implements FotoProdutoStoragePort {
 
     @Override
     public InputStream recuperarFotoProduto(String nomeArquivo) {
-        System.out.println("Recuperando foto do produto: " + storageProperties.getS3().getFotosDir() + "/" + nomeArquivo);
         GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                 .bucket(storageProperties.getS3().getBucketName())
                 .key(storageProperties.getS3().getFotosDir() + "/" + nomeArquivo)

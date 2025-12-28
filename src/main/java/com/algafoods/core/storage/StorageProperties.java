@@ -12,11 +12,13 @@ import java.nio.file.Path;
 @Setter
 @Component
 // CONFIGURAÇÃO PARA QUE SEJA FEITA LEITURA AUTOMATICA DAS PROPRIEDADES NO ARQUIVO APPLICATION.PROPERTIES. OS NOMES DEVEM BATER
+// EXEMPLO: PROPRIEDADE access-key-id É MAPEADA PARA accessKeyId
 @ConfigurationProperties("algafood.storage")
 public class StorageProperties {
 
     private Local local = new Local();
     private S3 s3 = new S3();
+
     private StorageType storageType;
 
     public enum StorageType {
