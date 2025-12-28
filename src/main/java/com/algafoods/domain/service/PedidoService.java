@@ -102,7 +102,7 @@ public class PedidoService {
         pedido.setDataConfirmacao(OffsetDateTime.now());
 
         Map<String, Object> parametros = new HashMap<>();
-        parametros.put("nomeCliente", pedido.getCliente().getNome());
+        parametros.put("pedido", pedido);
 
         enviarEmailUseCase.execute(
                 "bruno.lemos@live.com",
