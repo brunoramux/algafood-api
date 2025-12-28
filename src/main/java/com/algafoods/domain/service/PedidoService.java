@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Service
@@ -99,10 +101,14 @@ public class PedidoService {
         pedido.setStatus(StatusPedido.CONFIRMADO);
         pedido.setDataConfirmacao(OffsetDateTime.now());
 
+        Map<String, Object> parametros = new HashMap<>();
+        parametros.put("nomeCliente", pedido.getCliente().getNome());
+
         enviarEmailUseCase.execute(
                 "bruno.lemos@live.com",
                 "Confirmação de Pedido",
-                String.format("<h1>Olá %s Pedido código %s<h1/>", pedido.getCliente().getNome(), pedido.getCodigo())
+                "pedido-confirmado.html",
+                parametros
         );
     }
 

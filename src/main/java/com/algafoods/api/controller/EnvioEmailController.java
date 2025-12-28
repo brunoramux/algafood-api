@@ -20,7 +20,7 @@ public class EnvioEmailController {
     public void enviarEmail(
             @RequestParam String para
     ) {
-        enviarEmailUseCase.execute(para, "Bem-vindo!", "<h1>Olá 👋</h1>");
+        enviarEmailUseCase.execute(para, "Bem-vindo!", "<h1>Olá 👋</h1>", null);
     }
 }
 
