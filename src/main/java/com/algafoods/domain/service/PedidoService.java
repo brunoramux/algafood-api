@@ -2,6 +2,7 @@ package com.algafoods.domain.service;
 
 import com.algafoods.api.mappers.PedidoResumidoMapper;
 import com.algafoods.api.model.output.pedidos.PedidoResumidoOutputDTO;
+import com.algafoods.application.usecases.EnviarEmailUseCase;
 import com.algafoods.domain.exception.EntidadeNaoEncontradaException;
 import com.algafoods.domain.exception.FormaPagamentoEmPedidoException;
 import com.algafoods.domain.exception.StatusPedidoInvalidoException;
@@ -27,8 +28,9 @@ public class PedidoService {
     private final RestauranteService restauranteService;
     private final FormaPagamentoService formaPagamentoService;
     private final ProdutoService produtoService;
+    private final EnviarEmailUseCase enviarEmailUseCase;
 
-    public PedidoService(PedidoRepository pedidoRepository, PedidoResumidoMapper pedidoMapper, CidadeService cidadeService, UsuarioService usuarioService, RestauranteService restauranteService, FormaPagamentoService formaPagamentoService, ProdutoService produtoService) {
+    public PedidoService(PedidoRepository pedidoRepository, PedidoResumidoMapper pedidoMapper, CidadeService cidadeService, UsuarioService usuarioService, RestauranteService restauranteService, FormaPagamentoService formaPagamentoService, ProdutoService produtoService, EnviarEmailUseCase enviarEmailUseCase) {
         this.pedidoRepository = pedidoRepository;
         this.pedidoMapper = pedidoMapper;
         this.cidadeService = cidadeService;
@@ -36,6 +38,7 @@ public class PedidoService {
         this.restauranteService = restauranteService;
         this.formaPagamentoService = formaPagamentoService;
         this.produtoService = produtoService;
+        this.enviarEmailUseCase = enviarEmailUseCase;
     }
 
     public Pedido findByCodigo(String codigo) {
@@ -95,6 +98,12 @@ public class PedidoService {
 
         pedido.setStatus(StatusPedido.CONFIRMADO);
         pedido.setDataConfirmacao(OffsetDateTime.now());
+
+        enviarEmailUseCase.execute(
+                "bruno.lemos@live.com",
+                "Confirmação de Pedido",
+                String.format("<h1>Olá %s Pedido código %s<h1/>", pedido.getCliente().getNome(), pedido.getCodigo())
+        );
     }
 
     @Transactional
