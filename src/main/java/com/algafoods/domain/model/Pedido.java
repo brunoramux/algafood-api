@@ -1,9 +1,11 @@
 package com.algafoods.domain.model;
 
+import com.algafoods.domain.event.PedidoConfirmadoEvent;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.domain.AbstractAggregateRoot;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -13,9 +15,9 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @Entity
-public class Pedido {
+public class Pedido extends AbstractAggregateRoot<Pedido> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -70,6 +72,13 @@ public class Pedido {
     @PrePersist
     private void gerarCodigo() {
         this.codigo = UUID.randomUUID().toString();
+    }
+
+    public void confirmarPedido() {
+        this.status = StatusPedido.CONFIRMADO;
+        this.dataConfirmacao = OffsetDateTime.now();
+
+        registerEvent(new PedidoConfirmadoEvent(this));
     }
 }
 

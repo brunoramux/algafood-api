@@ -2,7 +2,6 @@ package com.algafoods.domain.service;
 
 import com.algafoods.api.mappers.PedidoResumidoMapper;
 import com.algafoods.api.model.output.pedidos.PedidoResumidoOutputDTO;
-import com.algafoods.application.usecases.EnviarEmailUseCase;
 import com.algafoods.domain.exception.EntidadeNaoEncontradaException;
 import com.algafoods.domain.exception.FormaPagamentoEmPedidoException;
 import com.algafoods.domain.exception.StatusPedidoInvalidoException;
@@ -16,9 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
-import java.util.HashMap;
-import java.util.Map;
-
 
 @Service
 public class PedidoService {
@@ -30,9 +26,16 @@ public class PedidoService {
     private final RestauranteService restauranteService;
     private final FormaPagamentoService formaPagamentoService;
     private final ProdutoService produtoService;
-    private final EnviarEmailUseCase enviarEmailUseCase;
 
-    public PedidoService(PedidoRepository pedidoRepository, PedidoResumidoMapper pedidoMapper, CidadeService cidadeService, UsuarioService usuarioService, RestauranteService restauranteService, FormaPagamentoService formaPagamentoService, ProdutoService produtoService, EnviarEmailUseCase enviarEmailUseCase) {
+    public PedidoService(
+            PedidoRepository pedidoRepository,
+            PedidoResumidoMapper pedidoMapper,
+            CidadeService cidadeService,
+            UsuarioService usuarioService,
+            RestauranteService restauranteService,
+            FormaPagamentoService formaPagamentoService,
+            ProdutoService produtoService
+    ) {
         this.pedidoRepository = pedidoRepository;
         this.pedidoMapper = pedidoMapper;
         this.cidadeService = cidadeService;
@@ -40,7 +43,6 @@ public class PedidoService {
         this.restauranteService = restauranteService;
         this.formaPagamentoService = formaPagamentoService;
         this.produtoService = produtoService;
-        this.enviarEmailUseCase = enviarEmailUseCase;
     }
 
     public Pedido findByCodigo(String codigo) {
@@ -98,18 +100,8 @@ public class PedidoService {
             );
         }
 
-        pedido.setStatus(StatusPedido.CONFIRMADO);
-        pedido.setDataConfirmacao(OffsetDateTime.now());
-
-        Map<String, Object> parametros = new HashMap<>();
-        parametros.put("pedido", pedido);
-
-        enviarEmailUseCase.execute(
-                "bruno.lemos@live.com",
-                "Confirmação de Pedido",
-                "pedido-confirmado.html",
-                parametros
-        );
+        pedido.confirmarPedido();
+        pedidoRepository.save(pedido);
     }
 
     @Transactional
