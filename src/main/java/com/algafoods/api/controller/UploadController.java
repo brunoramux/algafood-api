@@ -60,7 +60,7 @@ public class UploadController {
         fotoProduto.setNomeArquivo(nomeArquivo);
 
         try {
-            armazenarFotoProdutoUseCase.execute(fotoProdutoInputDTO.getArquivo().getInputStream(), nomeArquivo);
+            armazenarFotoProdutoUseCase.execute(fotoProdutoInputDTO.getArquivo().getInputStream(), nomeArquivo, tamanhoArquivo);
             FotoProduto newFotoProduto = cadastroFotoProdutoUseCase.execute(fotoProduto);
 
             return fotoProdutoMapper.toModel(newFotoProduto);

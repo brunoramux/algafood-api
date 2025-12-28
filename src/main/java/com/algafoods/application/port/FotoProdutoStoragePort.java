@@ -19,6 +19,7 @@ public interface FotoProdutoStoragePort {
 
         private String nomeArquivo;
         private InputStream inputStream;
+        private Long tamanhoArquivo;
 
     }
 

@@ -13,11 +13,12 @@ public class ArmazenarFotoProdutoUseCase {
         this.fotoProdutoStorage = fotoProdutoStorage;
     }
 
-    public void execute(InputStream inputStream, String nomeArquivo) {
+    public void execute(InputStream inputStream, String nomeArquivo, Long tamanhoArquivo) {
         fotoProdutoStorage.armazenarFotoProduto(
                 FotoProdutoStoragePort.NovaFoto
                         .builder()
                         .nomeArquivo(nomeArquivo)
+                        .tamanhoArquivo(tamanhoArquivo)
                         .inputStream(inputStream)
                         .build()
         );
