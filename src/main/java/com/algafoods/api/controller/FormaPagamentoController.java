@@ -6,12 +6,14 @@ import com.algafoods.domain.model.FormaPagamento;
 import com.algafoods.domain.repository.FormaPagamentoRepository;
 import com.algafoods.domain.service.FormaPagamentoService;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/formas-pagamento")
@@ -24,8 +26,14 @@ public class FormaPagamentoController {
     }
 
     @GetMapping
-    public List<FormaPagamento> listar(){
-        return formaPagamentoService.getAllFormaPagamentos();
+    public ResponseEntity<List<FormaPagamento>> listar(){
+
+        List<FormaPagamento> formaPagamentos = formaPagamentoService.getAllFormaPagamentos();
+
+        return ResponseEntity.ok()
+                .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
+                .body(formaPagamentos);
+
     }
 
     @GetMapping("/{id}")
