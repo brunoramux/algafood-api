@@ -1,12 +1,14 @@
 package com.algafoods.core.web;
 
-import io.swagger.v3.oas.models.ExternalDocumentation;
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.media.Schema;
 import jakarta.servlet.Filter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.ProblemDetail;
 import org.springframework.web.filter.ShallowEtagHeaderFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -36,7 +38,14 @@ public class WebConfig implements WebMvcConfigurer {
                 .info(new Info().title("Algafoods API")
                         .description("Spring Boot API")
                         .version("v0.0.1")
-                        .license(new License().name("Apache 2.0").url("http://springdoc.org")));
+                        .license(new License().name("Apache 2.0").url("http://springdoc.org")))
+                .components(new Components()
+                        .addSchemas("ProblemDetail",
+                                new Schema<ProblemDetail>()
+                                        .type("object")
+                                        .description("Problem Details conforme RFC 7807")
+                        )
+                );
     }
 
 

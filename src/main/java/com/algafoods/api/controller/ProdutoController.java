@@ -14,6 +14,10 @@ import com.algafoods.domain.model.Produto;
 import com.algafoods.domain.model.Restaurante;
 import com.algafoods.domain.service.ProdutoService;
 import com.algafoods.domain.service.RestauranteService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,6 +30,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
+@Tag(name = "Produtos", description = "Gerencia produtos de restaurantes.")
 @RestController
 @RequestMapping("/restaurantes/{id}/produtos")
 public class ProdutoController {
@@ -51,10 +56,12 @@ public class ProdutoController {
         this.removerArmazenamentoFotoProdutoUseCase = removerArmazenamentoFotoProdutoUseCase;
     }
 
+    @Operation(summary = "lista produtos ativos de um restaurante.")
     @GetMapping
     public List<Produto> listar(
             @PathVariable
             Long id,
+            @Parameter(description = "Indicativo de produto ativo ou não.")
             @RequestParam(required = false) boolean ativo
     ){
         if(ativo){
@@ -62,6 +69,8 @@ public class ProdutoController {
         }
         return produtoService.list(id);
     }
+
+
 
     @PostMapping
     public Produto cadastrarProduto(

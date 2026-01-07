@@ -17,4 +17,5 @@ public class EnviarEmailUseCase {
     public void execute(String para, String assunto, String template, Map<String, Object> parametros) {
         enviarEmailPort.enviarEmail(para, assunto, template, parametros);
     }
+
 }
