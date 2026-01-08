@@ -1,5 +1,7 @@
 package com.algafoods.api.controller;
 
+import com.algafoods.api.controller.openapi.ProdutoControllerOpenApi;
+import com.algafoods.api.exceptionhandler.ExceptionHandlerMessage;
 import com.algafoods.api.mappers.FotoProdutoMapper;
 import com.algafoods.api.mappers.ProdutoMapper;
 import com.algafoods.api.model.input.ProdutoInputDTO;
@@ -16,7 +18,10 @@ import com.algafoods.domain.service.ProdutoService;
 import com.algafoods.domain.service.RestauranteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
@@ -30,10 +35,9 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
-@Tag(name = "Produtos", description = "Gerencia produtos de restaurantes.")
 @RestController
 @RequestMapping("/restaurantes/{id}/produtos")
-public class ProdutoController {
+public class ProdutoController implements ProdutoControllerOpenApi {
 
     private final RestauranteService restauranteService;
     private final ProdutoService produtoService;
@@ -56,7 +60,6 @@ public class ProdutoController {
         this.removerArmazenamentoFotoProdutoUseCase = removerArmazenamentoFotoProdutoUseCase;
     }
 
-    @Operation(summary = "lista produtos ativos de um restaurante.")
     @GetMapping
     public List<Produto> listar(
             @PathVariable
@@ -87,6 +90,8 @@ public class ProdutoController {
         return produtoService.create(produto);
     }
 
+
+
     @GetMapping(value = "/{produtoId}/fotos", produces = MediaType.APPLICATION_JSON_VALUE)
     public FotoProdutoOutputDTO buscarFotoProduto(
             @PathVariable Long id,
@@ -98,6 +103,9 @@ public class ProdutoController {
 
         return fotoProdutoMapper.toModel(fotoProduto);
     }
+
+
+
 
     @GetMapping(value = "/{produtoId}/fotos")
     public ResponseEntity<InputStreamResource> servirFotoProduto(
@@ -128,6 +136,9 @@ public class ProdutoController {
             return ResponseEntity.notFound().build();
         }
     }
+
+
+
 
     @DeleteMapping("/{produtoId}/fotos")
     @ResponseStatus(HttpStatus.NO_CONTENT)
