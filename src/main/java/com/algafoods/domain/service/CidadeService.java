@@ -41,4 +41,11 @@ public class CidadeService {
 
         return this.cidadeRepository.save(cidade);
     }
+
+    public Cidade findById(Long id) {
+        return this.cidadeRepository.findById(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(
+                        String.format(MENSAGEM_CIDADE_NAO_ENCONTRADA, id)
+                ));
+    }
 }
