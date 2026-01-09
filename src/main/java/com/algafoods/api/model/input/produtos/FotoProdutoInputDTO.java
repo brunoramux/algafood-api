@@ -1,4 +1,4 @@
-package com.algafoods.api.model.input;
+package com.algafoods.api.model.input.produtos;
 
 import com.algafoods.core.validation.ContentType;
 import com.algafoods.core.validation.FileSize;

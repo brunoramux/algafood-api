@@ -1,4 +1,4 @@
-package com.algafoods.api.model.input;
+package com.algafoods.api.model.input.produtos;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;

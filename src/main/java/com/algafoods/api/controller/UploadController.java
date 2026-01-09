@@ -1,9 +1,8 @@
 package com.algafoods.api.controller;
 
 import com.algafoods.api.mappers.FotoProdutoMapper;
-import com.algafoods.api.model.input.FotoProdutoInputDTO;
-import com.algafoods.api.model.output.FotoProdutoOutputDTO;
-import com.algafoods.application.port.FotoProdutoStoragePort;
+import com.algafoods.api.model.input.produtos.FotoProdutoInputDTO;
+import com.algafoods.api.model.output.produtos.FotoProdutoOutputDTO;
 import com.algafoods.application.usecases.produto.*;
 import com.algafoods.domain.model.FotoProduto;
 import com.algafoods.domain.model.Produto;
@@ -13,9 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Path;
 import java.util.UUID;
 
 @RestController

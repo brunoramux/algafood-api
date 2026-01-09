@@ -1,7 +1,6 @@
-package com.algafoods.api.model.input;
+package com.algafoods.api.model.input.usuarios;
 
 
-import com.algafoods.api.model.GrupoModel;
 import com.algafoods.core.validation.SenhasIguais;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -10,7 +9,6 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.OffsetDateTime;
 import java.util.List;
 
 @Getter

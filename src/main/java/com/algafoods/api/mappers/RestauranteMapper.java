@@ -1,7 +1,7 @@
 package com.algafoods.api.mappers;
 
-import com.algafoods.api.model.input.RestauranteInputDTO;
-import com.algafoods.api.model.output.RestauranteOutputDTO;
+import com.algafoods.api.model.input.restaurantes.RestauranteInputDTO;
+import com.algafoods.api.model.output.restaurantes.RestauranteOutputDTO;
 import com.algafoods.domain.model.Cidade;
 import com.algafoods.domain.model.Cozinha;
 import com.algafoods.domain.model.Restaurante;

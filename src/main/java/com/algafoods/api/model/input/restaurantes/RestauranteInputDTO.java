@@ -1,12 +1,11 @@
-package com.algafoods.api.model.input;
+package com.algafoods.api.model.input.restaurantes;
 
-import com.algafoods.api.model.EnderecoModel;
+import com.algafoods.api.model.input.EnderecoInputDTO;
 import com.algafoods.core.validation.Multiplo;
 import com.algafoods.core.validation.TaxaFrete;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.Setter;
 

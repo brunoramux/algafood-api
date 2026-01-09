@@ -1,4 +1,4 @@
-package com.algafoods.api.model.output;
+package com.algafoods.api.model.output.usuarios;
 
 import lombok.Getter;
 import lombok.Setter;

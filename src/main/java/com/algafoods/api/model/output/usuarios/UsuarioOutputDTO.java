@@ -1,9 +1,7 @@
-package com.algafoods.api.model.output;
+package com.algafoods.api.model.output.usuarios;
 
 
 import com.algafoods.api.model.GrupoModel;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 

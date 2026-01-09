@@ -1,4 +1,4 @@
-package com.algafoods.api.model.input;
+package com.algafoods.api.model.input.usuarios;
 
 import com.algafoods.core.validation.SenhasIguais;
 import jakarta.validation.constraints.NotNull;

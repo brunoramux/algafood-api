@@ -1,6 +1,6 @@
 package com.algafoods.api.mappers;
 
-import com.algafoods.api.model.output.FotoProdutoOutputDTO;
+import com.algafoods.api.model.output.produtos.FotoProdutoOutputDTO;
 import com.algafoods.domain.model.FotoProduto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package com.algafoods.api.model.input;
+package com.algafoods.api.model.input.restaurantes;
 
 import lombok.Getter;
 import lombok.Setter;

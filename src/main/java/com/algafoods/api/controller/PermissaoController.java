@@ -1,8 +1,8 @@
 package com.algafoods.api.controller;
 
 import com.algafoods.api.mappers.PermissaoMapper;
-import com.algafoods.api.model.input.PermissaoInputDTO;
-import com.algafoods.api.model.output.PermissaoOutputDTO;
+import com.algafoods.api.model.input.usuarios.PermissaoInputDTO;
+import com.algafoods.api.model.output.usuarios.PermissaoOutputDTO;
 import com.algafoods.domain.model.Permissao;
 import com.algafoods.domain.service.PermissaoService;
 import org.springframework.web.bind.annotation.*;

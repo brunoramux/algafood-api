@@ -3,12 +3,11 @@ package com.algafoods.api.controller;
 import com.algafoods.api.mappers.GrupoMapper;
 import com.algafoods.api.mappers.PermissaoMapper;
 import com.algafoods.api.model.GrupoModel;
-import com.algafoods.api.model.output.PermissaoOutputDTO;
+import com.algafoods.api.model.output.usuarios.PermissaoOutputDTO;
 import com.algafoods.domain.service.GrupoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;

@@ -1,7 +1,7 @@
 package com.algafoods.api.mappers;
 
-import com.algafoods.api.model.input.PermissaoInputDTO;
-import com.algafoods.api.model.output.PermissaoOutputDTO;
+import com.algafoods.api.model.input.usuarios.PermissaoInputDTO;
+import com.algafoods.api.model.output.usuarios.PermissaoOutputDTO;
 import com.algafoods.domain.model.Permissao;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

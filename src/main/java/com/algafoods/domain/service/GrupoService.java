@@ -1,6 +1,5 @@
 package com.algafoods.domain.service;
 
-import com.algafoods.api.model.output.PermissaoOutputDTO;
 import com.algafoods.domain.exception.EntidadeEmUsoException;
 import com.algafoods.domain.exception.EntidadeNaoEncontradaException;
 import com.algafoods.domain.model.Grupo;

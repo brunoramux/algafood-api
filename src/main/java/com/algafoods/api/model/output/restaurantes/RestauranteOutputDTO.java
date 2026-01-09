@@ -1,8 +1,7 @@
-package com.algafoods.api.model.output;
+package com.algafoods.api.model.output.restaurantes;
 
 import com.algafoods.api.model.CozinhaModel;
 import com.algafoods.api.model.EnderecoModel;
-import com.algafoods.domain.model.Usuario;
 import lombok.Getter;
 import lombok.Setter;
 

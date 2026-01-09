@@ -1,8 +1,8 @@
 package com.algafoods.api.controller.openapi;
 
 import com.algafoods.api.exceptionhandler.ExceptionHandlerMessage;
-import com.algafoods.api.model.input.ProdutoInputDTO;
-import com.algafoods.api.model.output.FotoProdutoOutputDTO;
+import com.algafoods.api.model.input.produtos.ProdutoInputDTO;
+import com.algafoods.api.model.output.produtos.FotoProdutoOutputDTO;
 import com.algafoods.domain.model.Produto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

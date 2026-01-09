@@ -1,4 +1,4 @@
-package com.algafoods.api.model.input;
+package com.algafoods.api.model.input.usuarios;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;

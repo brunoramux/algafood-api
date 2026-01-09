@@ -1,11 +1,10 @@
 package com.algafoods.api.controller;
 
 import com.algafoods.api.controller.openapi.ProdutoControllerOpenApi;
-import com.algafoods.api.exceptionhandler.ExceptionHandlerMessage;
 import com.algafoods.api.mappers.FotoProdutoMapper;
 import com.algafoods.api.mappers.ProdutoMapper;
-import com.algafoods.api.model.input.ProdutoInputDTO;
-import com.algafoods.api.model.output.FotoProdutoOutputDTO;
+import com.algafoods.api.model.input.produtos.ProdutoInputDTO;
+import com.algafoods.api.model.output.produtos.FotoProdutoOutputDTO;
 import com.algafoods.application.port.FotoProdutoStoragePort;
 import com.algafoods.application.usecases.produto.BuscarFotoProdutoUseCase;
 import com.algafoods.application.usecases.produto.RemoverArmazenamentoFotoProdutoUseCase;
@@ -16,13 +15,7 @@ import com.algafoods.domain.model.Produto;
 import com.algafoods.domain.model.Restaurante;
 import com.algafoods.domain.service.ProdutoService;
 import com.algafoods.domain.service.RestauranteService;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,9 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.attribute.standard.Media;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
