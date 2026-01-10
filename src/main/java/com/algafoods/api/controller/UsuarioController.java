@@ -9,6 +9,7 @@ import com.algafoods.api.model.output.usuarios.UsuarioOutputDTO;
 import com.algafoods.domain.model.Usuario;
 import com.algafoods.domain.service.UsuarioService;
 import jakarta.validation.Valid;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,10 +32,10 @@ public class UsuarioController {
 
 
     @GetMapping
-    public List<UsuarioOutputDTO> listar(){
-        return usuarioService.findAll().stream()
-                .map(usuarioMapper::toModel)
-                .collect(Collectors.toList());
+    public CollectionModel<UsuarioOutputDTO> listar(){
+        List<Usuario> usuarios =  usuarioService.findAll();
+
+        return usuarioMapper.toCollectionModel(usuarios);
     }
 
     @PostMapping
