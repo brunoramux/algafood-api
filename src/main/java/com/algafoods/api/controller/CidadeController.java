@@ -4,11 +4,14 @@ import com.algafoods.api.mappers.CidadeMapper;
 import com.algafoods.api.model.CidadeModel;
 import com.algafoods.api.model.input.cidades.CidadeInputDTO;
 import com.algafoods.api.utils.ResourceUriHelper;
+import com.algafoods.domain.model.Cidade;
 import com.algafoods.domain.service.CidadeService;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @RequestMapping("/cidades")
@@ -23,8 +26,12 @@ public class CidadeController {
     }
 
     @GetMapping
-    public List<CidadeModel> listar(){
-        return cidadeService.findAll().stream().map(cidadeMapper::toModel).toList();
+    public CollectionModel<CidadeModel> listar(){
+
+        List<Cidade> cidades = cidadeService.findAll();
+
+        return cidadeMapper.toCollectionModel(cidades);
+
     }
 
     @GetMapping("/{id}")
@@ -32,24 +39,7 @@ public class CidadeController {
             @PathVariable
             Long id
     ){
-        var cidade = cidadeMapper.toModel(cidadeService.findById(id));
-
-        cidade.add(
-                linkTo(methodOn(CidadeController.class).buscar(id))
-                        .withSelfRel()
-        );
-
-        cidade.add(
-                linkTo(methodOn(CidadeController.class).listar())
-                        .withRel("cidades")
-        );
-
-        cidade.getEstado().add(
-                linkTo(methodOn(EstadoController.class).buscar(cidade.getEstado().getId()))
-                        .withRel("estado")
-        );
-
-        return cidade;
+        return cidadeMapper.toModel(cidadeService.findById(id));
     }
 
     @PostMapping
