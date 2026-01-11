@@ -127,4 +127,10 @@ public class UsuarioService {
 
         repository.save(usuario);
     }
+
+    public Usuario findById(Long id) {
+        return repository.findById(id).orElseThrow(
+                () -> new EntidadeNaoEncontradaException(String.format(MENSAGEM_USUARIO_NAO_ENCONTRADO, id))
+        );
+    }
 }

@@ -1,4 +1,4 @@
-package com.algafoods.api.model;
+package com.algafoods.api.model.pagination;
 
 import org.springframework.data.domain.Page;
 

@@ -2,7 +2,7 @@ package com.algafoods.api.controller;
 
 import com.algafoods.api.mappers.PedidoInputMapper;
 import com.algafoods.api.mappers.PedidoMapper;
-import com.algafoods.api.model.PageResponseDTO;
+import com.algafoods.api.model.pagination.PageResponseDTO;
 import com.algafoods.api.model.input.pedidos.PedidoInputDTO;
 import com.algafoods.api.model.output.pedidos.PedidoOutputDTO;
 import com.algafoods.api.model.output.pedidos.PedidoResumidoOutputDTO;
@@ -10,19 +10,11 @@ import com.algafoods.domain.model.Pedido;
 import com.algafoods.domain.model.Usuario;
 import com.algafoods.domain.repository.filter.PedidoFilter;
 import com.algafoods.domain.service.PedidoService;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
-import io.micrometer.common.util.StringUtils;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 
 @RestController
@@ -46,21 +38,6 @@ public class PedidoController {
             @PageableDefault(size = 10) Pageable pageable
     ) {
         return PageResponseDTO.from(pedidoService.findAll(pageable,  pedidoFilter));
-
-//        MappingJacksonValue pedidosWrapper = new MappingJacksonValue(pedidos);
-//
-//        SimpleFilterProvider filterProvider = new SimpleFilterProvider();
-//        filterProvider.addFilter("pedidoFilter", SimpleBeanPropertyFilter.serializeAll());
-//
-//        if(StringUtils.isNotEmpty(fields)) {
-//            List<String> fieldsList = new ArrayList<>(
-//                    Arrays.asList(fields.split(","))
-//            );
-//            filterProvider.addFilter("pedidoFilter", SimpleBeanPropertyFilter.filterOutAllExcept(fieldsList.toArray(new String[0])));
-//        }
-//
-//        pedidosWrapper.setFilters(filterProvider);
-
     }
 
 

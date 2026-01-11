@@ -25,6 +25,13 @@ public class GrupoController {
         this.permissaoMapper = permissaoMapper;
     }
 
+    @GetMapping("/{id}")
+    public GrupoModel buscar(
+            @PathVariable Long id
+    ){
+        return grupoMapper.toModel(grupoService.find(id));
+    }
+
     @GetMapping
     public List<GrupoModel> listar(){
         return grupoService.findAll().stream()

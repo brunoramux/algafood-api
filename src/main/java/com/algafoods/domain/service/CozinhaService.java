@@ -5,6 +5,8 @@ import com.algafoods.domain.exception.EntidadeNaoEncontradaException;
 import com.algafoods.domain.model.Cozinha;
 import com.algafoods.domain.repository.CozinhaRepository;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,5 +44,9 @@ public class CozinhaService {
                     String.format(MENSAGEM_COZINHA_EM_USO,  idCozinha)
             );
         }
+    }
+
+    public Page<Cozinha> findAll(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 }

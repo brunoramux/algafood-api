@@ -1,13 +1,22 @@
 package com.algafoods.api.controller;
 
+import com.algafoods.api.mappers.CozinhaMapper;
+import com.algafoods.api.model.CozinhaModel;
+import com.algafoods.api.model.CozinhaModelAssembler;
+import com.algafoods.api.model.pagination.PageModel;
+import com.algafoods.api.model.pagination.PagedResponseModel;
 import com.algafoods.domain.model.Cozinha;
 import com.algafoods.domain.repository.CozinhaRepository;
 import com.algafoods.domain.service.CozinhaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 import java.util.List;
 
@@ -19,33 +28,46 @@ public class CozinhaController {
 
     private final CozinhaService cozinhaService;
 
-    public CozinhaController(CozinhaRepository cozinhaRepository, CozinhaService cozinhaService) {
+    private final CozinhaMapper cozinhaMapper;
+    private final CozinhaModelAssembler cozinhaModelAssembler;
+
+
+    public CozinhaController(CozinhaRepository cozinhaRepository, CozinhaService cozinhaService, CozinhaMapper cozinhaMapper, CozinhaModelAssembler cozinhaModelAssembler) {
         this.cozinhaRepository = cozinhaRepository;
         this.cozinhaService = cozinhaService;
+        this.cozinhaMapper = cozinhaMapper;
+        this.cozinhaModelAssembler = cozinhaModelAssembler;
     }
 
     @GetMapping
-    public List<Cozinha> listar(){
-        return cozinhaRepository.findAll();
-    }
+    public PagedResponseModel<CozinhaModel> listar(
+            @PageableDefault(size = 10) Pageable pageable
+    ){
 
-//    @GetMapping("/{cozinhaId}")
-//    public ResponseEntity<Cozinha> buscar(
-//            @PathVariable
-//            Long cozinhaId
-//    ){
-//        Optional<Cozinha> cozinha = cozinhaRepository.findById(cozinhaId);
-//
-//        if(cozinha.isPresent()) {
-//            return ResponseEntity.ok(cozinha.get());
-//        }
-//
-//        return ResponseEntity.notFound().build();
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.add("Location", "http://localhost:8080/cozinhas");
-//
-//        return ResponseEntity.status(HttpStatus.FOUND).headers(headers).build();
-//    }
+        Page<Cozinha> pageCozinhas = cozinhaService.findAll(pageable);
+
+        List<CozinhaModel> cozinhas = pageCozinhas.getContent().stream()
+                .map(cozinhaModelAssembler::toModel)
+                .toList();
+
+        PageModel pageModel = new PageModel(
+                pageCozinhas.getSize(),
+                pageCozinhas.getTotalElements(),
+                pageCozinhas.getTotalPages(),
+                pageCozinhas.getNumber()
+        );
+
+        PagedResponseModel<CozinhaModel> response =
+                new PagedResponseModel<>(cozinhas, pageModel);
+
+        response.add(linkTo(
+                methodOn(CozinhaController.class)
+                        .listar(pageable))
+                .withSelfRel());
+
+        return response;
+
+    }
 
     @GetMapping("/{cozinhaId}")
     public Cozinha buscar(
@@ -68,10 +90,6 @@ public class CozinhaController {
 
         return ResponseEntity.ok(cozinhas);
 
-//       HttpHeaders headers = new HttpHeaders();
-//       headers.add("Location", "http://localhost:8080/cozinhas");
-//
-//       return ResponseEntity.status(HttpStatus.FOUND).headers(headers).build();
     }
 
     @PostMapping
@@ -105,20 +123,6 @@ public class CozinhaController {
         return ResponseEntity.ok(novaCozinha);
     }
 
-//    @DeleteMapping("/{cozinhaId}")
-//    public ResponseEntity<Cozinha> remover(
-//            @PathVariable
-//            Long cozinhaId
-//    ) {
-//        try {
-//            cadastroCozinhaService.excluir(cozinhaId);
-//            return ResponseEntity.noContent().build();
-//        } catch (EntidadeEmUsoException e) {
-//            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-//        } catch (EntidadeNaoEncontradaException e) {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
 
     @DeleteMapping("/{cozinhaId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

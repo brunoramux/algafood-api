@@ -1,6 +1,7 @@
 package com.algafoods.api.mappers;
 
 import com.algafoods.api.controller.CidadeController;
+import com.algafoods.api.controller.GrupoController;
 import com.algafoods.api.controller.UsuarioController;
 import com.algafoods.api.model.input.usuarios.UsuarioInputDTO;
 import com.algafoods.api.model.output.usuarios.UsuarioOutputDTO;
@@ -30,9 +31,19 @@ public class UsuarioMapper extends RepresentationModelAssemblerSupport<Usuario, 
         UsuarioOutputDTO usuarioOutputDTO = mapper.map(usuario, UsuarioOutputDTO.class);
 
         usuarioOutputDTO.add(
-                linkTo(methodOn(UsuarioController.class).listar())
+                linkTo(methodOn(UsuarioController.class).buscar(usuario.getId()))
                 .withSelfRel()
         );
+
+        usuarioOutputDTO.add(
+                linkTo(methodOn(UsuarioController.class).listar())
+                        .withRel("usuarios")
+        );
+
+        usuarioOutputDTO.getGrupos().forEach(grupo -> usuarioOutputDTO.add(
+                linkTo(methodOn(GrupoController.class).buscar(grupo.getId()))
+                        .withRel("grupos")
+        ));
 
         return usuarioOutputDTO;
 

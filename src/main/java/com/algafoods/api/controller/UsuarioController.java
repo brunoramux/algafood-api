@@ -30,6 +30,16 @@ public class UsuarioController {
         this.grupoMapper = grupoMapper;
     }
 
+    @GetMapping("/{id}")
+    public UsuarioOutputDTO buscar(
+            @PathVariable
+            Long id
+    ) {
+        Usuario usuario = usuarioService.findById(id);
+
+        return usuarioMapper.toModel(usuario);
+    }
+
 
     @GetMapping
     public CollectionModel<UsuarioOutputDTO> listar(){

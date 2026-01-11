@@ -13,6 +13,7 @@ import com.algafoods.application.usecases.produto.BuscarFotoProdutoUseCase;
 import com.algafoods.core.validation.ValidacaoException;
 import com.algafoods.domain.model.FormaPagamento;
 import com.algafoods.domain.model.Restaurante;
+import com.algafoods.domain.model.Usuario;
 import com.algafoods.domain.repository.RestauranteRepository;
 import com.algafoods.domain.service.FormaPagamentoService;
 import com.algafoods.domain.service.ProdutoService;
@@ -22,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -30,6 +32,7 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.*;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
@@ -350,13 +353,16 @@ public class RestauranteController {
     }
 
     @GetMapping("/{id}/responsaveis")
-    public Set<UsuarioOutputDTO> listarUsuariosResponsaveis(
+    public CollectionModel<UsuarioOutputDTO> listarUsuariosResponsaveis(
             @PathVariable
             Long id
     ){
-        return restauranteService.findUsuariosResponsaveis(id).stream()
-                .map(usuarioMapper::toModel)
-                .collect(Collectors.toSet());
+        Set<Usuario> usuarios = restauranteService.findUsuariosResponsaveis(id);
+
+        return usuarioMapper.toCollectionModel(usuarios)
+                .removeLinks()
+                .add(linkTo(methodOn(RestauranteController.class).listarUsuariosResponsaveis(id)).withSelfRel());
+
     }
 
     private void validate(Restaurante restaurante){
