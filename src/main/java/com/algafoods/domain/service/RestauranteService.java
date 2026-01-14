@@ -94,7 +94,7 @@ public class RestauranteService {
     public void delete(Long restauranteId) {
         Restaurante restaurante = this.find(restauranteId);
         try {
-            restauranteRepository.deleteById(restauranteId);
+            restauranteRepository.deleteById(restaurante.getId());
             restauranteRepository.flush();
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(MENSAGEM_RESTAURANTE_EM_USO);

@@ -1,7 +1,5 @@
 package com.algafoods.domain.service;
 
-
-import com.algafoods.api.model.GrupoModel;
 import com.algafoods.domain.exception.EntidadeEmUsoException;
 import com.algafoods.domain.exception.EntidadeNaoEncontradaException;
 import com.algafoods.domain.exception.SenhaInvalidaException;
@@ -69,7 +67,7 @@ public class UsuarioService {
         Usuario usuario = this.find(id);
 
         try {
-            repository.deleteById(id);
+            repository.deleteById(usuario.getId());
             repository.flush();
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(MENSAGEM_USUARIO_EM_USO);

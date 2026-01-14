@@ -3,7 +3,6 @@ package com.algafoods.core.springdoc;
 import com.algafoods.api.exceptionhandler.ExceptionHandlerMessage;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.models.Operation;
-import io.swagger.v3.oas.models.examples.Example;
 import io.swagger.v3.oas.models.media.*;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import org.springdoc.core.customizers.OpenApiCustomizer;
@@ -11,8 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 
-import java.util.HashMap;
-import java.util.Map;
 
 
 @Configuration

@@ -3,7 +3,6 @@ package com.algafoods.domain.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.Objects;
 
 @Entity
 @Data

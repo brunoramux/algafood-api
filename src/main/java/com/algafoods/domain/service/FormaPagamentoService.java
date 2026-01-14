@@ -37,6 +37,6 @@ public class FormaPagamentoService {
     @Transactional
     public void deleteFormaPagamentoById(Long id) {
         FormaPagamento formaPagamento = getFormaPagamentoById(id);
-        repository.deleteById(id);
+        repository.deleteById(formaPagamento.getId());
     }
 }

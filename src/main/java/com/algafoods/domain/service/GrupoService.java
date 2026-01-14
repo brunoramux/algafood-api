@@ -45,7 +45,7 @@ public class GrupoService {
         Grupo grupo = this.find(id);
 
         try {
-            repository.deleteById(id);
+            repository.deleteById(grupo.getId());
             repository.flush();
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(MENSAGEM_GRUPO_EM_USO);

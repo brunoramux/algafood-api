@@ -2,7 +2,6 @@ package com.algafoods.core.validation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-import org.springframework.http.MediaType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
