@@ -4,7 +4,6 @@ import com.algafoods.domain.exception.EntidadeEmUsoException;
 import com.algafoods.domain.model.Cozinha;
 import com.algafoods.domain.model.Restaurante;
 import com.algafoods.domain.service.CozinhaService;
-import com.algafoods.domain.service.RestauranteService;
 import com.algafoods.api.util.DatabaseCleaner;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -13,19 +12,16 @@ import org.assertj.core.api.Assertions;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class CadastroCozinhaIT {
@@ -34,8 +30,6 @@ public class CadastroCozinhaIT {
     @Autowired
     private CozinhaService cozinhaService;
 
-    @Autowired
-    private RestauranteService restauranteService;
 
     @LocalServerPort
     private int port;
@@ -86,8 +80,6 @@ public class CadastroCozinhaIT {
         restaurante.setCozinha(newCozinha);
         restaurante.setNome("Restaurante de Cozinha Chinesa");
         restaurante.setTaxaFrete(BigDecimal.valueOf(10.0));
-
-        Restaurante newRestaurante = restauranteService.create(restaurante);
 
         assertThrows(EntidadeEmUsoException.class, () -> {
             cozinhaService.excluir(newCozinha.getId());
@@ -156,6 +148,6 @@ public class CadastroCozinhaIT {
     private void prepareDatabase() {
         Cozinha newCozinha = new Cozinha();
         newCozinha.setNome("Chinesa");
-        Cozinha cozinha = cozinhaService.salvar(newCozinha);
+        cozinhaService.salvar(newCozinha);
     }
 }

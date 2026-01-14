@@ -1,6 +1,5 @@
 package com.algafoods.api.controller;
 
-import com.algafoods.api.mappers.CozinhaMapper;
 import com.algafoods.api.model.CozinhaModel;
 import com.algafoods.api.model.CozinhaModelAssembler;
 import com.algafoods.api.model.pagination.PageModel;
@@ -11,16 +10,13 @@ import com.algafoods.domain.service.CozinhaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 import java.util.List;
 
@@ -32,15 +28,13 @@ public class CozinhaController {
 
     private final CozinhaService cozinhaService;
 
-    private final CozinhaMapper cozinhaMapper;
     private final CozinhaModelAssembler cozinhaModelAssembler;
     private final PagedResourcesAssembler<Cozinha> pagedAssembler;
 
 
-    public CozinhaController(CozinhaRepository cozinhaRepository, CozinhaService cozinhaService, CozinhaMapper cozinhaMapper, CozinhaModelAssembler cozinhaModelAssembler, PagedResourcesAssembler<Cozinha> pagedAssembler) {
+    public CozinhaController(CozinhaRepository cozinhaRepository, CozinhaService cozinhaService, CozinhaModelAssembler cozinhaModelAssembler, PagedResourcesAssembler<Cozinha> pagedAssembler) {
         this.cozinhaRepository = cozinhaRepository;
         this.cozinhaService = cozinhaService;
-        this.cozinhaMapper = cozinhaMapper;
         this.cozinhaModelAssembler = cozinhaModelAssembler;
         this.pagedAssembler = pagedAssembler;
     }

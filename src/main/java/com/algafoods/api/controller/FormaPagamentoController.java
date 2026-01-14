@@ -3,7 +3,6 @@ package com.algafoods.api.controller;
 import com.algafoods.domain.exception.EntidadeEmUsoException;
 import com.algafoods.domain.exception.EntidadeNaoEncontradaException;
 import com.algafoods.domain.model.FormaPagamento;
-import com.algafoods.domain.repository.FormaPagamentoRepository;
 import com.algafoods.domain.service.FormaPagamentoService;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.CacheControl;

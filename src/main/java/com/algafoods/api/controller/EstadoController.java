@@ -1,12 +1,10 @@
 package com.algafoods.api.controller;
 
-import com.algafoods.api.mappers.CidadeMapper;
 import com.algafoods.api.mappers.EstadoMapper;
 import com.algafoods.api.model.EstadoModel;
 import com.algafoods.domain.exception.EntidadeNaoEncontradaException;
 import com.algafoods.domain.model.Estado;
 import com.algafoods.domain.repository.EstadoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

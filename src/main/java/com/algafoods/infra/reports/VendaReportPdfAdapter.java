@@ -33,7 +33,7 @@ public class VendaReportPdfAdapter implements VendasReportPort {
             JasperReport jasperReport = JasperCompileManager.compileReport(jrxml);
 
             var parametros = new HashMap<String, Object>();
-            parametros.put("REPORT_LOCALE", new Locale("pt", "BR"));
+            parametros.put("REPORT_LOCALE", Locale.of("pt", "BR"));
 
             var vendasDiarias = consultarVendasDiariasUseCase.execute(filter, timeOffSet)
                     .stream()

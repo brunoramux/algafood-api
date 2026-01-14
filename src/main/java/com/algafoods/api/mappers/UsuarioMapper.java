@@ -1,6 +1,5 @@
 package com.algafoods.api.mappers;
 
-import com.algafoods.api.controller.CidadeController;
 import com.algafoods.api.controller.GrupoController;
 import com.algafoods.api.controller.UsuarioController;
 import com.algafoods.api.model.input.usuarios.UsuarioInputDTO;
