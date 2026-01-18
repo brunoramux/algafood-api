@@ -13,7 +13,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/grupos")
+@RequestMapping("/v1/grupos")
 public class GrupoController {
     private final GrupoService grupoService;
     private final GrupoMapper grupoMapper;

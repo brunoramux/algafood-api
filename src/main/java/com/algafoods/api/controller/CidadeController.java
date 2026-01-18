@@ -13,7 +13,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/cidades")
+@RequestMapping("/v1/cidades")
 public class CidadeController {
 
     private final CidadeService cidadeService;

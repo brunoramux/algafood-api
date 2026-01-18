@@ -27,7 +27,7 @@ import java.io.InputStream;
 import java.util.List;
 
 @RestController
-@RequestMapping("/restaurantes/{id}/produtos")
+@RequestMapping("/v1/restaurantes/{id}/produtos")
 public class ProdutoController implements ProdutoControllerOpenApi {
 
     private final RestauranteService restauranteService;

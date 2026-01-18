@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/cozinhas")
+@RequestMapping("/v1/cozinhas")
 public class CozinhaController {
 
     private final CozinhaRepository cozinhaRepository;

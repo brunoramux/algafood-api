@@ -1,0 +1,1895 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: algafoods-api-v1
+meta:
+  id: wrk_d454c00d8426490d9192041063a902cc
+  created: 1765130467533
+  modified: 1768750185044
+  description: ""
+collection:
+  - name: Cozinhas
+    meta:
+      id: fld_5438e55dbcbc4ee38acdfdb604040f78
+      created: 1763000851643
+      modified: 1764285747571
+      sortKey: -1763000851643
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/cozinhas?size=1&sort=nome&page=1"
+        name: Listar Cozinhas
+        meta:
+          id: req_c70cf12fe3ae45cb80c70bab3fbae566
+          created: 1763000855677
+          modified: 1768170566037
+          isPrivate: false
+          description: ""
+          sortKey: -1763000855677
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.0.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/cozinhas/1"
+        name: Consulta cozinha por ID
+        meta:
+          id: req_1c0ea404a6c449feb50453031e06db45
+          created: 1763052306306
+          modified: 1768171120626
+          isPrivate: false
+          description: ""
+          sortKey: -1763052306306
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.0.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/cozinhas"
+        name: Criar nova cozinha
+        meta:
+          id: req_f64265affdfb46b692ffa8ccda4d2ccd
+          created: 1763068681730
+          modified: 1764884557705
+          isPrivate: false
+          description: ""
+          sortKey: -1763068681730
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"nome": null
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.0.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/cozinhas/3"
+        name: Alterar Cozinha
+        meta:
+          id: req_013f701f59e44736ac8a687531ce3fa2
+          created: 1763069623731
+          modified: 1763140539325
+          isPrivate: false
+          description: ""
+          sortKey: -1763069623731
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"nome": "BRASILEIRA"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.0.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/cozinhas/10"
+        name: Remover Cozinha
+        meta:
+          id: req_4488d82cb8bb43fd88f873657d8f546a
+          created: 1763071043280
+          modified: 1764288284625
+          isPrivate: false
+          description: ""
+          sortKey: -1763071043280
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/12.0.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/cozinhas/procurar?nome=b"
+        name: Procurar Cozinha por Nome
+        meta:
+          id: req_e97605ae0d5f4850bedfbc1d35b458ac
+          created: 1763132796565
+          modified: 1763152283724
+          isPrivate: false
+          description: ""
+          sortKey: -1763132796565
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.0.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/cozinhas"
+        name: Enviando XML
+        meta:
+          id: req_16efb23f884140e792408ab8c9c0f111
+          created: 1764285095922
+          modified: 1764285230343
+          isPrivate: false
+          description: ""
+          sortKey: -1764285095922
+        method: POST
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+          - name: Content-Type
+            value: aplication/xml
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Estados
+    meta:
+      id: fld_933cef0814da4fa685d26349434e9409
+      created: 1763001732462
+      modified: 1763001732462
+      sortKey: -1763001732462
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/estados"
+        name: Listar Estados
+        meta:
+          id: req_7e1db7baa5704823a1978e3f8d6ff568
+          created: 1763001738688
+          modified: 1763862397378
+          isPrivate: false
+          description: ""
+          sortKey: -1763001738688
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.0.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Restaurantes
+    meta:
+      id: fld_0475191ad03440dfb35668ca9bf598c0
+      created: 1763080490737
+      modified: 1766351478659
+      sortKey: -1763080490737
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/restaurantes"
+        name: Listar Restaurantes
+        meta:
+          id: req_bfcd9301152743f4bd4a1bdd3659f7a9
+          created: 1763080495347
+          modified: 1766351480426
+          isPrivate: false
+          description: ""
+          sortKey: -1763080495347
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.0.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/restaurantes/1"
+        name: Listar Restaurante por Id
+        meta:
+          id: req_3801e0e70e6f4749afd5ba39dd447864
+          created: 1763081220852
+          modified: 1765498344338
+          isPrivate: false
+          description: ""
+          sortKey: -1763075769313.5
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.0.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/restaurantes"
+        name: Criar novo Restaurante
+        meta:
+          id: req_8fd188ad02114b9caba10a43ab0515b3
+          created: 1763082474601
+          modified: 1766014246752
+          isPrivate: false
+          description: ""
+          sortKey: -1763080495447
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "nome": "Restaurante Cantinho Mineiro",
+            	"taxaFrete": 5,
+            	"ativo": true,
+              "cozinha": {
+            		"id": 1
+            	},
+            	"endereco": {
+            		"cep": "99999-999",
+            		"numero": "1000",
+            		"logradouro": "Rua dos Ipes",
+            		"complemento": null,
+            		"bairro": "Centro",
+            		"cidade": {
+            			"id": 1
+            		}
+            	}
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.0.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/restaurantes/1"
+        name: Alterar Restaurante
+        meta:
+          id: req_8fb806d871b140409e7362fa3ab1fbe5
+          created: 1763085738724
+          modified: 1765587210209
+          isPrivate: false
+          description: ""
+          sortKey: -1763075769213.5
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "nome": "Restaurante Cantinho Mineiro",
+            	"taxaFrete": 10,
+            	"ativo": true,
+              "cozinha": {
+            		"id": 1
+            	},
+            	"endereco": {
+            		"cep": "99999-999",
+            		"numero": "1000",
+            		"logradouro": "Rua dos Ipes",
+            		"complemento": null,
+            		"bairro": "Centro",
+            		"cidade": {
+            			"id": 2
+            		}
+            	}
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.0.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/restaurantes/1"
+        name: Alterar parcial Restaurante
+        meta:
+          id: req_151714fe90ca427f8a4a78bb5eccdf52
+          created: 1763085860447
+          modified: 1765241080046
+          isPrivate: false
+          description: ""
+          sortKey: -1763073406246.75
+        method: PATCH
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"nome": "Bruno Ramos Restaurant"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.0.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/restaurantes/procurar?taxaInicial=3&taxaFinal=20"
+        name: Buscar restaurante por Taxa Frete
+        meta:
+          id: req_ba58ede7167545ba997843f5d8b8288d
+          created: 1763153072936
+          modified: 1763835794337
+          isPrivate: false
+          description: ""
+          sortKey: -1763153072936
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.0.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/restaurantes/find?nome=t&taxaInicial=10&taxaFinal=10"
+        name: Procurar por Nome e Taxa
+        meta:
+          id: req_4e5a5462e2844cab84df908158ab60b0
+          created: 1763556511995
+          modified: 1763820803335
+          isPrivate: false
+          description: ""
+          sortKey: -1763556511995
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.0.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/restaurantes/findFreteGratis"
+        name: Buscar com Frete Gratis
+        meta:
+          id: req_6710595f8be44983823d6d1912d84fad
+          created: 1763822493512
+          modified: 1763832731522
+          isPrivate: false
+          description: ""
+          sortKey: -1763822493512
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: " {{ _.base_url }}/restaurantes/findFirst"
+        name: Buscar primeiro
+        meta:
+          id: req_2973fcac864b416e903179daad7a6a7b
+          created: 1763834468759
+          modified: 1763834506608
+          isPrivate: false
+          description: ""
+          sortKey: -1763834468759
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/restaurantes/2/formas-pagamento"
+        name: Listar Formas de Pagamento de um Restaurante
+        meta:
+          id: req_1d85d080d7e94645b5c294307a1fba18
+          created: 1763919014855
+          modified: 1765413528264
+          isPrivate: false
+          description: ""
+          sortKey: -1763919014855
+        method: GET
+        body:
+          mimeType: application/json
+          text: ""
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/restaurantes/8"
+        name: Deletar Restaurante
+        meta:
+          id: req_0e1ec804bc0c4ec0bea45e971814c817
+          created: 1765237458635
+          modified: 1765237794367
+          isPrivate: false
+          description: ""
+          sortKey: -1765237458635
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/restaurantes/1/ativar"
+        name: Ativar Restaurante
+        meta:
+          id: req_fb6c69f92f674ba8a4aa7735fe223a24
+          created: 1765404488318
+          modified: 1765404983621
+          isPrivate: false
+          description: ""
+          sortKey: -1765404488318
+        method: PUT
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/restaurantes/1/desativar"
+        name: Desativar Restaurante
+        meta:
+          id: req_640ed682fa9043b9b9f1e891b875cfa5
+          created: 1765404678575
+          modified: 1765404986720
+          isPrivate: false
+          description: ""
+          sortKey: -1765404678575
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/restaurantes/2/formas-pagamento"
+        name: Vincular Formas de Pagamento
+        meta:
+          id: req_5f2d6f6816064dd38068b460bb4916bf
+          created: 1765413289184
+          modified: 1765731396535
+          isPrivate: false
+          description: ""
+          sortKey: -1765413289184
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            [
+            	{
+            		"id": 10
+            	}
+            ] 
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/restaurantes/1/abrir"
+        name: Abrir Restaurante
+        meta:
+          id: req_bfd000487f1d49f48139ffe9dea36412
+          created: 1765800889555
+          modified: 1765800913287
+          isPrivate: false
+          description: ""
+          sortKey: -1765800889555
+        method: PUT
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/restaurantes/1/fechar"
+        name: Fechar Restaurante
+        meta:
+          id: req_2c16dd7dafe6421bac5e37421ffad6d5
+          created: 1765800942236
+          modified: 1765800974365
+          isPrivate: false
+          description: ""
+          sortKey: -1765800942236
+        method: PUT
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/restaurantes/ativacoes"
+        name: Ativar vários Restaurantes
+        meta:
+          id: req_13e52be02c934c9599644236dcefac82
+          created: 1766013637890
+          modified: 1766014297712
+          isPrivate: false
+          description: ""
+          sortKey: -1766013637890
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            [
+            	3
+            ]
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/restaurantes/desativacoes"
+        name: Desativar vários Restaurantes
+        meta:
+          id: req_f3eccd19baf54d40b7b4d56b7b3b6d84
+          created: 1766013779821
+          modified: 1766013785959
+          isPrivate: false
+          description: ""
+          sortKey: -1766010141614
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            [
+            	1,
+            	2,
+            	3
+            ]
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/restaurantes/1/responsaveis"
+        name: Listar usuários responsáveis
+        meta:
+          id: req_25768094fa47458c9e078029072dfa90
+          created: 1766096525816
+          modified: 1766096551857
+          isPrivate: false
+          description: ""
+          sortKey: -1766096525816
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Formas de Pagamento
+    meta:
+      id: fld_949ca6b6a826493d9700aa4c6421d4d2
+      created: 1763838677997
+      modified: 1763838677997
+      sortKey: -1763838677997
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/formas-pagamento"
+        name: Listar Formas de Pagamento
+        meta:
+          id: req_f978fa86e813405abb860015e0375148
+          created: 1763838685726
+          modified: 1765411945098
+          isPrivate: false
+          description: ""
+          sortKey: -1763838685726
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/formas-pagamento"
+        name: Criar Forma de Pagamento
+        meta:
+          id: req_052afeec43754a229881472a11f023d9
+          created: 1763839635659
+          modified: 1765411943832
+          isPrivate: false
+          description: ""
+          sortKey: -1763839635659
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"descricao": "PIX"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/formas-pagamento/1"
+        name: Listar Forma de Pagamento por ID
+        meta:
+          id: req_37d1615710d945cf81e39912d73fafe0
+          created: 1765411954202
+          modified: 1765411972655
+          isPrivate: false
+          description: ""
+          sortKey: -1765411954202
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/formas-pagamento/7"
+        name: New Request
+        meta:
+          id: req_25c2d8156c35436a970715b61b23804b
+          created: 1765411993708
+          modified: 1765412185597
+          isPrivate: false
+          description: ""
+          sortKey: -1765411993708
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Grupos
+    meta:
+      id: fld_538c3b0f628749a8b0788b3072cbc83d
+      created: 1765655081639
+      modified: 1765930007205
+      sortKey: -1765655081639
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/grupos"
+        name: Listar Grupos
+        meta:
+          id: req_b4efe3a60df24b669eb1e9660eb2999b
+          created: 1765655087468
+          modified: 1766006562750
+          isPrivate: false
+          description: ""
+          sortKey: -1765655087468
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/grupos/1/permissoes"
+        name: Listar permissões de um Grupo
+        meta:
+          id: req_b675b574a89d4e7da899d70032a7a7de
+          created: 1765930008955
+          modified: 1765930069695
+          isPrivate: false
+          description: ""
+          sortKey: -1765930008955
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/grupos/1/permissoes/3"
+        name: Associar uma permissão a um Grupo
+        meta:
+          id: req_38295a1e912f48a097072009d2d385f0
+          created: 1765930026114
+          modified: 1765930153584
+          isPrivate: false
+          description: ""
+          sortKey: -1765930026114
+        method: PUT
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/grupos/1/permissoes/1"
+        name: Desassociar uma permissão a um Grupo
+        meta:
+          id: req_ab9e56a349d74ab09cabfabae2036bf7
+          created: 1765930038121
+          modified: 1765930183175
+          isPrivate: false
+          description: ""
+          sortKey: -1765930038121
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Usuarios
+    meta:
+      id: fld_07d128c6ebc64503bfc63de485fa210f
+      created: 1765655148514
+      modified: 1765656133534
+      sortKey: -1765655148514
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/usuarios"
+        name: Listar Usuários
+        meta:
+          id: req_9e62e398568b44f788cf5421b7f94b56
+          created: 1765655298072
+          modified: 1768070257193
+          isPrivate: false
+          description: ""
+          sortKey: -1765655298072
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/usuarios"
+        name: Criar novo usuário
+        meta:
+          id: req_322ef0847f214c43bde1c270ce9ca365
+          created: 1765656135882
+          modified: 1765733017179
+          isPrivate: false
+          description: ""
+          sortKey: -1765656135882
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            		"nome": "Bruno Ramos Lemos",
+            		"email": "bruno.lemos@live.com",
+            	  "senha": "12345678Br*",
+            	  "confirmacaoSenha": "12345678Br*",
+            		"grupos": [
+            			{
+            				"id": 1
+            			},
+            			{
+            				"id": 2
+            			}
+            		]
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/usuarios/5/senhas"
+        name: Alterar senha
+        meta:
+          id: req_d15a117dd1634f9da3c61aa4fd427138
+          created: 1765668689465
+          modified: 1765669348491
+          isPrivate: false
+          description: ""
+          sortKey: -1765668689465
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"senhaAtual": "1234567",
+            	"novaSenha": "12345678Br**",
+              "confirmacaoNovaSenha": "12345678Br**"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/usuarios/1/grupos"
+        name: Listar Grupos de um Usuário
+        meta:
+          id: req_36824e498608476387ffe23bffec4a55
+          created: 1766006527873
+          modified: 1766006550019
+          isPrivate: false
+          description: ""
+          sortKey: -1766006527873
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/usuarios/5/grupos/1"
+        name: Associar Grupo a Usuário
+        meta:
+          id: req_7e1ffb79c7a54c72804a0178a2f24274
+          created: 1766006586440
+          modified: 1768143322978
+          isPrivate: false
+          description: ""
+          sortKey: -1766006586440
+        method: PUT
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/usuarios/1/grupos/1/desassociar"
+        name: Desassociar Grupo a Usuário
+        meta:
+          id: req_d1933d59795c4c849cdb8d8a9130794b
+          created: 1766006645338
+          modified: 1766006672575
+          isPrivate: false
+          description: ""
+          sortKey: -1766006645338
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/usuarios/5"
+        name: Buscar Usuário por ID
+        meta:
+          id: req_d33e546955c1480ba0326b56b21c1ddc
+          created: 1768142793772
+          modified: 1768143336939
+          isPrivate: false
+          description: ""
+          sortKey: -1768142793772
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Produtos
+    meta:
+      id: fld_71f3d5011d4745dd860dc4778aa20688
+      created: 1765748279057
+      modified: 1765748279057
+      sortKey: -1765748279057
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/restaurantes/2/produtos"
+        name: Listar Produtos
+        meta:
+          id: req_631614eafde345d09ee7c4f4389abe85
+          created: 1765748285339
+          modified: 1766531097039
+          isPrivate: false
+          description: ""
+          sortKey: -1765748285339
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/restaurantes/2/produtos"
+        name: Cadastrar produto em Restaurante
+        meta:
+          id: req_84aef5b97c024af5b7fcaf061e755e4a
+          created: 1765748387709
+          modified: 1765748632561
+          isPrivate: false
+          description: ""
+          sortKey: -1765748387709
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"nome": "Hamburgao",
+            	"descricao": "Hamburgao delicioso",
+            	"preco": 53.00,
+            	"ativo": true
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/restaurantes/1/produtos?ativo=true"
+        name: Listar apenas Produtos Ativos
+        meta:
+          id: req_12f23f1e2f454156b52c3847c6fd32c1
+          created: 1766454307166
+          modified: 1766454371654
+          isPrivate: false
+          description: ""
+          sortKey: -1765708487402
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/restaurantes/1/produtos/1/fotos"
+        name: Retornar Foto do Produto
+        meta:
+          id: req_77ac8d94ebda44ddb55eaba78f947d7a
+          created: 1766795858857
+          modified: 1766858776826
+          isPrivate: false
+          description: ""
+          sortKey: -1766795858857
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/restaurantes/1/produtos/1/fotos"
+        name: Retornar Arquivo da Foto do Produto
+        meta:
+          id: req_7ba9e06296574b3eb71cdd4a9f56a460
+          created: 1766856472583
+          modified: 1768750156021
+          isPrivate: false
+          description: ""
+          sortKey: -1766856472583
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: image/png
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/restaurantes/1/produtos/1/fotos"
+        name: Deletar Foto do produto
+        meta:
+          id: req_8cc337a7bc5c42748598efc32560c72b
+          created: 1766858577908
+          modified: 1766858730090
+          isPrivate: false
+          description: ""
+          sortKey: -1766858577908
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Permissoes
+    meta:
+      id: fld_634fad9aded84a178a8a4fc2b4f06b39
+      created: 1765926275899
+      modified: 1765928596228
+      sortKey: -1765926275899
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/permissoes"
+        name: Listar permissões
+        meta:
+          id: req_6e211b0109a14d6ca6931e3a2c0d8dd0
+          created: 1765928601114
+          modified: 1765930146507
+          isPrivate: false
+          description: ""
+          sortKey: -1765928601114
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/permissoes/3"
+        name: Buscar Permissão
+        meta:
+          id: req_6955fc6f0e02404e8a4c3d77f3ddb239
+          created: 1765928645289
+          modified: 1765928791812
+          isPrivate: false
+          description: ""
+          sortKey: -1765928645289
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/permissoes"
+        name: Criar Permissões
+        meta:
+          id: req_dff817b5f1f3427ab76fd21325f2b61d
+          created: 1765928701374
+          modified: 1765930131448
+          isPrivate: false
+          description: ""
+          sortKey: -1765928701374
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"nome": "EXCLUIR_RESTAURANTES",
+            	"descricao": "Permite excluir resturante"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Pedidos
+    meta:
+      id: fld_e81157703b604ca69a96196c192ea08b
+      created: 1766101679350
+      modified: 1766705443650
+      sortKey: -1766101679350
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/pedidos?status=ENTREGUE"
+        name: Listar pedidos com paginação
+        meta:
+          id: req_3d5eff85a53d4ac097057aed90682afd
+          created: 1766101688646
+          modified: 1766707974221
+          isPrivate: false
+          description: ""
+          sortKey: -1766101688646
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/pedidos/271288df-9f65-4cb3-bb52-9e371c6587c7"
+        name: Listar pedido por código
+        meta:
+          id: req_d49b1ad559aa4f3d99962dac9125db72
+          created: 1766102976190
+          modified: 1767055774216
+          isPrivate: false
+          description: ""
+          sortKey: -1766102976190
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/pedidos"
+        name: Emitir Pedido
+        meta:
+          id: req_cf70f6fc63934fb7b82867891f3c4bd8
+          created: 1766350327375
+          modified: 1766363681599
+          isPrivate: false
+          description: ""
+          sortKey: -1766350327375
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"restaurante": {
+            		"id": 1
+            	},
+            	"formaPagamento": {
+            		"id": 1
+            	},
+            	"enderecoEntrega": {
+            		"cep": "38400-000",
+            		"logradouro": "Rua 13 Norte",
+            		"numero": "S/N",
+            		"complemento": "Bloco G Apto 205",
+            		"bairro": "Aguas Claras",
+            		"cidade": {
+            			"id": 6
+            		}
+            	},
+            	"itens": [
+            		{
+            			"produtoId": 1,
+            			"quantidade": 3,
+            			"observacao": "Sem pimenta"
+            		},
+            		{
+            			"produtoId": 2,
+            			"quantidade": 1
+            		}
+            	]
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/pedidos/61b47f07-81a4-46b5-a35e-65266a70c10d/confirmar"
+        name: Confirmar Pedido
+        meta:
+          id: req_57ea0b2cc99a4265a5200d807666fe37
+          created: 1766363273701
+          modified: 1767054203603
+          isPrivate: false
+          description: ""
+          sortKey: -1766363273701
+        method: PUT
+        headers:
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/pedidos/271288df-9f65-4cb3-bb52-9e371c6587c7/cancelar"
+        name: Cancelar Pedido
+        meta:
+          id: req_b1576b5aa40948f1820297b87582f823
+          created: 1766363283693
+          modified: 1766366944238
+          isPrivate: false
+          description: ""
+          sortKey: -1766363283693
+        method: PUT
+        headers:
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/pedidos/271288df-9f65-4cb3-bb52-9e371c6587c7/entregar"
+        name: Entregar Pedido
+        meta:
+          id: req_f46453d3d41b45d3ba3846237837679b
+          created: 1766363290149
+          modified: 1766366930611
+          isPrivate: false
+          description: ""
+          sortKey: -1766363290149
+        method: PUT
+        headers:
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/pedidos?fields=codigo,valorTotal,status"
+        name: Listar pedidos com paginação e filtrando os campos desejados
+        meta:
+          id: req_8ec77c6071b94e8bb37d05540caed6a9
+          created: 1766446078964
+          modified: 1766604103113
+          isPrivate: false
+          description: ""
+          sortKey: -1766099107231
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/pedidos?clienteId=1"
+        name: Listar Pedidos com Specs
+        meta:
+          id: req_090c4e44db9543f3acec4939e7b3b6b0
+          created: 1766532876484
+          modified: 1766613373267
+          isPrivate: false
+          description: ""
+          sortKey: -1766532876484
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Relatorios
+    meta:
+      id: fld_1e0b7ec406ef492dad942a47ad61a1f7
+      created: 1766692635817
+      modified: 1766692635817
+      sortKey: -1766692635817
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/relatorios/vendas-diarias?restauranteId=1"
+        name: Vendas diárias
+        meta:
+          id: req_35b0aa98789e4569b114eccce9c9cd1f
+          created: 1766692638359
+          modified: 1766705946120
+          isPrivate: false
+          description: ""
+          sortKey: -1766692638359
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/relatorios/vendas-diarias"
+        name: Vendas diárias sem parâmetros
+        meta:
+          id: req_542c1e0b54e64c35997ff8ff9d727a6d
+          created: 1766707655326
+          modified: 1766707660497
+          isPrivate: false
+          description: ""
+          sortKey: -1766612757421.5
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/relatorios/vendas-diarias?restauranteId=1"
+        name: Vendas diárias - PDF
+        meta:
+          id: req_04506e7fcaac44709759d1107c664f29
+          created: 1766712011894
+          modified: 1766712067227
+          isPrivate: false
+          description: ""
+          sortKey: -1766652697890.25
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/pdf
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Uploads
+    meta:
+      id: fld_3835f574e8034fd0925127321811dd3e
+      created: 1766781456095
+      modified: 1766781456095
+      sortKey: -1766781456095
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/restaurantes/1/produtos/1/upload"
+        name: Upload de foto do Produto
+        meta:
+          id: req_039a42cbeee44e599201351c6f7a1c2e
+          created: 1766781459219
+          modified: 1766856416580
+          isPrivate: false
+          description: ""
+          sortKey: -1766781459219
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: arquivo
+              value: ""
+              description: ""
+              disabled: false
+              fileName: /Users/brunoramoslemos/Downloads/ms-certified.png
+              type: file
+            - name: descricao
+              value: Foto Me
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Email
+    meta:
+      id: fld_78d1395ee3cd485f9dc7dcf1821413b5
+      created: 1766887062394
+      modified: 1766887062394
+      sortKey: -1766887062394
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/email?para=bruno.lemos@live.com"
+        name: New Request
+        meta:
+          id: req_5b0dadffb89f4368a97d3963389011c7
+          created: 1766887065722
+          modified: 1766887145104
+          isPrivate: false
+          description: ""
+          sortKey: -1766887065722
+        method: POST
+        body:
+          mimeType: application/json
+          text: ""
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Cidades
+    meta:
+      id: fld_60840f8868f34157b438e44d0777e48b
+      created: 1767916674034
+      modified: 1767916674034
+      sortKey: -1767916674034
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/cidades"
+        name: Listar Cidades
+        meta:
+          id: req_9bd8f82807f24b23b22824185ed1614f
+          created: 1767917687579
+          modified: 1767917701199
+          isPrivate: false
+          description: ""
+          sortKey: -1767917687579
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/cidades"
+        name: Criar Cidade
+        meta:
+          id: req_58c7249e535c469ea0300532d8bf6fad
+          created: 1767918000213
+          modified: 1767918055784
+          isPrivate: false
+          description: ""
+          sortKey: -1767918000213
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"nome": "Franca",
+            	"estado": {
+            		"id": 2
+            	}
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/cidades/3"
+        name: Buscar Cidade
+        meta:
+          id: req_d27a4cc659c44243b8903491a1f1af41
+          created: 1767991510213
+          modified: 1768068555447
+          isPrivate: false
+          description: ""
+          sortKey: -1767991510213
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.2.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_d19bed4e657f4d4da17c4538134c747b
+    created: 1763000777737
+    modified: 1765656616380
+  cookies:
+    - id: b9f4d610-29a1-4e27-9ef8-3e5b7510018e
+      key: JSESSIONID
+      value: 2AEEFD75B842B5E149E509B0CBE38642
+      domain: localhost
+      path: /
+      secure: false
+      httpOnly: true
+      hostOnly: true
+environments:
+  name: Base Environment
+  meta:
+    id: env_29417bb4b01d4248b0847e4c967267bb
+    created: 1763000777736
+    modified: 1768750143874
+    isPrivate: false
+  data:
+    base_url: http://localhost:8080/v1

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/permissoes")
+@RequestMapping("/v1/permissoes")
 public class PermissaoController {
 
     private final PermissaoService permissaoService;

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/email")
+@RequestMapping("/v1/email")
 public class EnvioEmailController {
 
     private final EnviarEmailUseCase enviarEmailUseCase;

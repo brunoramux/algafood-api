@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/restaurantes/{restauranteId}")
+@RequestMapping("/v1/restaurantes/{restauranteId}")
 public class UploadController {
 
     private final ProdutoService produtoService;

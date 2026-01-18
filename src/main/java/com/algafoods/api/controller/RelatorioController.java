@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/relatorios")
+@RequestMapping("/v1/relatorios")
 public class RelatorioController {
 
     private final ConsultarVendasDiariasUseCase consultarVendasDiariasUseCase;
