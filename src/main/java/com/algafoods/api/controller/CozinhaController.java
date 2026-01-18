@@ -8,6 +8,7 @@ import com.algafoods.domain.model.Cozinha;
 import com.algafoods.domain.repository.CozinhaRepository;
 import com.algafoods.domain.service.CozinhaService;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +24,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/cozinhas")
 public class CozinhaController {
+
+    private static final Logger logger = org.slf4j.LoggerFactory.getLogger(CozinhaController.class);
 
     private final CozinhaRepository cozinhaRepository;
 
@@ -44,6 +47,8 @@ public class CozinhaController {
     public PagedResponseModel<CozinhaModel> listar(
             @PageableDefault(size = 10) Pageable pageable
     ){
+
+        logger.info("Iniciando lista de cozinhas...");
 
         // PEGA DADOS DO SERVIÇO DE COZINHAS
         Page<Cozinha> pageCozinhas = cozinhaService.findAll(pageable);
