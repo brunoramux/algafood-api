@@ -131,4 +131,10 @@ public class UsuarioService {
                 () -> new EntidadeNaoEncontradaException(String.format(MENSAGEM_USUARIO_NAO_ENCONTRADO, id))
         );
     }
+
+    public Usuario findByEmail(String email) {
+        return repository.findByEmail(email).orElseThrow(
+                () -> new EntidadeNaoEncontradaException("Usuário com o email " + email + " não encontrado.")
+        );
+    }
 }
